@@ -1,0 +1,4 @@
+include README
+include docs/changelog
+recursive-include unittests *
+exclude unittests/files/*.tif

@@ -1,0 +1,47 @@
+# How many threads to spawn for threaded operations.  This should correspond to
+# the number of cores or cpus avaiable to your machine.  Or, set it lower if
+# you want less load on your machine.  If set to "-1", djvubind will figure it
+# out on its own.
+cores = -1
+
+# Whether djvubind should perform optical character analysis.  Set to either
+# "True" or "False"
+ocr = True
+
+# What ocr engine should be used as default.  Note that "tesseract" is the
+# fallback engine if something goes wrong on any given image.
+# engines: tesseract, cuneiform
+ocr_engine = tesseract
+
+# Command line options for all ocr engines.  Consult each program's
+# documentation for a listing of what options are possible.
+cuneiform_options =
+tesseract_options =
+
+# Preferred encoder for bitonal images and non-bitonal images.
+# bitonal encoders: cjb2, minidjvu
+# color encoders: csepdjvu, c44, cpaldjvu
+#
+# N.b., csepdjvu uses cjb2 to encode the pure black and pure white part of the
+# image, which will be the textual portion if you are using Scantailor's
+# "mixed mode".  Front and back covers, if present, are encoded with c44.
+bitonal_encoder = cjb2
+color_encoder = csepdjvu
+
+# Command line options for all encoders can be specified here.  Consult each
+# program's documentation for a listing of what options are possible.
+#
+# N.b., options to specify the image's dpi (normally -d or --dpi) are calculated
+# by djvubind, so don't bother setting that.
+c44_options =
+cjb2_options = -lossy
+cpaldjvu_options =
+csepdjvu_options =
+minidjvu_options = --match --pages-per-dict 100
+
+# Windows related options.
+# Unless you have made changes to the system PATH, djvubind might not be able
+# to find programs that it needs, especially the djvulibre tools.  Put the
+# path to the directory that contains needed executables here.  Separate
+# directories with a ';'
+win_path = C:\Program Files\DjVuZone\DjVuLibre\;C:\Program Files\Tesseract-OCR;C:\Program Files\ImageMagick-6.6.5-Q16
