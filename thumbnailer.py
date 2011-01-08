@@ -42,7 +42,7 @@ class Thumbnailer(QtCore.QThread):
         
         thumb_image = Image.open(str(item.statusTip()))
         thumb_image.thumbnail([72, 72])
-        thumb_image.save(thumbnail, 'TIFF')
+        thumb_image.save(thumbnail, 'PNG')
         
         icon = QtGui.QImage(thumbnail)
         

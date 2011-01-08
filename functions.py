@@ -3,9 +3,6 @@ import sys, os, subprocess, time
 from gui import *
 from DropListWidget import * 
 from thumbnailer import *
-from organizer import *
-from ocr import *
-from utils import *
 
 from PIL import Image
 from PyQt4 import QtCore, QtGui
@@ -30,7 +27,11 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def fileDropped(self, file):
-    f = str(file[-1])
+    if file is list:
+      f = str(file[-1])
+    else:
+      f = str(file)
+    
     toAll = ''
     new = ''
     
@@ -68,7 +69,6 @@ class StartQT4(QtGui.QMainWindow):
       item.setStatusTip(f)
       
       self.hideBackground()
-      
       self.repaint()
       
       if not self.thread.running:
@@ -86,6 +86,8 @@ class StartQT4(QtGui.QMainWindow):
     
     self.ui.statusBar.clearMessage()
     self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.statusTip()))[1])
+    
+    self.ui.pageList.setCurrentItem(item)
   
   
   
@@ -98,6 +100,7 @@ class StartQT4(QtGui.QMainWindow):
       'background-image: url(\'./icons/go-down-big.png\');\n'
       'background-position: center;\n'
       'background-repeat: no-repeat;\n'
+      'background-color: white;\n'
       '}\n'
       '\n'
       'QListView:hover\n'
@@ -105,6 +108,7 @@ class StartQT4(QtGui.QMainWindow):
       'background-image: url(\'./icons/go-down-big-hover.png\');\n'
       'background-position: center;\n'
       'background-repeat: no-repeat;\n'
+      'background-color: white;\n'
       '}'))
   
   
@@ -112,7 +116,8 @@ class StartQT4(QtGui.QMainWindow):
   def showFileDialog(self):
     files = QtGui.QFileDialog.getOpenFileNames(self, self.trUtf8('Open file'), QtCore.QString('~'), self.trUtf8('Images (*.png *.tiff *.jpg *.jpeg *.bmp *.tif)'))
 
-    for file in files:  self.fileDropped(file)
+    for file in files:
+      self.fileDropped(file)
   
   
   
@@ -127,9 +132,13 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def startBinding(self):
+    pages = []
+    
     if self.ui.enableOCR.checkState() == 0:
       ocr = False
     else:
       ocr = True
     
+    pages = [str(item) for item in self.getChildren(self.ui.pageList, True)]
     
+    print pages

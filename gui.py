@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Fri Jan  7 23:31:33 2011
+# Created: Sat Jan  8 15:13:27 2011
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,7 +31,6 @@ class Ui_MainWindow(object):
         self.label.setObjectName(_fromUtf8("label"))
         self.verticalLayout_2.addWidget(self.label)
         self.pageList = DropListWidget(self.centralwidget)
-        self.pageList.setAcceptDrops(True)
         self.pageList.setStyleSheet(_fromUtf8("QListView\n"
 "{\n"
 "background-image: url(\"./icons/go-down-big.png\");\n"
@@ -47,12 +46,6 @@ class Ui_MainWindow(object):
 "background-repeat: no-repeat;\n"
 "background-color: white;\n"
 "}"))
-        self.pageList.setDragEnabled(True)
-        self.pageList.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
-        self.pageList.setAlternatingRowColors(True)
-        self.pageList.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        self.pageList.setIconSize(QtCore.QSize(72, 72))
-        self.pageList.setMovement(QtGui.QListView.Snap)
         self.pageList.setObjectName(_fromUtf8("pageList"))
         self.verticalLayout_2.addWidget(self.pageList)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
