@@ -23,7 +23,7 @@ import os
 import shutil
 import sys
 
-from . import utils
+import utils
 
 
 class Encoder:
@@ -54,7 +54,7 @@ class Encoder:
         # Check that the outfile has been created.
         if not os.path.isfile(outfile):
             msg = 'err: encode.Encoder._c44(): No encode errors, but "{0}" does not exist!'.format(outfile)
-            print(msg, file=sys.stderr)
+            print(msg)
             sys.exit(1)
 
         # Cleanup
@@ -74,7 +74,7 @@ class Encoder:
         # Check that the outfile has been created.
         if not os.path.isfile(outfile):
             msg = 'err: encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile)
-            print(msg, file=sys.stderr)
+            print(msg)
             sys.exit(1)
 
         return None
@@ -97,7 +97,7 @@ class Encoder:
         # Check that the outfile has been created.
         if not os.path.isfile(outfile):
             msg = 'err: encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile)
-            print(msg, file=sys.stderr)
+            print(msg)
             sys.exit(1)
 
         # Cleanup
@@ -177,11 +177,11 @@ class Encoder:
 
         if not utils.is_executable(self.opts['bitonal_encoder']):
             msg = 'err: encoder "{0}" is not installed.'.format(self.opts['bitonal_encoder'])
-            print(msg, file=sys.stderr)
+            print(msg)
             sys.exit(1)
         if not utils.is_executable(self.opts['color_encoder']):
             msg = 'err: encoder "{0}" is not installed.'.format(self.opts['color_encoder'])
-            print(msg, file=sys.stderr)
+            print(msg)
             sys.exit(1)
 
         return None
@@ -229,7 +229,7 @@ class Encoder:
                 if not page.bitonal:
                     msg = 'wrn: Invalid bitonal encoder.  Bitonal pages will be omitted.'
                     msg = utils.color(msg, 'red')
-                    print(msg, file=sys.stderr)
+                    print(msg)
                     break
 
         # Encode and insert non-bitonal
@@ -259,7 +259,7 @@ class Encoder:
                 if not page.bitonal:
                     msg = 'wrn: Invalid color encoder.  Colored pages will be omitted.'
                     msg = utils.color(msg, 'red')
-                    print(msg, file=sys.stderr)
+                    print(msg)
                     break
 
         # Add ocr data

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>614</width>
+    <width>693</width>
     <height>786</height>
    </rect>
   </property>
@@ -121,75 +121,166 @@ background-color: white;
        </widget>
       </item>
       <item>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0" colspan="2">
-         <widget class="QCheckBox" name="enableOCR">
-          <property name="text">
-           <string>Enable OCR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="ocrEngineLabel">
-          <property name="text">
-           <string>OCR Engine</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QComboBox" name="ocrEngine">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <item>
-           <property name="text">
-            <string>Tesseract</string>
-           </property>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab1">
+         <attribute name="title">
+          <string>OCR</string>
+         </attribute>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="enableOCR">
+            <property name="text">
+             <string>Enable OCR</string>
+            </property>
+           </widget>
           </item>
-          <item>
-           <property name="text">
-            <string>Cuniform</string>
-           </property>
+          <item row="1" column="0">
+           <widget class="QComboBox" name="ocrEngine">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <item>
+             <property name="text">
+              <string>Tesseract</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Cuniform</string>
+             </property>
+            </item>
+           </widget>
           </item>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="ocrOptionsLabel">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string>Engine Options</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLineEdit" name="ocrOptions">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
+          <item row="1" column="1">
+           <widget class="QLabel" name="ocrEngineLabel">
+            <property name="text">
+             <string>OCR Engine</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLineEdit" name="ocrOptions">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="ocrOptionsLabel">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="text">
+             <string>Engine Options</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab2">
+         <attribute name="title">
+          <string>Encoders</string>
+         </attribute>
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="QComboBox" name="bitonalEncoder">
+            <item>
+             <property name="text">
+              <string>cjb2</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="bitonalEncoderLabel">
+            <property name="text">
+             <string>Bitonal Encoder</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QComboBox" name="colorEncoder">
+            <item>
+             <property name="text">
+              <string>csepdjvu</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="colorEncoderLabel">
+            <property name="text">
+             <string>Color Encoder</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLineEdit" name="c44Options"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="c44OptionsLabel">
+            <property name="text">
+             <string>c44 Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLineEdit" name="cjb2Options">
+            <property name="text">
+             <string>-lossy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="cjb2OptionsLabel">
+            <property name="text">
+             <string>cjb2 Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLineEdit" name="cpaldjvuOptions"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="cpaldjvuOptionsLabel">
+            <property name="text">
+             <string>cpaldjvu Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLineEdit" name="csepdjvuOptions"/>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="csepdjvuOptionsLabel">
+            <property name="text">
+             <string>csepdjvu Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLineEdit" name="minidjvuOptions">
+            <property name="text">
+             <string>--match -pages-per-dict 100</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="minidjvuOptionsLabel">
+            <property name="text">
+             <string>minidjvu Options</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -284,38 +375,5 @@ background-color: white;
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>enableOCR</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ocrOptions</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>405</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>501</x>
-     <y>106</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>enableOCR</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ocrEngine</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>422</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>501</x>
-     <y>77</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

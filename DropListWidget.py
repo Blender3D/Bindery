@@ -4,7 +4,7 @@ class DropListWidget(QtGui.QListWidget):
   def __init__(self, type, parent = None):
     super(DropListWidget, self).__init__(parent)
     
-    self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+    self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
     self.setDragEnabled(True)
     self.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
     self.setAcceptDrops(True)

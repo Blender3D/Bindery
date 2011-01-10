@@ -5,7 +5,7 @@ import sys, os
 from PyQt4 import QtCore, QtGui
 
 import functions
-import djvubind
+#import djvubind
 from thumbnailer import *
 from gui import *
 from DropListWidget import *
@@ -18,8 +18,6 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     self.ui.setupUi(self)
     
     self.thread = Thumbnailer(self.ui.pageList)
-    self.thread.images = []
-    self.thread.queue = []
     
     self.connect(self.ui.pageList, QtCore.SIGNAL('dropped'), self.fileDropped)
     self.connect(self.thread, QtCore.SIGNAL('makeIcon(int, QImage)'), self.makeIcon)

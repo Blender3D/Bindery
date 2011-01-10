@@ -7,6 +7,11 @@ from thumbnailer import *
 from PIL import Image
 from PyQt4 import QtCore, QtGui
 
+import encode
+import ocr
+import organizer
+import utils
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -72,8 +77,8 @@ class StartQT4(QtGui.QMainWindow):
       self.repaint()
       
       if not self.thread.running:
-        self.thread.images = list(set(self.thread.images).union(set(f)))
-        self.thread.process()
+        self.thread.queue = list(set(self.thread.queue).union(set(f)))
+        self.thread.run()
   
   
   
@@ -85,7 +90,7 @@ class StartQT4(QtGui.QMainWindow):
     item.setIcon(icon)
     
     self.ui.statusBar.clearMessage()
-    self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.statusTip()))[1])
+    self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.statusTip()))[1], 500)
     
     self.ui.pageList.setCurrentItem(item)
   
@@ -114,7 +119,7 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def showFileDialog(self):
-    files = QtGui.QFileDialog.getOpenFileNames(self, self.trUtf8('Open file'), QtCore.QString('~'), self.trUtf8('Images (*.png *.tiff *.jpg *.jpeg *.bmp *.tif)'))
+    files = QtGui.QFileDialog.getOpenFileNames(self, self.trUtf8('Open file'), QtCore.QDir.currentPath(), self.trUtf8('Images (*.png *.tiff *.jpg *.jpeg *.bmp *.tif)'))
 
     for file in files:
       self.fileDropped(file)
@@ -141,4 +146,15 @@ class StartQT4(QtGui.QMainWindow):
     
     pages = [str(item) for item in self.getChildren(self.ui.pageList, True)]
     
-    print pages
+    if len(pages) == 0:
+      QtGui.QMessageBox.warning(self, self.trUtf8('Warning'), self.trUtf8('There are no pages to process!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
+      
+      return False
+    
+    out = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save file'), self.trUtf8(os.path.normpath(str(QtCore.QDir.currentPath() + '/Book.djvu'))), self.trUtf8('DjVu Document (*.djvu)'))
+    
+    if ocr:
+      queue = list(pages)
+      pagecount = len(pages)
+      
+      
