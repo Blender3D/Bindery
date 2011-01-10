@@ -3,14 +3,16 @@ import sys, os, subprocess, time
 from gui import *
 from DropListWidget import * 
 from thumbnailer import *
+from bind import *
 
 from PIL import Image
 from PyQt4 import QtCore, QtGui
-
+'''
 import encode
 import ocr
 import organizer
 import utils
+'''
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -18,7 +20,15 @@ except AttributeError:
     _fromUtf8 = lambda s: s
 
 class StartQT4(QtGui.QMainWindow):
+  '''
+  Extension of main StartQT4 class
+  '''
+  
   def getChildren(self, element, statusTip = False):
+    '''
+    Returns a list of text or tooltips of the children of a QListWidget
+    '''
+    
     children = []
     
     for i in range(element.count()):
@@ -32,6 +42,10 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def fileDropped(self, file):
+    '''
+    Handles a file drop. Also used when file is chosen via dialog.
+    '''
+    
     if file is list:
       f = str(file[-1])
     else:
@@ -41,28 +55,6 @@ class StartQT4(QtGui.QMainWindow):
     new = ''
     
     if os.path.splitext(f)[1][1:].lower() in ['jpg', 'jpeg', 'bmp', 'png', 'tga']:
-      '''
-      if toAll != None:
-        reply = QtGui.QMessageBox.question(self, 'Message', 'All files must be TIFF images. Would you like me to convert a copy of your file to the TIFF format?', QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.YesToAll | QtGui.QMessageBox.NoToAll, QtGui.QMessageBox.YesToAll)
-        
-        toAll = None
-      
-      if reply == QtGui.QMessageBox.Yes:       toAll = ''
-      if reply == QtGui.QMessageBox.No:        toAll = ''
-      if reply == QtGui.QMessageBox.YesToAll:  toAll = True
-      if reply == QtGui.QMessageBox.NoToAll:   toAll = False
-      
-      if reply == QtGui.QMessageBox.Yes or toAll == True:
-        if not os.path.exists('./djvu_backup/'):  os.mkdir('./djvu_backup/')
-        
-        if f not in self.getChildren(self.ui.pageList):
-          new = './djvu_backup/' + os.path.splitext(os.path.split(f)[1])[0] + '.tiff'
-          Image.open(f).save(new)
-      
-      elif reply == QtGui.QMessageBox.No or toAll == False:
-        return False
-      '''
-      
       if f not in self.getChildren(self.ui.pageList, True):
         new = './djvu_backup/' + os.path.splitext(os.path.split(f)[1])[0] + '.tiff'
       
@@ -83,6 +75,10 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def makeIcon(self, index, image):
+    '''
+    Sets the icon of the QListWidgetIcon at the given index.
+    '''
+    
     item = self.ui.pageList.item(index)
     pixmap = QtGui.QPixmap(72, 72)
     pixmap.convertFromImage(image)
@@ -97,28 +93,24 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def hideBackground(self):
+    '''
+    Hides the background image of the main QListWidget when it obtains
+    more than one item, or adds it again when the widget has zero items.
+    '''
+    
     if len(self.getChildren(self.ui.pageList, True)) > 0:
       self.ui.pageList.setStyleSheet(_fromUtf8(''))
     else:
-      self.ui.pageList.setStyleSheet(_fromUtf8('QListView\n'
-      '{\n'
-      'background-image: url(\'./icons/go-down-big.png\');\n'
-      'background-position: center;\n'
-      'background-repeat: no-repeat;\n'
-      'background-color: white;\n'
-      '}\n'
-      '\n'
-      'QListView:hover\n'
-      '{\n'
-      'background-image: url(\'./icons/go-down-big-hover.png\');\n'
-      'background-position: center;\n'
-      'background-repeat: no-repeat;\n'
-      'background-color: white;\n'
-      '}'))
+      self.ui.pageList.setStyleSheet(_fromUtf8('QListView\n{\nbackground-image: url(\'./icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListView:hover\n{\nbackground-image: url(\'./icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}'))
   
   
   
   def showFileDialog(self):
+    '''
+    Shows the 'File Selection' dialog and pipes the output into the
+    'fileDropped()' function for processing.
+    '''
+    
     files = QtGui.QFileDialog.getOpenFileNames(self, self.trUtf8('Open file'), QtCore.QDir.currentPath(), self.trUtf8('Images (*.png *.tiff *.jpg *.jpeg *.bmp *.tif)'))
 
     for file in files:
@@ -127,6 +119,10 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def removeItems(self):
+    '''
+    Removes the selected items from the main QListWidget.
+    '''
+    
     selected = self.ui.pageList.selectedItems()
     
     for item in selected:
@@ -137,24 +133,35 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def startBinding(self):
-    pages = []
+    '''
+    Starts binding the book. It's a huge task...
+    '''
     
-    if self.ui.enableOCR.checkState() == 0:
-      ocr = False
-    else:
-      ocr = True
+    self.pages = [str(item) for item in self.getChildren(self.ui.pageList, True)]
     
-    pages = [str(item) for item in self.getChildren(self.ui.pageList, True)]
-    
-    if len(pages) == 0:
+    if len(self.pages) == 0:
       QtGui.QMessageBox.warning(self, self.trUtf8('Warning'), self.trUtf8('There are no pages to process!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
       
       return False
     
-    out = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save file'), self.trUtf8(os.path.normpath(str(QtCore.QDir.currentPath() + '/Book.djvu'))), self.trUtf8('DjVu Document (*.djvu)'))
+    self.outFile = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save file'), self.trUtf8(os.path.normpath(str(QtCore.QDir.currentPath() + '/Book.djvu'))), self.trUtf8('DjVu Document (*.djvu)'))
     
-    if ocr:
-      queue = list(pages)
-      pagecount = len(pages)
-      
-      
+    self.options = {'cores':             -1,
+                   'ocr':               (self.ui.enableOCR.checkState() == 0),
+                   'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
+                   'cuneiform_options': str(self.ui.ocrOptions.text()),
+                   'tesseract_options': str(self.ui.ocrOptions.text()),
+                   'bitonal_encoder':   str(self.ui.bitonalEncoder.currentText()),
+                   'color_encoder':     str(self.ui.colorEncoder.currentText()),
+                   'c44_options':       str(self.ui.c44Options.text()),
+                   'cjb2_options':      str(self.ui.cjb2Options.text()),
+                   'cpaldjvu_options':  str(self.ui.cpaldjvuOptions.text()),
+                   'csepdjvu_options':  str(self.ui.csepdjvuOptions.text()),
+                   'minidjvu_options':  str(self.ui.minidjvuOptions.text()),
+                   'numbering_type':    [],
+                   'numbering_start':   [],
+                   'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
+    
+    self.binder = binder(self.pages, self.options, self.outFile)
+    
+    self.binder.run()

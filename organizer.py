@@ -59,7 +59,7 @@ class Page:
     """
 
     dpi = utils.execute('identify -ping -format %x "{0}"'.format(self.path), capture = True).decode('ascii').split(' ')[0]
-    self.dpi = int(dpi)
+    self.dpi = int(float(dpi))
     return None
 
   def is_bitonal(self):

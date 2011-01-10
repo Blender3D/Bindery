@@ -7,6 +7,28 @@ import os
 import subprocess
 import sys
 
+def color(text, color_name):
+    """
+    Change the text color by adding ANSI escape sequences.
+    """
+
+    # Don't bother on the windows platform.
+    if sys.platform.startswith('win'):
+        return text
+
+    colors = {}
+    colors['pink'] = '\033[95m'
+    colors['blue'] = '\033[94m'
+    colors['green'] = '\033[92m'
+    colors['yellow'] = '\033[93m'
+    colors['red'] = '\033[91m'
+    end = '\033[0m'
+
+    if color_name in colors.keys():
+        text = colors[color_name] + text + end
+
+    return text
+
 def split_cmd(start, files, end = ''):
   """
   Rumor has it that Windows has a character limit of a little more than 32,000 for commands.[1]
@@ -104,7 +126,7 @@ def execute(cmd, capture = False):
   status = sub.wait()
 
   # Exit if the command fails for any reason.
-  if status ! = 0:
+  if status != 0:
     print('err: utils.execute(): command exited with bad status.\ncmd = {0}\nexit status = {1}'.format(cmd, status))
     sys.exit(1)
 
@@ -146,7 +168,7 @@ def list_files(directory = '.', contains = None, extension = None):
     for file in contents:
       ext = file.split('.')[-1]
       
-      if extension.lower() ! = ext.lower():
+      if extension.lower() != ext.lower():
         remove.append(file)
     
     for file in remove:

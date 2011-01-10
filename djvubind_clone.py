@@ -11,7 +11,7 @@ import ocr
 import organizer
 import utils
 
-class djvuAnalyze:
+class ThreadAnalyze:
   def __init__(self, queue):
     self.queue = reversed(queue)
     self.quit = False
@@ -22,14 +22,14 @@ class djvuAnalyze:
         self.quit = True
         break
       
-      page = self.queue[-1]
+      page = self.queue.pop()
       page.is_bitonal()
       page.get_dpi()
 
 
 
 
-class djvuOCR:
+class ThreadOCR:
   def __init__(self, queue, ocr):
     self.queue = reversed(queue)
     self.ocr = ocr
@@ -42,12 +42,9 @@ class djvuOCR:
       self.quit = True
       break
       
-      page = self.queue[-1]
+      page = self.queue.pop()
       boxing = self.ocr.analyze_image(page.path)
       page.text = self.ocr.translate(boxing)
-
-
-
 
 
 
@@ -70,7 +67,7 @@ class Project:
     self.enc = djvubind.encode.Encoder(self.opts)
     self.ocr = djvubind.ocr.OCR(self.opts)
 
-  def add_file(self, filename, type='page'):
+  def add_file(self, filename, type = 'page'):
     """
     Adds a file to the project.
     type can be 'page', 'cover_front', 'cover_back', 'metadata', or 'bookmarks'.
@@ -80,11 +77,6 @@ class Project:
     if type not in ['page', 'cover_front', 'cover_back', 'metadata', 'bookmarks']:
       msg = 'err: Project.add_file(): type "{0}" is unknown.'.format(type)
       print(msg)
-      sys.exit(1)
-    if not os.path.isfile(filename):
-      msg = 'err: Project.add_file(): "{0}" does not exist or is not a file.'.format(filename)
-      print(msg)
-      sys.exit(1)
 
     # Hand the files over to self.book to manage.
     if type == 'page':
@@ -100,32 +92,15 @@ class Project:
     """
 
     # Create queu and populate with pages to process
-    q = queue.Queue()
+    q = []
+    
     for i in self.book.pages:
-      q.put(i)
+      q.append(i)
 
     # Create threads to process the pages in queue
-    print('  Spawning {0} processing threads.'.format(self.opts['cores']))
-    for i in range(self.opts['cores']):
-      p = ThreadAnalyze(q)
-      p.daemon = True
-      p.start()
-
-    # Wait for everything to digest.  Note that we don't simply call q.join()
-    # because it blocks, preventing something like ctrl-c from killing the program.
-    pagecount = len(self.book.pages)
-    while not q.empty():
-      try:
-        time.sleep(3)
-        # Report completion percentage.
-        # N.b., this is perfect, since queue.qsize() isn't completely reliable in a threaded
-        # environment, but it will do well enough to give the user and idea of where we are.
-        position = ( (pagecount - q.qsize() - self.opts['cores']) / pagecount ) * 100
-        print('  {0:.2f}% completed.     '.format(position), end='\r')
-      except KeyboardInterrupt:
-        print('')
-        sys.exit(1)
-    q.join()
+  
+    p = ThreadAnalyze(q)
+    p.run()
 
     return None
 
@@ -139,122 +114,29 @@ class Project:
 
     return None
 
-  def get_config(self, opts):
-    """
-    Retrives configuration options set in the user's config file.  Options
-    passed through the command line (already in 'opts') should be
-    translated and overwrite config file options.
-    """
-
-    # Set default options
-    self.opts = {'cores':-1,
-           'ocr':True,
-           'ocr_engine':'tesseract',
-           'cuneiform_options':'',
-           'tesseract_options':'',
-           'bitonal_encoder':'cjb2',
-           'color_encoder':'csepdjvu',
-           'c44_options':'',
-           'cjb2_options':'-lossy',
-           'cpaldjvu_options':'',
-           'csepdjvu_options':'',
-           'minidjvu_options':'--match -pages-per-dict 100',
-           'numbering_type':[],
-           'numbering_start':[],
-           'win_path':'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
-
-    # Load the global config file first
-    if not sys.platform.startswith('win'):
-      filename = '/etc/djvubind/config'
-      if os.path.isfile(filename):
-        config_opts = djvubind.utils.parse_config(filename)
-        self.opts.update(config_opts)
-
-    # Load the options from the user's config file, if it exists.
-    if sys.platform.startswith('win'):
-      filename = os.path.expanduser('~\\Application Data\\djvubind\\config')
-    else:
-      filename = os.path.expanduser('~/.config/djvubind/config')
-    filename = os.path.normpath(filename)
-    if os.path.isfile(filename):
-      config_opts = djvubind.utils.parse_config(filename)
-      self.opts.update(config_opts)
-    else:
-      if os.path.isfile('/etc/djvubind/config'):
-        conf_dir = os.path.expanduser('~/.config/djvubind')
-        if not os.path.isdir(conf_dir):
-          os.makedirs(conf_dir)
-        shutil.copy('/etc/djvubind/config', filename)
-        config_opts = djvubind.utils.parse_config(filename)
-        self.opts.update(config_opts)
-      else:
-        msg = 'msg: Project.get_config(): No user config file found ({0}).'.format(filename)
-        msg = msg + '\n' + 'A sample config file is included in the source (docs/config).'
-        print(msg)
-
-
-    # Set cetain variables to the proper type
-    self.opts['cores'] = int(self.opts['cores'])
-    self.opts['ocr'] = (self.opts['ocr'] == 'True')
-
-    # Overwrite or create values for certain command line options
-    if opts.no_ocr:
-      self.opts['ocr'] = False
-    if opts.ocr_engine is not None:
-      self.opts['ocr_engine'] = opts.ocr_engine
-    if opts.tesseract_options is not None:
-      self.opts['tesseract_options'] = opts.tesseract_options
-    if opts.cuneiform_options is not None:
-      self.opts['cuneiform_options'] = opts.cuneiform_options
-    if opts.numbering_type is not None:
-      self.opts['numbering_type'] = opts.numbering_type
-    if opts.numbering_start is not None:
-      self.opts['numbering_start'] = [int(item) for item in opts.numbering_start]
-    self.opts['verbose'] = opts.verbose
-    self.opts['quiet'] = opts.quiet
-
-    # Detect number of cores if not manually set already
-    if self.opts['cores'] == -1:
-      self.opts['cores'] = djvubind.utils.cpu_count()
-
-    # Update windows PATH so that we can find the executable we need.
-    if sys.platform.startswith('win'):
-      if self.opts['win_path'] != '':
-        os.environ['PATH'] = '{0};{1}'.format(self.opts['win_path'], os.environ['PATH'])
-
-    if self.opts['verbose']:
-      print('Executing with these parameters:')
-      print(self.opts)
-      print('')
-
-    return None
-
   def get_ocr(self):
     """
     Performs optical character analysis on all images, excluding covers.
     """
 
     if not self.opts['ocr']:
-      print('  OCR is disabled and will be skipped.')
       return None
 
-    # Create queu and populate with pages to process
-    q = queue.Queue()
+    # Create queue and populate with pages to process
+    q = []
+    
     for i in self.book.pages:
-      q.put(i)
-
-    # Create threads to process the pages in queue
-    print('  Spawning {0} processing threads.'.format(self.opts['cores']))
-    for i in range(self.opts['cores']):
-      p = ThreadOCR(q, self.ocr)
-      p.daemon = True
-      p.start()
+      q.append(i)
+    
+    
+    p = ThreadOCR(q, self.ocr)
+    p.run()
 
     # Wait for everything to digest.  Note that we don't simply call q.join()
     # because it blocks, preventing something like ctrl-c from killing the
     # program.
     pagecount = len(self.book.pages)
-    while not q.empty():
+    while not len(q == 0):
       try:
         time.sleep(3)
         # Report completion percentage.
