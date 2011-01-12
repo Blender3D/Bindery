@@ -62,10 +62,9 @@ class StartQT4(QtGui.QMainWindow):
       self.hideBackground()
       self.repaint()
       
-      if not self.thread.running:
-        self.thread.queue = list(set(self.thread.queue).union(set(f)))
-        self.thread.run()
-  
+      self.thumbnailer.queue = list(set(self.thumbnailer.queue).union(set(f)))
+      self.thumbnailer.start()
+      
   
   
   def makeIcon(self, index, image):
@@ -126,6 +125,11 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
+  def updateProgress(self, value):
+    self.ui.progressBar.setValue(value)
+  
+  
+  
   def startBinding(self):
     '''
     Starts binding the book. It's a huge task...
@@ -156,7 +160,7 @@ class StartQT4(QtGui.QMainWindow):
                    'numbering_start':   [],
                    'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
     
-    self.binder = binder(self.pages, self.options, self.outFile)
-    self.binder.run()
+    self.binder.initialize(self.pages, self.options, self.outFile)
+    self.binder.start()
     
-    QtGui.QMessageBox.message(self, self.trUtf8('Message'), self.trUtf8('The book has been saved to \'' + os.path.split(self.outFile)[-1] + '\'.'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
+    #QtGui.QMessageBox.message(self, self.trUtf8('Message'), self.trUtf8('The book has been saved to \'' + os.path.split(self.outFile)[-1] + '\'.'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)

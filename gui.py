@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Sat Jan  8 22:43:11 2011
+# Created: Wed Jan 12 11:20:22 2011
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -80,7 +80,35 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.verticalLayout.addWidget(self.label_2)
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
+        self.tabWidget.setTabShape(QtGui.QTabWidget.Rounded)
+        self.tabWidget.setMovable(True)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
+        self.tab_2 = QtGui.QWidget()
+        self.tab_2.setObjectName(_fromUtf8("tab_2"))
+        self.formLayout_4 = QtGui.QFormLayout(self.tab_2)
+        self.formLayout_4.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
+        self.formLayout_4.setObjectName(_fromUtf8("formLayout_4"))
+        self.pageNumberLabel = QtGui.QLabel(self.tab_2)
+        self.pageNumberLabel.setObjectName(_fromUtf8("pageNumberLabel"))
+        self.formLayout_4.setWidget(0, QtGui.QFormLayout.LabelRole, self.pageNumberLabel)
+        self.pageNumber = QtGui.QLineEdit(self.tab_2)
+        self.pageNumber.setObjectName(_fromUtf8("pageNumber"))
+        self.formLayout_4.setWidget(0, QtGui.QFormLayout.FieldRole, self.pageNumber)
+        self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
+        self.tab = QtGui.QWidget()
+        self.tab.setObjectName(_fromUtf8("tab"))
+        self.formLayout = QtGui.QFormLayout(self.tab)
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
+        self.formLayout.setObjectName(_fromUtf8("formLayout"))
+        self.outputFormat = QtGui.QComboBox(self.tab)
+        self.outputFormat.setObjectName(_fromUtf8("outputFormat"))
+        self.outputFormat.addItem(_fromUtf8(""))
+        self.outputFormat.addItem(_fromUtf8(""))
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.outputFormat)
+        self.outputFormatLabel = QtGui.QLabel(self.tab)
+        self.outputFormatLabel.setObjectName(_fromUtf8("outputFormatLabel"))
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.outputFormatLabel)
+        self.tabWidget.addTab(self.tab, _fromUtf8(""))
         self.tab1 = QtGui.QWidget()
         self.tab1.setObjectName(_fromUtf8("tab1"))
         self.formLayout_2 = QtGui.QFormLayout(self.tab1)
@@ -209,10 +237,16 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Bindery", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Drop the book\'s pages below", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("MainWindow", "Add and arrange the book\'s pages below", None, QtGui.QApplication.UnicodeUTF8))
         self.addPageButton.setText(QtGui.QApplication.translate("MainWindow", "Add page", None, QtGui.QApplication.UnicodeUTF8))
         self.removePageButton.setText(QtGui.QApplication.translate("MainWindow", "Remove page", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Configure the binding options below", None, QtGui.QApplication.UnicodeUTF8))
+        self.pageNumberLabel.setText(QtGui.QApplication.translate("MainWindow", "Page Number", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("MainWindow", "Page", None, QtGui.QApplication.UnicodeUTF8))
+        self.outputFormat.setItemText(0, QtGui.QApplication.translate("MainWindow", "DjVu", None, QtGui.QApplication.UnicodeUTF8))
+        self.outputFormat.setItemText(1, QtGui.QApplication.translate("MainWindow", "PDF", None, QtGui.QApplication.UnicodeUTF8))
+        self.outputFormatLabel.setText(QtGui.QApplication.translate("MainWindow", "Output Format", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Book", None, QtGui.QApplication.UnicodeUTF8))
         self.enableOCR.setText(QtGui.QApplication.translate("MainWindow", "Enable OCR", None, QtGui.QApplication.UnicodeUTF8))
         self.ocrEngine.setItemText(0, QtGui.QApplication.translate("MainWindow", "Tesseract", None, QtGui.QApplication.UnicodeUTF8))
         self.ocrEngine.setItemText(1, QtGui.QApplication.translate("MainWindow", "Cuniform", None, QtGui.QApplication.UnicodeUTF8))
@@ -230,7 +264,7 @@ class Ui_MainWindow(object):
         self.csepdjvuOptionsLabel.setText(QtGui.QApplication.translate("MainWindow", "csepdjvu Options", None, QtGui.QApplication.UnicodeUTF8))
         self.minidjvuOptions.setText(QtGui.QApplication.translate("MainWindow", "--match -pages-per-dict 100", None, QtGui.QApplication.UnicodeUTF8))
         self.minidjvuOptionsLabel.setText(QtGui.QApplication.translate("MainWindow", "minidjvu Options", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab2), QtGui.QApplication.translate("MainWindow", "Encoders", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab2), QtGui.QApplication.translate("MainWindow", "DjVu Encoders", None, QtGui.QApplication.UnicodeUTF8))
         self.startButton.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
         self.stopButton.setText(QtGui.QApplication.translate("MainWindow", "Stop", None, QtGui.QApplication.UnicodeUTF8))
         self.progressBar.setFormat(QtGui.QApplication.translate("MainWindow", "%p%", None, QtGui.QApplication.UnicodeUTF8))
