@@ -1,0 +1,171 @@
+@font-face
+{
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Vollkorn Regular'), local('Vollkorn-Regular'), url('http://themes.googleusercontent.com/font?kit=IiexqYAeh8uII223thYx3w') format('truetype');
+}
+
+html
+{
+  background-color: rgb(50, 50, 50);
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  
+  margin-bottom: -15px;
+}
+
+body
+{
+  position: relative;
+  
+  font-family: 'Vollkorn', arial, serif;
+  background-color: rgb(250, 250, 250);
+  color: rgb(50, 50, 50);
+  
+  font-size: 15px;
+  
+  width: 600px;
+  
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  
+  padding-top: 230px;
+  padding-left: 30px;
+  padding-right: 30px;
+  
+  border: 12px solid rgb(156, 196, 80);
+  
+  min-height: 100%;
+  
+  text-align: justify;
+}
+
+h1
+{
+  font-size: 30px;
+}
+
+p
+{
+  text-indent: 30px;
+}
+
+#top
+{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 200px;
+  
+  width: 100%;
+  background-color: rgb(156, 196, 80);
+}
+
+#navigation
+{
+  position: absolute;
+  bottom: 15px;
+  left: -36px;
+  
+  list-style: none;
+}
+
+#navigation li
+{
+  display: inline;
+  padding: 15px;
+  margin-right: 20px;
+  height: 30px;
+  
+  background-color: rgb(215, 215, 215);
+  cursor: pointer;
+}
+
+#navigation li:hover
+{
+  background-color: rgb(235, 235, 235);
+}
+
+#navigation li.selected
+{
+  background-color: rgb(250, 250, 250);
+}
+
+a
+{
+  color: rgb(136, 176, 60);
+  text-decoration: none;
+}
+
+a:hover
+{
+  color: rgb(136, 196, 80);
+  text-decoration: underline;
+}
+
+dt
+{
+  font-size: 25px;
+  margin-bottom: 11px;
+}
+
+dd
+{
+  margin-bottom: 3px;
+  margin-left: 0px;
+  padding-left: 125px;
+}
+
+dl.nodates
+{
+  margin-bottom: 25px;
+}
+
+dl.nodates dd
+{
+  padding-left: 18px;
+}
+
+ul
+{
+  padding: 0px;
+  margin: 0px;
+  padding-left: 36px;
+}
+
+ul > li
+{
+  margin-top: 5px;
+}
+
+dd > ul > li:first-child
+{
+  margin-top: 5px !important;
+}
+
+dd > ul > li
+{
+  margin-top: 45px;
+}
+
+.date
+{
+  display: inline-block;
+  
+  width: 105px;
+  
+  font-size: 15px;
+  text-align: justify;
+  
+  float: left;
+  margin-left: -107px;
+}
+
+.gray
+{
+  color: rgb(145, 145, 145);
+}
