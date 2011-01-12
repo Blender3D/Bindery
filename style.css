@@ -49,9 +49,24 @@ h1
   font-size: 30px;
 }
 
-p
+p, dd
 {
-  text-indent: 30px;
+  text-indent: 20px;
+}
+
+p.noIndent, dd.noIndent
+{
+  text-indent: 0px;
+}
+
+code
+{
+  font-family: monospace;
+  
+  display: block;
+  border: 1px dashed rgb(50, 50, 50);
+  background-color: rgb(235, 235, 235);
+  padding: 10px;
 }
 
 #top
@@ -63,6 +78,12 @@ p
   
   width: 100%;
   background-color: rgb(156, 196, 80);
+}
+
+#logo
+{
+  float: left;
+  margin-right: 20px;
 }
 
 #navigation
