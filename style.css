@@ -59,6 +59,11 @@ p.noIndent, dd.noIndent
   text-indent: 0px;
 }
 
+img
+{
+  display: block;
+}
+
 code
 {
   font-family: monospace;
