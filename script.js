@@ -12,5 +12,5 @@ $(document).ready(function()
     $('#' + $(this).text().toLowerCase().replace(' ', '_')).show();
   });
   
-  $('#navigation li:eq(0)').trigger('click');
+  $('#navigation li:eq(2)').trigger('click');
 });
