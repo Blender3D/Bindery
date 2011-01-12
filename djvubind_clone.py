@@ -38,13 +38,13 @@ class ThreadOCR:
   
   def run(self):
     while not self.quit:
-    if len(self.queue) == 0:
-      self.quit = True
-      break
-      
-      page = self.queue.pop()
-      boxing = self.ocr.analyze_image(page.path)
-      page.text = self.ocr.translate(boxing)
+      if len(self.queue) == 0:
+        self.quit = True
+        break
+        
+        page = self.queue.pop()
+        boxing = self.ocr.analyze_image(page.path)
+        page.text = self.ocr.translate(boxing)
 
 
 
@@ -143,7 +143,7 @@ class Project:
         # N.b., this is perfect, since queue.qsize() isn't completely reliable in a threaded
         # environment, but it will do well enough to give the user and idea of where we are.
         position = ( (pagecount - q.qsize() - self.opts['cores']) / pagecount ) * 100
-        print('  {0:.2f}% completed.     '.format(position), end='\r')
+        print('  {0:.2f}% completed.     '.format(position))
       except KeyboardInterrupt:
         print('')
         sys.exit(1)

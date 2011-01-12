@@ -144,7 +144,7 @@ class Project:
                 # N.b., this is perfect, since queue.qsize() isn't completely reliable in a threaded
                 # environment, but it will do well enough to give the user and idea of where we are.
                 position = ( (pagecount - q.qsize() - self.opts['cores']) / pagecount ) * 100
-                print('  {0:.2f}% completed.       '.format(position), end='\r')
+                print('  {0:.2f}% completed.       '.format(position))
             except KeyboardInterrupt:
                 print('')
                 sys.exit(1)
@@ -284,7 +284,7 @@ class Project:
                 # N.b., this is perfect, since queue.qsize() isn't completely reliable in a threaded
                 # environment, but it will do well enough to give the user and idea of where we are.
                 position = ( (pagecount - q.qsize() - self.opts['cores']) / pagecount ) * 100
-                print('  {0:.2f}% completed.       '.format(position), end='\r')
+                print('  {0:.2f}% completed.       '.format(position))
             except KeyboardInterrupt:
                 print('')
                 sys.exit(1)

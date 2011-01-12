@@ -7,12 +7,6 @@ from bind import *
 
 from PIL import Image
 from PyQt4 import QtCore, QtGui
-'''
-import encode
-import ocr
-import organizer
-import utils
-'''
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -147,7 +141,7 @@ class StartQT4(QtGui.QMainWindow):
     self.outFile = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save file'), self.trUtf8(os.path.normpath(str(QtCore.QDir.currentPath() + '/Book.djvu'))), self.trUtf8('DjVu Document (*.djvu)'))
     
     self.options = {'cores':             -1,
-                   'ocr':               (self.ui.enableOCR.checkState() == 0),
+                   'ocr':               (self.ui.enableOCR.checkState() != 0),
                    'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
                    'cuneiform_options': str(self.ui.ocrOptions.text()),
                    'tesseract_options': str(self.ui.ocrOptions.text()),
@@ -163,5 +157,6 @@ class StartQT4(QtGui.QMainWindow):
                    'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
     
     self.binder = binder(self.pages, self.options, self.outFile)
-    
     self.binder.run()
+    
+    QtGui.QMessageBox.message(self, self.trUtf8('Message'), self.trUtf8('The book has been saved to \'' + os.path.split(self.outFile)[-1] + '\'.'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
