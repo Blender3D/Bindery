@@ -1,4 +1,4 @@
-import sys, os, subprocess, time
+import sys, os, time
 
 from gui import *
 from DropListWidget import * 
@@ -45,7 +45,6 @@ class StartQT4(QtGui.QMainWindow):
     else:
       f = str(file)
     
-    toAll = ''
     new = ''
     
     if os.path.splitext(f)[1][1:].lower() in ['jpg', 'jpeg', 'bmp', 'png', 'tga']:
@@ -94,7 +93,7 @@ class StartQT4(QtGui.QMainWindow):
     if len(self.getChildren(self.ui.pageList, True)) > 0:
       self.ui.pageList.setStyleSheet(_fromUtf8(''))
     else:
-      self.ui.pageList.setStyleSheet(_fromUtf8('QListView\n{\nbackground-image: url(\'./icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListView:hover\n{\nbackground-image: url(\'./icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}'))
+      self.ui.pageList.setStyleSheet(_fromUtf8('QListWidget\n{\nbackground-image: url(\'./icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListWidget:hover\n{\nbackground-image: url(\'./icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}'))
   
   
   
@@ -125,9 +124,15 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
-  def updateProgress(self, value):
+  def updateProgress(self, value, message = None):
     self.ui.progressBar.setValue(value)
+    self.ui.statusBar.showMessage(message)
   
+  
+  
+  def finishedBinding(self):
+    self.ui.progressBar.reset()
+    QtGui.QMessageBox.information(self, self.trUtf8('Message'), self.trUtf8('The book has been succesfully saved!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
   
   
   def startBinding(self):
@@ -162,5 +167,11 @@ class StartQT4(QtGui.QMainWindow):
     
     self.binder.initialize(self.pages, self.options, self.outFile)
     self.binder.start()
+  
+  
+  
+  def stopBinding(self):
+    self.binder.die = True
     
-    #QtGui.QMessageBox.message(self, self.trUtf8('Message'), self.trUtf8('The book has been saved to \'' + os.path.split(self.outFile)[-1] + '\'.'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
+    self.statusBar.clearMessage()
+    self.ui.progressBar.reset()

@@ -28,12 +28,14 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     
     self.connect(self.ui.pageList, QtCore.SIGNAL('dropped'), self.fileDropped)
     self.connect(self.thumbnailer, QtCore.SIGNAL('makeIcon(int, QImage)'), self.makeIcon)
-    self.connect(self.binder, QtCore.SIGNAL('updateProgress(int)'), self.updateProgress)
+    self.connect(self.binder, QtCore.SIGNAL('updateProgress(int, QString)'), self.updateProgress)
+    self.connect(self.binder, QtCore.SIGNAL('finishedBinding()'), self.finishedBinding)
     
     self.connect(self.ui.addPageButton, QtCore.SIGNAL('clicked()'), self.showFileDialog)
     self.connect(self.ui.removePageButton, QtCore.SIGNAL('clicked()'), self.removeItems)
     
     self.connect(self.ui.startButton, QtCore.SIGNAL('clicked()'), self.startBinding)
+    self.connect(self.ui.stopButton, QtCore.SIGNAL('clicked()'), self.stopBinding)
 
 if __name__ == '__main__':
   app = QtGui.QApplication(sys.argv)
