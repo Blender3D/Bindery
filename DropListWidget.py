@@ -48,3 +48,25 @@ class DropListWidget(QtGui.QListWidget):
     else:
       event.ignore()
   '''
+
+class DropListWidgetItem(QtGui.QListWidgetItem):
+  def __init__(self, text = '', defaultIcon = True, parent = None):
+    super(DropListWidgetItem, self).__init__(parent)
+    self.defaultIcon = True
+    
+    self.pixmap = QtGui.QPixmap(72, 72)
+    self.pixmap.convertFromImage(QtGui.QImage('./icons/blank.png'))
+    self.icon = QtGui.QIcon(self.pixmap)
+    self.blank = QtGui.QIcon(QtGui.QPixmap(0, 0))
+    
+    self.setText(text)
+    
+    if defaultIcon:
+      self.setIcon(self.icon)
+  
+  def resetIcon(self):
+    self.setIcon(self.icon)
+    self.defaultIcon = True
+  
+  def removeIcon(self):
+    self.setIcon(self.blank)

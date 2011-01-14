@@ -35,33 +35,22 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
-  def fileDropped(self, file):
+  def fileAdded(self, files):
     '''
     Handles a file drop. Also used when file is chosen via dialog.
     '''
     
-    if file is list:
-      f = str(file[-1])
-    else:
-      f = str(file)
-    
-    new = ''
-    
-    if os.path.splitext(f)[1][1:].lower() in ['jpg', 'jpeg', 'bmp', 'png', 'tga']:
-      if f not in self.getChildren(self.ui.pageList, True):
-        new = './djvu_backup/' + os.path.splitext(os.path.split(f)[1])[0] + '.tiff'
+    for f in files:
+      f = str(f)
       
-    elif os.path.splitext(f)[1][1:].lower() in ['tif', 'tiff']:
-      new = str(f)
+      if os.path.splitext(f)[1][1:].lower() in ['jpg', 'jpeg', 'bmp', 'png', 'tga', 'tif', 'tiff']:
+        if f not in self.getChildren(self.ui.pageList, True):
+          item = DropListWidgetItem(os.path.split(f)[1], self.previews, self.ui.pageList)
+          item.setStatusTip(f)
+          
+          self.hideBackground()
     
-    if new != '':
-      item = QtGui.QListWidgetItem(os.path.split(f)[1], self.ui.pageList)
-      item.setStatusTip(f)
-      
-      self.hideBackground()
-      self.repaint()
-      
-      self.thumbnailer.queue = list(set(self.thumbnailer.queue).union(set(f)))
+    if not self.thumbnailer.running and self.previews:
       self.thumbnailer.start()
       
   
@@ -77,10 +66,7 @@ class StartQT4(QtGui.QMainWindow):
     icon = QtGui.QIcon(pixmap)
     item.setIcon(icon)
     
-    self.ui.statusBar.clearMessage()
     self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.statusTip()))[1], 500)
-    
-    self.ui.pageList.setCurrentItem(item)
   
   
   
@@ -100,13 +86,12 @@ class StartQT4(QtGui.QMainWindow):
   def showFileDialog(self):
     '''
     Shows the 'File Selection' dialog and pipes the output into the
-    'fileDropped()' function for processing.
+    'fileAdded()' function for processing.
     '''
     
     files = QtGui.QFileDialog.getOpenFileNames(self, self.trUtf8('Open file'), QtCore.QDir.currentPath(), self.trUtf8('Images (*.png *.tiff *.jpg *.jpeg *.bmp *.tif)'))
 
-    for file in files:
-      self.fileDropped(file)
+    self.fileAdded(files)
   
   
   
@@ -124,6 +109,20 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
+  def togglePreviews(self, on = True):
+    self.previews = on
+    
+    if on:
+      for i in range(self.ui.pageList.count()):
+        self.ui.pageList.item(i).resetIcon()
+      
+      self.thumbnailer.start()
+    else:
+      for i in range(self.ui.pageList.count()):
+        self.ui.pageList.item(i).removeIcon()
+  
+  
+  
   def updateProgress(self, value, message = None):
     self.ui.progressBar.setValue(value)
     self.ui.statusBar.showMessage(message)
@@ -131,7 +130,7 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def finishedBinding(self):
-    self.ui.progressBar.reset()
+    self.ui.progressBar.setValue(0)
     QtGui.QMessageBox.information(self, self.trUtf8('Message'), self.trUtf8('The book has been succesfully saved!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
   
   
@@ -172,6 +171,4 @@ class StartQT4(QtGui.QMainWindow):
   
   def stopBinding(self):
     self.binder.die = True
-    
-    self.statusBar.clearMessage()
     self.ui.progressBar.reset()

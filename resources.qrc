@@ -1,5 +1,7 @@
 <RCC>
   <qresource>
+    <file>icons/blank.png</file>
+    <file>icons/logo.png</file>
     <file>./icons/go-down-big-hover.png</file>
     <file>./icons/go-down-big.png</file>
     <file>./icons/go-down-big.svg</file>

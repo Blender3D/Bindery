@@ -19,23 +19,21 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
     
-    self.pixmap = QtGui.QPixmap(72, 72)
-    self.pixmap.convertFromImage(QtGui.QImage('./icons/blank.png'))
-    self.icon = QtGui.QIcon(self.pixmap)
-    
     self.thumbnailer = Thumbnailer(self.ui.pageList)
     self.binder = Binder()
     
-    self.connect(self.ui.pageList, QtCore.SIGNAL('dropped'), self.fileDropped)
+    #self.connect(self.ui.pageList, QtCore.SIGNAL('dropped'), self.fileAdded)
     self.connect(self.thumbnailer, QtCore.SIGNAL('makeIcon(int, QImage)'), self.makeIcon)
     self.connect(self.binder, QtCore.SIGNAL('updateProgress(int, QString)'), self.updateProgress)
-    self.connect(self.binder, QtCore.SIGNAL('finishedBinding()'), self.finishedBinding)
+    self.connect(self.binder, QtCore.SIGNAL('finishedBinding'), self.finishedBinding)
     
     self.connect(self.ui.addPageButton, QtCore.SIGNAL('clicked()'), self.showFileDialog)
     self.connect(self.ui.removePageButton, QtCore.SIGNAL('clicked()'), self.removeItems)
     
     self.connect(self.ui.startButton, QtCore.SIGNAL('clicked()'), self.startBinding)
     self.connect(self.ui.stopButton, QtCore.SIGNAL('clicked()'), self.stopBinding)
+    
+    self.connect(self.ui.filePreviewsMenuItem, QtCore.SIGNAL('toggled(bool)'), self.togglePreviews)
 
 if __name__ == '__main__':
   app = QtGui.QApplication(sys.argv)
