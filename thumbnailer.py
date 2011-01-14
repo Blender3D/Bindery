@@ -8,6 +8,7 @@ class Thumbnailer(QtCore.QThread):
     super(Thumbnailer, self).__init__(parent)
     self.widget = ListWidget
     self.running = False
+    self.die = False
     
     if not os.path.exists('./djvu_backup/'):  os.mkdir('./djvu_backup/')
     if not os.path.exists('./djvu_backup/thumbnails/'):  os.mkdir('./djvu_backup/thumbnails/')
@@ -18,7 +19,7 @@ class Thumbnailer(QtCore.QThread):
     for i in range(self.widget.count()):
       item = self.widget.item(i)
       
-      if item.defaultIcon:
+      if item.defaultIcon and not self.die:
         djvu_backup = './djvu_backup/' + os.path.splitext(os.path.split(str(item.statusTip()))[1])[0]
         thumbnail = './djvu_backup/thumbnails/' + os.path.splitext(os.path.split(str(item.statusTip()))[1])[0]
         
@@ -32,5 +33,10 @@ class Thumbnailer(QtCore.QThread):
         
         self.emit(QtCore.SIGNAL('makeIcon(int, QImage)'), i, icon)
         item.defaultIcon = False
+      elif self.die:
+        for j in range(self.widget.count()):
+          self.widget.item(j).removeIcon()
+        
+        break
     
     self.running = False

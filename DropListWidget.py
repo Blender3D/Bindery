@@ -11,43 +11,6 @@ class DropListWidget(QtGui.QListWidget):
     self.setDropIndicatorShown(True)
     self.setAlternatingRowColors(True)
     self.setIconSize(QtCore.QSize(72, 72))
-    
-  '''
-  def dragEnterEvent(self, event):
-    if event.source() == self:
-      event.accept()
-    elif event.mimeData().hasUrls:
-      event.accept()
-    else:
-      event.ignore()
-
-  def dragMoveEvent(self, event):
-    if event.source() == self:
-      event.accept()
-    elif event.mimeData().hasUrls:
-      event.setDropAction(QtCore.Qt.CopyAction)
-      event.accept()
-    else:
-      event.ignore()
-
-  def dropEvent(self, event):
-    if event.source() == self:
-      event.setDropAction(QtCore.Qt.MoveAction)
-      event.accept()
-      
-      print event.mimeData().text()
-    elif event.mimeData().hasUrls:
-      event.setDropAction(QtCore.Qt.CopyAction)
-      event.accept()
-      
-      links = []
-      
-      for url in event.mimeData().urls():
-        links.append(str(url.toLocalFile()))
-        self.emit(QtCore.SIGNAL('dropped'), links)
-    else:
-      event.ignore()
-  '''
 
 class DropListWidgetItem(QtGui.QListWidgetItem):
   def __init__(self, text = '', defaultIcon = True, parent = None):
@@ -70,3 +33,4 @@ class DropListWidgetItem(QtGui.QListWidgetItem):
   
   def removeIcon(self):
     self.setIcon(self.blank)
+    self.defaultIcon = True

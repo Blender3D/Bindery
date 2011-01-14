@@ -16,15 +16,17 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
   def __init__(self, parent = None):
     QtGui.QWidget.__init__(self, parent)
     
+    self.previews = True
+    
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
     
     self.thumbnailer = Thumbnailer(self.ui.pageList)
     self.binder = Binder()
     
-    #self.connect(self.ui.pageList, QtCore.SIGNAL('dropped'), self.fileAdded)
     self.connect(self.thumbnailer, QtCore.SIGNAL('makeIcon(int, QImage)'), self.makeIcon)
     self.connect(self.binder, QtCore.SIGNAL('updateProgress(int, QString)'), self.updateProgress)
+    self.connect(self.binder, QtCore.SIGNAL('updateBackground(int, QColor)'), self.updateBackground)
     self.connect(self.binder, QtCore.SIGNAL('finishedBinding'), self.finishedBinding)
     
     self.connect(self.ui.addPageButton, QtCore.SIGNAL('clicked()'), self.showFileDialog)

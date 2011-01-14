@@ -22,6 +22,8 @@ class Binder(QtCore.QThread):
     self.book = organizer.Book()
     self.enc = Encoder(self.options)
     self.ocr = ocr.OCR(self.options)
+    
+    self.connect(self.enc, QtCore.SIGNAL('updateProgress(int, int)'), self.updateProgress)
   
   
   
@@ -66,8 +68,17 @@ class Binder(QtCore.QThread):
       page.get_dpi()
       
       self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+      self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(230, 255, 230, 120))
       
     return None
+  
+  
+  def updateProgress(self, percent, item):
+    if int(percent) == 100:
+      self.emit(QtCore.SIGNAL('finishedBinding'))
+    
+    self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book...')
+    self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), int(item), QtGui.QColor(170, 255, 170, 120))
   
   
   def get_ocr(self):
@@ -96,6 +107,7 @@ class Binder(QtCore.QThread):
       page.text = self.ocr.translate(boxing)
       
       self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR...')
+      self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(190, 255, 190, 120))
     return None
   
   
@@ -105,22 +117,15 @@ class Binder(QtCore.QThread):
     for page in self.pages:
       self.add_file(page, 'page')
     
-    self.analyze()
+    if not self.die:
+      self.analyze()
     
-    self.book.get_dpi()
+    if not self.die:
+      self.book.get_dpi()
     
-    if self.options['ocr']:
+    if self.options['ocr'] and not self.die:
       self.get_ocr()
     
-    self.enc.initialize(self.book, self.outFile)
-    self.enc.start()
-    
-    while self.enc.isRunning and self.die == False:
-      if int(self.enc.getProgress()) == 100:
-        self.die = True
-      
-      self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(self.enc.getProgress()), 'Binding the book...')
-      time.sleep(1)
-    
-    if self.die:
-      self.emit(QtCore.SIGNAL('finishedBinding'))
+    if not self.die:
+      self.enc.initialize(self.book, self.outFile)
+      self.enc.start()

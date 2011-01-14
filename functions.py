@@ -113,13 +113,14 @@ class StartQT4(QtGui.QMainWindow):
     self.previews = on
     
     if on:
+      self.thumbnailer.die = False
+      
       for i in range(self.ui.pageList.count()):
         self.ui.pageList.item(i).resetIcon()
       
       self.thumbnailer.start()
     else:
-      for i in range(self.ui.pageList.count()):
-        self.ui.pageList.item(i).removeIcon()
+      self.thumbnailer.die = True
   
   
   
@@ -129,9 +130,18 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
+  def updateBackground(self, item, color):
+    self.ui.pageList.item(item).setBackground(color)
+  
+  
+  
   def finishedBinding(self):
     self.ui.progressBar.setValue(0)
+    
     QtGui.QMessageBox.information(self, self.trUtf8('Message'), self.trUtf8('The book has been succesfully saved!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
+    
+    for i in range(self.ui.pageList.count()):
+      self.ui.pageList.item(i).setBackground(QtGui.QColor(0, 0, 0, 0))
   
   
   def startBinding(self):
