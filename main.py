@@ -10,7 +10,7 @@ from thumbnailer import *
 from bind import *
 
 from gui import *
-from DropListWidget import *
+from BookListWidget import *
 
 class StartQT4(functions.StartQT4, QtGui.QMainWindow):
   def __init__(self, parent = None):
@@ -33,9 +33,12 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     self.connect(self.ui.removePageButton, QtCore.SIGNAL('clicked()'), self.removeItems)
     
     self.connect(self.ui.startButton, QtCore.SIGNAL('clicked()'), self.startBinding)
-    self.connect(self.ui.stopButton, QtCore.SIGNAL('clicked()'), self.stopBinding)
     
     self.connect(self.ui.filePreviewsMenuItem, QtCore.SIGNAL('toggled(bool)'), self.togglePreviews)
+    
+    self.connect(self.ui.pageList, QtCore.SIGNAL('itemSelectionChanged()'), self.itemSelectionChanged)
+    self.connect(self.ui.pageNumber, QtCore.SIGNAL('valueChanged(int)'), self.pageNumberChanged)
+    self.connect(self.ui.pageDPI, QtCore.SIGNAL('valueChanged(int)'), self.pageDPIChanged)
 
 if __name__ == '__main__':
   app = QtGui.QApplication(sys.argv)
