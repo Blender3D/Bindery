@@ -56,7 +56,7 @@ class Binder(QtCore.QThread):
     
     self.queue = queue
     self.quit = False
-    self.total = len(queue)
+    self.total = len(self.queue)
     
     while not self.quit:
       if len(self.queue) == 0:
@@ -68,18 +68,18 @@ class Binder(QtCore.QThread):
       page.get_dpi()
       
       self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
-      self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(230, 255, 230, 120))
+      self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(210, 255, 210, 120))
       
     return None
   
   
   def updateProgress(self, percent, item):
-    if int(percent) == 100:
-      self.emit(QtCore.SIGNAL('finishedBinding'))
-    
     self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book...')
     self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), int(item), QtGui.QColor(170, 255, 170, 120))
-  
+    
+    if int(percent) == 100:
+      time.sleep(0.5)
+      self.emit(QtCore.SIGNAL('finishedBinding'))
   
   def get_ocr(self):
     """
@@ -93,8 +93,7 @@ class Binder(QtCore.QThread):
       queue.append(page)
     
     self.queue = queue
-    self.ocr = ocr
-    
+    self.total = len(self.queue)
     self.quit = False
     
     while not self.quit:
@@ -106,7 +105,7 @@ class Binder(QtCore.QThread):
       boxing = self.ocr.analyze_image(page.path)
       page.text = self.ocr.translate(boxing)
       
-      self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR...')
+      self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR...')
       self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(190, 255, 190, 120))
     return None
   

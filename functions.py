@@ -167,10 +167,18 @@ class StartQT4(QtGui.QMainWindow):
   
   
   def finishedBinding(self):
-    self.ui.progressBar.setValue(0)
+    self.ui.progressBar.reset()
+    self.ui.statusBar.showMessage('Done binding the book!')
+    
+    self.ui.startButton.setText(QtCore.QString('Start'))
+    startIcon = QtGui.QIcon()
+    startIcon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.ui.startButton.setIcon(startIcon)
     
     QtGui.QMessageBox.information(self, self.trUtf8('Message'), self.trUtf8('The book has been succesfully saved!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
     
+    self.ui.statusBar.clearMessage()
+        
     for i in range(self.ui.pageList.count()):
       self.ui.pageList.item(i).setBackground(QtGui.QColor(0, 0, 0, 0))
   

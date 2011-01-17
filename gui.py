@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Mon Jan 17 01:11:23 2011
+# Created: Mon Jan 17 12:17:06 2011
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setEnabled(True)
-        MainWindow.resize(646, 783)
+        MainWindow.resize(618, 777)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -76,12 +76,12 @@ class Ui_MainWindow(object):
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
         self.horizontalLayout_3.addWidget(self.line)
-        self.verticalLayout = QtGui.QVBoxLayout()
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.v = QtGui.QVBoxLayout()
+        self.v.setObjectName(_fromUtf8("v"))
         self.label_2 = QtGui.QLabel(self.centralwidget)
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.verticalLayout.addWidget(self.label_2)
+        self.v.addWidget(self.label_2)
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
         self.tabWidget.setTabShape(QtGui.QTabWidget.Rounded)
         self.tabWidget.setMovable(True)
@@ -116,7 +116,7 @@ class Ui_MainWindow(object):
         self.pageDPILabel.setObjectName(_fromUtf8("pageDPILabel"))
         self.formLayout_4.setWidget(2, QtGui.QFormLayout.LabelRole, self.pageDPILabel)
         self.graphicsView = QtGui.QLabel(self.tab_2)
-        self.graphicsView.setScaledContents(True)
+        self.graphicsView.setText(_fromUtf8(""))
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
         self.formLayout_4.setWidget(0, QtGui.QFormLayout.SpanningRole, self.graphicsView)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
@@ -209,7 +209,7 @@ class Ui_MainWindow(object):
         self.minidjvuOptionsLabel.setObjectName(_fromUtf8("minidjvuOptionsLabel"))
         self.formLayout_3.setWidget(6, QtGui.QFormLayout.LabelRole, self.minidjvuOptionsLabel)
         self.tabWidget.addTab(self.tab2, _fromUtf8(""))
-        self.verticalLayout.addWidget(self.tabWidget)
+        self.v.addWidget(self.tabWidget)
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.progressBar = QtGui.QProgressBar(self.centralwidget)
@@ -222,15 +222,15 @@ class Ui_MainWindow(object):
         self.startButton.setIcon(icon3)
         self.startButton.setObjectName(_fromUtf8("startButton"))
         self.horizontalLayout_4.addWidget(self.startButton)
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
-        self.horizontalLayout_3.addLayout(self.verticalLayout)
+        self.v.addLayout(self.horizontalLayout_4)
+        self.horizontalLayout_3.addLayout(self.v)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setEnabled(True)
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
         MainWindow.setStatusBar(self.statusBar)
         self.menuBar = QtGui.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 646, 25))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 618, 25))
         self.menuBar.setObjectName(_fromUtf8("menuBar"))
         self.menuFile = QtGui.QMenu(self.menuBar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -288,7 +288,9 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
+        QtCore.QObject.connect(self.enableOCR, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.ocrEngine.setEnabled)
+        QtCore.QObject.connect(self.enableOCR, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.ocrOptions.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

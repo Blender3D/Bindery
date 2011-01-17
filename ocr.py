@@ -359,7 +359,7 @@ class OCR:
         print(msg)
       return self._tesseract(filename)
 
-    with open('{0}.hocr'.format(filename), 'r', encoding='utf8') as handle:
+    with open('{0}.hocr'.format(filename), 'r') as handle:
       text = handle.read()
 
     # Clean up excess files.
@@ -406,9 +406,9 @@ class OCR:
     else:
       boxfilename = basename + '_box.box'
 
-    with open(boxfilename, 'r', encoding='utf8') as handle:
+    with open(boxfilename, 'r') as handle:
       boxfile = handle.read()
-    with open(basename+'_txt.txt', 'r', encoding='utf8') as handle:
+    with open(basename+'_txt.txt', 'r') as handle:
       textfile = handle.read()
 
     os.remove(boxfilename)
