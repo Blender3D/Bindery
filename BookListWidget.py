@@ -37,3 +37,20 @@ class BookListWidgetItem(QtGui.QListWidgetItem):
   def removeIcon(self):
     self.setIcon(self.blank)
     self.defaultIcon = True
+
+class ImageViewerLabel(QtGui.QLabel):
+  def __init__(self, parent = None):
+    super(ImageViewerLabel, self).__init__(parent)
+    self.scale = 1.0
+    self.ready = True
+  
+  def addImage(self, pixmap):
+    self.ready = False
+    
+    self.pixmap = pixmap
+    self.setPixmap(self.pixmap)
+    self.setFixedSize(self.pixmap.width() * self.scale, self.pixmap.height() * self.scale)
+  
+  def zoom(self, factor):
+    self.scale = factor
+    self.setFixedSize(self.pixmap.width() * self.scale, self.pixmap.height() * self.scale)

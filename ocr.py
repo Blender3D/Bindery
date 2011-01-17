@@ -8,6 +8,8 @@ import re
 import shutil
 import sys
 
+import codecs
+
 import HTMLParser
 
 import utils
@@ -269,7 +271,7 @@ class djvuWordBox:
     if (self.xmin > self.xmax) or (self.ymin > self.ymax):
       print('err: ocr.djvuWordBox(): Boxing information is impossible (x/y min exceed x/y max).')
       sys.exit(1)
-    return '(word {0} {1} {2} {3} "{4}")'.format(self.xmin, self.ymin, self.xmax, self.ymax, self.word)
+    return '(word {0} {1} {2} {3} "{4}")'.format(self.xmin, self.ymin, self.xmax, self.ymax, self.word.encode('utf-8'))
 
 
 class djvuLineBox:
@@ -359,7 +361,7 @@ class OCR:
         print(msg)
       return self._tesseract(filename)
 
-    with open('{0}.hocr'.format(filename), 'r') as handle:
+    with codecs.codecs.open('{0}.hocr'.format(filename), 'r', encoding='utf8') as handle:
       text = handle.read()
 
     # Clean up excess files.
@@ -406,9 +408,9 @@ class OCR:
     else:
       boxfilename = basename + '_box.box'
 
-    with open(boxfilename, 'r') as handle:
+    with codecs.open(boxfilename, 'r', encoding='utf8') as handle:
       boxfile = handle.read()
-    with open(basename+'_txt.txt', 'r') as handle:
+    with codecs.open(basename+'_txt.txt', 'r', encoding='utf8') as handle:
       textfile = handle.read()
 
     os.remove(boxfilename)

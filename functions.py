@@ -37,6 +37,8 @@ class StartQT4(QtGui.QMainWindow):
   
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
+    self.scalex = 0.25
+    self.scaley = 0.25
     
     if len(self.selected) == 1:
       self.ui.pageNumber.setEnabled(True)
@@ -47,12 +49,15 @@ class StartQT4(QtGui.QMainWindow):
       if self.selected.number is not None:  self.ui.pageNumber.setValue(self.selected.number)
       if self.selected.dpi is not None:  self.ui.pageDPI.setValue(self.selected.dpi)
       
-      #pixmap = QtGui.QPixmap()
-      
-     # self.ui.graphicsView.setPixmap(QtGui.QPixmap(self.selected.statusTip()))
+      self.ui.imageViewer.addImage(QtGui.QPixmap(self.selected.statusTip()))
     else:
       self.ui.pageNumber.setEnabled(False)
       self.ui.pageDPI.setEnabled(False)
+  
+  
+  
+  def zoomImage(self, factor):
+     self.ui.imageViewer.zoom(float(factor) / 10.0)
   
   
   
@@ -197,30 +202,31 @@ class StartQT4(QtGui.QMainWindow):
       
       self.outFile = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save file'), self.trUtf8(os.path.normpath(str(QtCore.QDir.currentPath() + '/Book.djvu'))), self.trUtf8('DjVu Document (*.djvu)'))
       
-      self.ui.startButton.setText(QtCore.QString('Stop'))
-      stopIcon = QtGui.QIcon()
-      stopIcon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-      self.ui.startButton.setIcon(stopIcon)
-      
-      
-      self.options = {'cores':             -1,
-                      'ocr':               (self.ui.enableOCR.checkState() != 0),
-                      'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
-                      'cuneiform_options': str(self.ui.ocrOptions.text()),
-                      'tesseract_options': str(self.ui.ocrOptions.text()),
-                      'bitonal_encoder':   str(self.ui.bitonalEncoder.currentText()),
-                      'color_encoder':     str(self.ui.colorEncoder.currentText()),
-                      'c44_options':       str(self.ui.c44Options.text()),
-                      'cjb2_options':      str(self.ui.cjb2Options.text()),
-                      'cpaldjvu_options':  str(self.ui.cpaldjvuOptions.text()),
-                      'csepdjvu_options':  str(self.ui.csepdjvuOptions.text()),
-                      'minidjvu_options':  str(self.ui.minidjvuOptions.text()),
-                      'numbering_type':    [],
-                      'numbering_start':   [],
-                      'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
-      
-      self.binder.initialize(self.pages, self.options, self.outFile)
-      self.binder.start()
+      if not self.outFile.isNull():
+        self.ui.startButton.setText(QtCore.QString('Stop'))
+        stopIcon = QtGui.QIcon()
+        stopIcon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.startButton.setIcon(stopIcon)
+        
+        
+        self.options = {'cores':             -1,
+                        'ocr':               (self.ui.enableOCR.checkState() != 0),
+                        'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
+                        'cuneiform_options': str(self.ui.ocrOptions.text()),
+                        'tesseract_options': str(self.ui.ocrOptions.text()),
+                        'bitonal_encoder':   str(self.ui.bitonalEncoder.currentText()),
+                        'color_encoder':     str(self.ui.colorEncoder.currentText()),
+                        'c44_options':       str(self.ui.c44Options.text()),
+                        'cjb2_options':      str(self.ui.cjb2Options.text()),
+                        'cpaldjvu_options':  str(self.ui.cpaldjvuOptions.text()),
+                        'csepdjvu_options':  str(self.ui.csepdjvuOptions.text()),
+                        'minidjvu_options':  str(self.ui.minidjvuOptions.text()),
+                        'numbering_type':    [],
+                        'numbering_start':   [],
+                        'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
+        
+        self.binder.initialize(self.pages, self.options, self.outFile)
+        self.binder.start()
     else:
       self.binder.die = True
       self.ui.progressBar.reset()

@@ -67,7 +67,11 @@ class Binder(QtCore.QThread):
       page.is_bitonal()
       page.get_dpi()
       
-      self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+      if self.options['ocr']:
+        self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+      else:
+        self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(50 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+      
       self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(210, 255, 210, 120))
       
     return None
