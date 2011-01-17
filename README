@@ -1,0 +1,34 @@
+Bindery README
+===================
+Blender3D  <>
+:Author Initials: NN
+:toc:
+:icons:
+:numbered:
+:website: http://blender3d.github.com/Bindery/
+
+Bindery is a cross-platform solution to DIY book digitalization, all written in Python. In order to make it useable to non-techies or Terminal-phobics, a GUI exists and is written in PyQt4. The core of the software is the djvubind package, which is basically the CLI father of the whole project.
+
+Who?
+____
+My nickname is Blender. I prefer to stay (partially) anonymous, but my real identity can be determined quite easily.
+
+What?
+_____
+As mentioned earlier, Bindery is a cross-platform solution to DIY book digitalization, all written in Python. In order to make it useable to non-techies or Terminal-phobics, a GUI exists and is written in PyQt4. The core of the software is the djvubind package, which is basically the CLI father of the whole project.
+
+When?
+_____
+The first git commit was performed on Saturday January 1, 2011, but the project was spread around my desktop for a few days beforehand.
+
+Where?
+______
+In the inner workings of my mind, the hard drive I work with, and a lot of help from GitHub!
+
+Why?
+____
+This project was created mainly because I was bored, but helping the DIY book scanning community grow is a part of it too.
+
+How?
+____
+It's written in Python. I love Python. I can rant on about that topic endlessly, but this is not what you want to hear (I hope), so it's better not to ask.

@@ -47,9 +47,9 @@ class StartQT4(QtGui.QMainWindow):
       if self.selected.number is not None:  self.ui.pageNumber.setValue(self.selected.number)
       if self.selected.dpi is not None:  self.ui.pageDPI.setValue(self.selected.dpi)
       
-      pixmap = QtGui.QPixmap()
+      #pixmap = QtGui.QPixmap()
       
-      self.ui.graphicsView.setPixmap(QtGui.QPixmap(self.selected.statusTip()))
+     # self.ui.graphicsView.setPixmap(QtGui.QPixmap(self.selected.statusTip()))
     else:
       self.ui.pageNumber.setEnabled(False)
       self.ui.pageDPI.setEnabled(False)
