@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Sat Jan 15 00:31:04 2011
+# Created: Mon Jan 17 01:11:23 2011
 #      by: PyQt4 UI code generator 4.8.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         MainWindow.setEnabled(True)
         MainWindow.resize(646, 783)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.centralwidget = QtGui.QWidget(MainWindow)
@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.pageList = BookListWidget(self.centralwidget)
         self.pageList.setStyleSheet(_fromUtf8("QListView\n"
 "{\n"
-"background-image: url(\"./icons/go-down-big.png\");\n"
+"background-image: url(\":/icons/go-down-big.png\");\n"
 "background-position: center;\n"
 "background-repeat: no-repeat;\n"
 "background-color: white;\n"
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
 "\n"
 "QListView:hover\n"
 "{\n"
-"background-image: url(\"./icons/go-down-big-hover.png\");\n"
+"background-image: url(\":/icons/go-down-big-hover.png\");\n"
 "background-position: center;\n"
 "background-repeat: no-repeat;\n"
 "background-color: white;\n"
@@ -55,7 +55,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.addPageButton = QtGui.QPushButton(self.centralwidget)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/list-add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/list-add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.addPageButton.setIcon(icon1)
         self.addPageButton.setObjectName(_fromUtf8("addPageButton"))
         self.horizontalLayout_2.addWidget(self.addPageButton)
@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(spacerItem)
         self.removePageButton = QtGui.QPushButton(self.centralwidget)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/list-remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/list-remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.removePageButton.setIcon(icon2)
         self.removePageButton.setAutoRepeat(False)
         self.removePageButton.setFlat(False)
@@ -91,10 +91,6 @@ class Ui_MainWindow(object):
         self.formLayout_4 = QtGui.QFormLayout(self.tab_2)
         self.formLayout_4.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
         self.formLayout_4.setObjectName(_fromUtf8("formLayout_4"))
-        self.graphicsView = QtGui.QGraphicsView(self.tab_2)
-        self.graphicsView.setDragMode(QtGui.QGraphicsView.RubberBandDrag)
-        self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
-        self.formLayout_4.setWidget(0, QtGui.QFormLayout.SpanningRole, self.graphicsView)
         self.pageNumber = QtGui.QSpinBox(self.tab_2)
         self.pageNumber.setEnabled(False)
         self.pageNumber.setAccelerated(True)
@@ -119,6 +115,10 @@ class Ui_MainWindow(object):
         self.pageDPILabel = QtGui.QLabel(self.tab_2)
         self.pageDPILabel.setObjectName(_fromUtf8("pageDPILabel"))
         self.formLayout_4.setWidget(2, QtGui.QFormLayout.LabelRole, self.pageDPILabel)
+        self.graphicsView = QtGui.QLabel(self.tab_2)
+        self.graphicsView.setScaledContents(True)
+        self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
+        self.formLayout_4.setWidget(0, QtGui.QFormLayout.SpanningRole, self.graphicsView)
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
@@ -218,7 +218,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.progressBar)
         self.startButton = QtGui.QPushButton(self.centralwidget)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/media-playback-start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.startButton.setIcon(icon3)
         self.startButton.setObjectName(_fromUtf8("startButton"))
         self.horizontalLayout_4.addWidget(self.startButton)
