@@ -16,16 +16,16 @@ class Thumbnailer(QtCore.QThread):
   def run(self):
     self.running = True
     
-    for i in range(self.widget.count()):
+    for i in xrange(self.widget.count()):
       item = self.widget.item(i)
       
       if item.defaultIcon and not self.die:
-        djvu_backup = './djvu_backup/' + os.path.splitext(os.path.split(str(item.statusTip()))[1])[0]
-        thumbnail = './djvu_backup/thumbnails/' + os.path.splitext(os.path.split(str(item.statusTip()))[1])[0]
+        djvu_backup = './djvu_backup/' + os.path.splitext(os.path.split(item.filepath)[1])[0]
+        thumbnail = './djvu_backup/thumbnails/' + os.path.splitext(os.path.split(item.filepath)[1])[0]
         
-        Image.open(str(item.statusTip())).save(djvu_backup, 'TIFF')
+        Image.open(item.filepath).save(djvu_backup, 'TIFF')
         
-        thumb_image = Image.open(str(item.statusTip()))
+        thumb_image = Image.open(item.filepath)
         thumb_image.thumbnail([72, 72])
         thumb_image.save(thumbnail, 'TIFF')
         
@@ -34,7 +34,7 @@ class Thumbnailer(QtCore.QThread):
         self.emit(QtCore.SIGNAL('makeIcon(int, QImage)'), i, icon)
         item.defaultIcon = False
       elif self.die:
-        for j in range(self.widget.count()):
+        for j in xrange(self.widget.count()):
           self.widget.item(j).removeIcon()
         
         break
