@@ -117,15 +117,8 @@ class Binder(QtCore.QThread):
   def run(self):
     self.die = False
     
-    if not self.die:
-      for page in self.pages:
-        if page.grayscale:
-          utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.filepath))
-          page.filepath += '.grayscale'
-    
     for page in self.pages:
-      self.add_file(page.filepath, 'page')
-      print page.filepath
+      self.add_file(page, 'page')
     
     if not self.die:
       self.analyze()
