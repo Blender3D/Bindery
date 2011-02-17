@@ -17,47 +17,20 @@ class StartQT4(QtGui.QMainWindow):
   '''
   Extension of main StartQT4 class
   '''
-  
-  def getChildren(self, element, statusTip = False):
-    '''
-    Returns a list of text or tooltips of the children of a QListWidget
-    '''
-    
-    children = []
-    
-    for i in range(element.count()):
-      if not statusTip:
-        children.append(element.item(i).text())
-      else:
-        children.append(element.item(i).statusTip())
-    
-    return children
-  
-  
-  
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
-    self.scalex = 0.25
-    self.scaley = 0.25
+    
+    self.ui.pageGrayscale.setChecked(False)
     
     if len(self.selected) == 1:
-      self.ui.pageNumber.setEnabled(True)
-      self.ui.pageDPI.setEnabled(True)
-      
       self.selected = self.selected[0]
+      self.ui.pageGrayscale.setEnabled(True)
       
-      if self.selected.number is not None:  self.ui.pageNumber.setValue(self.selected.number)
-      if self.selected.dpi is not None:  self.ui.pageDPI.setValue(self.selected.dpi)
+      self.ui.pageGrayscale.setChecked(self.selected.grayscale)
       
-      self.ui.imageViewer.addImage(QtGui.QPixmap(self.selected.statusTip()))
+      #self.ui.imageViewer.addImage(QtGui.QPixmap(self.selected.filepath))
     else:
-      self.ui.pageNumber.setEnabled(False)
-      self.ui.pageDPI.setEnabled(False)
-  
-  
-  
-  def zoomImage(self, factor):
-     self.ui.imageViewer.zoom(float(factor) / 10.0)
+      self.ui.pageGrayscale.setEnabled(False)
   
   
   
@@ -65,8 +38,14 @@ class StartQT4(QtGui.QMainWindow):
     self.ui.pageList.selectedItems()[0].number = value
   
   
+  
   def pageDPIChanged(self, value):
     self.ui.pageList.selectedItems()[0].dpi = value
+  
+  
+  
+  def pageGrayscaleChanged(self, state):
+    self.ui.pageList.selectedItems()[0].grayscale = (state == 2)
   
   
   
@@ -80,9 +59,8 @@ class StartQT4(QtGui.QMainWindow):
       f = str(f)
       
       if os.path.splitext(f)[1][1:].lower() in ['jpg', 'jpeg', 'bmp', 'png', 'tga', 'tif', 'tiff']:
-        if f not in self.getChildren(self.ui.pageList, True):
-          item = BookListWidgetItem(os.path.split(f)[1], self.previews, self.ui.pageList)
-          item.setStatusTip(f)
+        if f not in [self.ui.pageList.item(i).filepath for i in xrange(self.ui.pageList.count())]:
+          item = BookListWidgetItem(os.path.split(f)[1], f, self.previews, self.ui.pageList)
           
           self.hideBackground()
     
@@ -102,7 +80,7 @@ class StartQT4(QtGui.QMainWindow):
     icon = QtGui.QIcon(pixmap)
     item.setIcon(icon)
     
-    self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.statusTip()))[1], 500)
+    self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.filepath))[1], 500)
   
   
   
@@ -112,7 +90,7 @@ class StartQT4(QtGui.QMainWindow):
     more than one item, or adds it again when the widget has zero items.
     '''
     
-    if len(self.getChildren(self.ui.pageList, True)) > 0:
+    if self.ui.pageList.count() > 0:
       self.ui.pageList.setStyleSheet(_fromUtf8(''))
     else:
       self.ui.pageList.setStyleSheet(_fromUtf8('QListWidget\n{\nbackground-image: url(\'./icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListWidget:hover\n{\nbackground-image: url(\'./icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}'))
@@ -151,7 +129,7 @@ class StartQT4(QtGui.QMainWindow):
     if on:
       self.thumbnailer.die = False
       
-      for i in range(self.ui.pageList.count()):
+      for i in xrange(self.ui.pageList.count()):
         self.ui.pageList.item(i).resetIcon()
       
       self.thumbnailer.start()
@@ -184,7 +162,7 @@ class StartQT4(QtGui.QMainWindow):
     
     self.ui.statusBar.clearMessage()
         
-    for i in range(self.ui.pageList.count()):
+    for i in xrange(self.ui.pageList.count()):
       self.ui.pageList.item(i).setBackground(QtGui.QColor(0, 0, 0, 0))
   
   
@@ -193,7 +171,7 @@ class StartQT4(QtGui.QMainWindow):
     Starts binding the book. It's a huge task...
     '''
     if str(self.ui.startButton.text()) == 'Start':
-      self.pages = [str(item) for item in self.getChildren(self.ui.pageList, True)]
+      self.pages = [self.ui.pageList.item(i) for i in xrange(self.ui.pageList.count())]
       
       if len(self.pages) == 0:
         QtGui.QMessageBox.warning(self, self.trUtf8('Warning'), self.trUtf8('There are no pages to process!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)

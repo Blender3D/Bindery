@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>777</height>
+    <width>559</width>
+    <height>832</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,23 +24,31 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Add and arrange the book's pages below</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="BookListWidget" name="pageList">
-        <property name="styleSheet">
-         <string notr="true">QListView
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="mainTabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Pages</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0" colspan="3">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Add and arrange the book's pages below</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="3">
+         <widget class="BookListWidget" name="pageList">
+          <property name="styleSheet">
+           <string notr="true">QListView
 {
 background-image: url(&quot;:/icons/go-down-big.png&quot;);
 background-position: center;
@@ -55,12 +63,46 @@ background-position: center;
 background-repeat: no-repeat;
 background-color: white;
 }</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
+          </property>
+          <property name="verticalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <property name="horizontalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <property name="uniformItemSizes">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QCheckBox" name="pageGrayscale">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Grayscale</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
          <widget class="QPushButton" name="addPageButton">
           <property name="text">
            <string>Add page</string>
@@ -71,20 +113,27 @@ background-color: white;
           </property>
          </widget>
         </item>
-        <item>
+        <item row="2" column="1">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>166</width>
+            <height>24</height>
            </size>
           </property>
          </spacer>
         </item>
-        <item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Page options</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
          <widget class="QPushButton" name="removePageButton">
           <property name="text">
            <string>Remove page</string>
@@ -102,458 +151,298 @@ background-color: white;
          </widget>
         </item>
        </layout>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="v">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Configure the binding options below</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTabWidget" name="tabWidget">
-        <property name="tabShape">
-         <enum>QTabWidget::Rounded</enum>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <property name="movable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="tab_2">
-         <attribute name="title">
-          <string>Page</string>
-         </attribute>
-         <layout class="QFormLayout" name="formLayout_4">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Options</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QSplitter" name="splitter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <item row="0" column="0" colspan="2">
-           <widget class="QScrollArea" name="scrollArea">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>400</height>
-             </size>
-            </property>
-            <property name="palette">
-             <palette>
-              <active>
-               <colorrole role="Base">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Window">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-              </active>
-              <inactive>
-               <colorrole role="Base">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Window">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-              </inactive>
-              <disabled>
-               <colorrole role="Base">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-               <colorrole role="Window">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
-                 </color>
-                </brush>
-               </colorrole>
-              </disabled>
-             </palette>
-            </property>
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>266</width>
-               <height>398</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout">
-              <property name="margin">
-               <number>0</number>
-              </property>
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="ImageViewerLabel" name="imageViewer">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="scaledContents">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QSpinBox" name="pageNumber">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="specialValueText">
-             <string>?</string>
-            </property>
-            <property name="accelerated">
-             <bool>true</bool>
-            </property>
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>5000</number>
-            </property>
-            <property name="value">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLabel" name="pageNumberLabel">
-            <property name="text">
-             <string>Page Number</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QSpinBox" name="pageDPI">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="specialValueText">
-             <string>?</string>
-            </property>
-            <property name="accelerated">
-             <bool>true</bool>
-            </property>
-            <property name="suffix">
-             <string/>
-            </property>
-            <property name="prefix">
-             <string/>
-            </property>
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>2000</number>
-            </property>
-            <property name="value">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLabel" name="pageDPILabel">
-            <property name="text">
-             <string>Page DPI</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="zoomFactorLabel">
-            <property name="text">
-             <string>Zoom Factor</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QSlider" name="zoomFactor">
-            <property name="maximum">
-             <number>10</number>
-            </property>
-            <property name="sliderPosition">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab">
-         <attribute name="title">
-          <string>Book</string>
-         </attribute>
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <item row="0" column="0">
-           <widget class="QComboBox" name="outputFormat">
-            <item>
-             <property name="text">
-              <string>DjVu</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>PDF</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="outputFormatLabel">
-            <property name="text">
-             <string>Output Format</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab1">
-         <attribute name="title">
-          <string>OCR</string>
-         </attribute>
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="enableOCR">
-            <property name="text">
-             <string>Enable OCR</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QComboBox" name="ocrEngine">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <item>
-             <property name="text">
-              <string>Tesseract</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Cuniform</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="ocrEngineLabel">
-            <property name="text">
-             <string>OCR Engine</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLineEdit" name="ocrOptions">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="ocrOptionsLabel">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string>Engine Options</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab2">
-         <attribute name="title">
-          <string>DjVu Encoders</string>
-         </attribute>
-         <layout class="QFormLayout" name="formLayout_3">
-          <item row="0" column="0">
-           <widget class="QComboBox" name="bitonalEncoder">
-            <item>
-             <property name="text">
-              <string>cjb2</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="bitonalEncoderLabel">
-            <property name="text">
-             <string>Bitonal Encoder</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QComboBox" name="colorEncoder">
-            <item>
-             <property name="text">
-              <string>csepdjvu</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="colorEncoderLabel">
-            <property name="text">
-             <string>Color Encoder</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLineEdit" name="c44Options"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="c44OptionsLabel">
-            <property name="text">
-             <string>c44 Options</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLineEdit" name="cjb2Options">
-            <property name="text">
-             <string>-lossy</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLabel" name="cjb2OptionsLabel">
-            <property name="text">
-             <string>cjb2 Options</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLineEdit" name="cpaldjvuOptions"/>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLabel" name="cpaldjvuOptionsLabel">
-            <property name="text">
-             <string>cpaldjvu Options</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLineEdit" name="csepdjvuOptions"/>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLabel" name="csepdjvuOptionsLabel">
-            <property name="text">
-             <string>csepdjvu Options</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLineEdit" name="minidjvuOptions">
-            <property name="text">
-             <string>--match -pages-per-dict 100</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QLabel" name="minidjvuOptionsLabel">
-            <property name="text">
-             <string>minidjvu Options</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QProgressBar" name="progressBar">
-          <property name="invertedAppearance">
+          <property name="handleWidth">
+           <number>8</number>
+          </property>
+          <property name="childrenCollapsible">
            <bool>false</bool>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="startButton">
-          <property name="text">
-           <string>Start</string>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/icons/media-playback-start.png</normaloff>:/icons/media-playback-start.png</iconset>
-          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QVBoxLayout" name="verticalLayout1">
+            <item>
+             <widget class="QTabWidget" name="tabWidget">
+              <property name="tabShape">
+               <enum>QTabWidget::Rounded</enum>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <property name="movable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="tab2">
+               <attribute name="title">
+                <string>Book</string>
+               </attribute>
+               <layout class="QFormLayout" name="formLayout_10">
+                <property name="fieldGrowthPolicy">
+                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QComboBox" name="outputFormat">
+                  <item>
+                   <property name="text">
+                    <string>DjVu</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>PDF</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="outputFormatLabel">
+                  <property name="text">
+                   <string>Output Format</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab3">
+               <attribute name="title">
+                <string>OCR</string>
+               </attribute>
+               <layout class="QFormLayout" name="formLayout_11">
+                <item row="0" column="0" colspan="2">
+                 <widget class="QCheckBox" name="enableOCR">
+                  <property name="text">
+                   <string>Enable OCR</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QComboBox" name="ocrEngine">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Tesseract</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Cuniform</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="ocrEngineLabel">
+                  <property name="text">
+                   <string>OCR Engine</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLineEdit" name="ocrOptions">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="ocrOptionsLabel">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>Engine Options</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab4">
+               <attribute name="title">
+                <string>DjVu Encoders</string>
+               </attribute>
+               <layout class="QFormLayout" name="formLayout_12">
+                <item row="0" column="0">
+                 <widget class="QComboBox" name="bitonalEncoder">
+                  <item>
+                   <property name="text">
+                    <string>cjb2</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="bitonalEncoderLabel">
+                  <property name="text">
+                   <string>Bitonal Encoder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QComboBox" name="colorEncoder">
+                  <item>
+                   <property name="text">
+                    <string>csepdjvu</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLabel" name="colorEncoderLabel">
+                  <property name="text">
+                   <string>Color Encoder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLineEdit" name="c44Options"/>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="c44OptionsLabel">
+                  <property name="text">
+                   <string>c44 Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLineEdit" name="cjb2Options">
+                  <property name="text">
+                   <string>-lossy</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLabel" name="cjb2OptionsLabel">
+                  <property name="text">
+                   <string>cjb2 Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLineEdit" name="cpaldjvuOptions"/>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLabel" name="cpaldjvuOptionsLabel">
+                  <property name="text">
+                   <string>cpaldjvu Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLineEdit" name="csepdjvuOptions"/>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QLabel" name="csepdjvuOptionsLabel">
+                  <property name="text">
+                   <string>csepdjvu Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLineEdit" name="minidjvuOptions">
+                  <property name="text">
+                   <string>--match -pages-per-dict 100</string>
+                  </property>
+                  <property name="frame">
+                   <bool>true</bool>
+                  </property>
+                  <property name="cursorPosition">
+                   <number>0</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QLabel" name="minidjvuOptionsLabel">
+                  <property name="text">
+                   <string>minidjvu Options</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
        </layout>
-      </item>
-     </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Binding</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QTextEdit" name="progressLog">
+            <property name="font">
+             <font>
+              <family>Monospace</family>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Monospace'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This is where the log text goes. This feature is not yet implemented.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QProgressBar" name="progressBar">
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="startButton">
+              <property name="text">
+               <string>Start</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/media-playback-start.png</normaloff>:/icons/media-playback-start.png</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -567,7 +456,7 @@ background-color: white;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>618</width>
+     <width>559</width>
      <height>25</height>
     </rect>
    </property>
@@ -588,7 +477,6 @@ background-color: white;
      <string>&amp;Edit</string>
     </property>
     <addaction name="filePreviewsMenuItem"/>
-    <addaction name="advancedOptionsMenuItem"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -597,6 +485,8 @@ background-color: white;
     <addaction name="helpMenuItem"/>
     <addaction name="separator"/>
     <addaction name="aboutMenuItem"/>
+    <addaction name="actionAbout_Qt4"/>
+    <addaction name="actionAbout_PyQt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -702,6 +592,16 @@ background-color: white;
     <string>Advanced Options</string>
    </property>
   </action>
+  <action name="actionAbout_Qt4">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionAbout_PyQt">
+   <property name="text">
+    <string>About PyQt</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -709,47 +609,9 @@ background-color: white;
    <extends>QListWidget</extends>
    <header>BookListWidget</header>
   </customwidget>
-  <customwidget>
-   <class>ImageViewerLabel</class>
-   <extends>QLabel</extends>
-   <header>BookListWidget</header>
-  </customwidget>
  </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>enableOCR</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ocrEngine</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>376</x>
-     <y>107</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>387</x>
-     <y>133</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>enableOCR</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>ocrOptions</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>432</x>
-     <y>114</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>438</x>
-     <y>173</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

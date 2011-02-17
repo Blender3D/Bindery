@@ -37,10 +37,7 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     self.connect(self.ui.filePreviewsMenuItem, QtCore.SIGNAL('toggled(bool)'), self.togglePreviews)
     
     self.connect(self.ui.pageList, QtCore.SIGNAL('itemSelectionChanged()'), self.itemSelectionChanged)
-    self.connect(self.ui.pageNumber, QtCore.SIGNAL('valueChanged(int)'), self.pageNumberChanged)
-    self.connect(self.ui.pageDPI, QtCore.SIGNAL('valueChanged(int)'), self.pageDPIChanged)
-    
-    self.connect(self.ui.zoomFactor, QtCore.SIGNAL('valueChanged(int)'), self.zoomImage)
+    self.connect(self.ui.pageGrayscale, QtCore.SIGNAL('stateChanged(int)'), self.pageGrayscaleChanged)
 
 if __name__ == '__main__':
   app = QtGui.QApplication(sys.argv)
