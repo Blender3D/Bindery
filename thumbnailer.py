@@ -1,6 +1,6 @@
 import os
 
-from PIL import Image, ImageFilter
+from PIL import Image
 from PyQt4 import QtCore, QtGui
 
 class Thumbnailer(QtCore.QThread):
@@ -10,8 +10,13 @@ class Thumbnailer(QtCore.QThread):
     self.running = False
     self.die = False
     
-    if not os.path.exists('./djvu_backup/'):  os.mkdir('./djvu_backup/')
-    if not os.path.exists('./djvu_backup/thumbnails/'):  os.mkdir('./djvu_backup/thumbnails/')
+    if not os.path.exists('./djvu_backup/'):
+      os.mkdir('./djvu_backup/')
+      self.emit(QtCore.SIGNAL('debug(QString)'), 'Created directory \'./djvu_backup/\'')
+      
+    if not os.path.exists('./djvu_backup/thumbnails/'):
+      os.mkdir('./djvu_backup/thumbnails/')
+      self.emit(QtCore.SIGNAL('debug(QString)'), 'Created directory \'./djvu_backup/thumbnails/\'')
   
   def run(self):
     self.running = True
@@ -33,6 +38,8 @@ class Thumbnailer(QtCore.QThread):
         
         self.emit(QtCore.SIGNAL('makeIcon(int, QImage)'), i, icon)
         item.defaultIcon = False
+        
+        self.emit(QtCore.SIGNAL('debug(QString)'), 'Generated thumbnail for \'{0}\''.format(item.filepath))
       elif self.die:
         for j in xrange(self.widget.count()):
           self.widget.item(j).removeIcon()

@@ -123,6 +123,11 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
+  def debug(self, message):
+    self.ui.debugLog.add(message)
+  
+  
+  
   def togglePreviews(self, on = True):
     self.previews = on
     

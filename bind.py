@@ -33,7 +33,8 @@ class Binder(QtCore.QThread):
     type can be 'page', 'cover_front', 'cover_back', 'metadata', or 'bookmarks'.
     """
 
-    # Hand the files over to self.book to manage.
+    self.emit(QtCore.SIGNAL('debug(QString)'), 'Adding \'{0}\' of type \'{1}\''.format(filename, type))
+    
     if type == 'page':
       self.book.insert_page(filename)
     else:
@@ -73,6 +74,7 @@ class Binder(QtCore.QThread):
         self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(50 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
       
       self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(210, 255, 210, 120))
+      self.emit(QtCore.SIGNAL('debug(QString)'), 'Analyzing page:\n  Path:{0}\n  DPI: {1}\n  Bitonal: {2}'.format(page.path, page.dpi, page.bitonal))
       
     return None
   

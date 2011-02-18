@@ -25,9 +25,12 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     self.binder = Binder()
     
     self.connect(self.thumbnailer, QtCore.SIGNAL('makeIcon(int, QImage)'), self.makeIcon)
+    self.connect(self.thumbnailer, QtCore.SIGNAL('debug(QString)'), self.debug)
+    
     self.connect(self.binder, QtCore.SIGNAL('updateProgress(int, QString)'), self.updateProgress)
     self.connect(self.binder, QtCore.SIGNAL('updateBackground(int, QColor)'), self.updateBackground)
     self.connect(self.binder, QtCore.SIGNAL('finishedBinding'), self.finishedBinding)
+    self.connect(self.binder, QtCore.SIGNAL('debug(QString)'), self.debug)
     
     self.connect(self.ui.addPageButton, QtCore.SIGNAL('clicked()'), self.showFileDialog)
     self.connect(self.ui.removePageButton, QtCore.SIGNAL('clicked()'), self.removeItems)
