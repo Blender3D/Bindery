@@ -23,8 +23,7 @@ class BookListWidgetItem(QtGui.QListWidgetItem):
     self.dpi = 0
     self.grayscale = False
     
-    self.pixmap = QtGui.QPixmap(72, 72)
-    self.pixmap.convertFromImage(QtGui.QImage('./icons/blank.png'))
+    self.pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(':/icons/blank.png'))
     self.icon = QtGui.QIcon(self.pixmap)
     self.blank = QtGui.QIcon(QtGui.QPixmap(0, 0))
     
