@@ -288,5 +288,21 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ProjectFilesDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
+     <y>448</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>371</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

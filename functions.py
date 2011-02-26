@@ -1,6 +1,8 @@
 import sys, os, time, glob
 
 import project_files
+import config
+
 from gui import *
 from BookListWidget import * 
 from thumbnailer import *
@@ -37,22 +39,6 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
-  
-  def fileAdded(self, files):
-    for f in files:
-      f = str(f)
-      
-      if os.path.splitext(f)[1][1:].lower() in ['jpg', 'jpeg', 'bmp', 'png', 'tga', 'tif', 'tiff']:
-        if f not in [self.ui.pageList.item(i).filepath for i in xrange(self.ui.pageList.count())]:
-          item = BookListWidgetItem(os.path.split(f)[1], f, self.previews, self.ui.pageList)
-          
-          self.hideBackground()
-    
-    if not self.thumbnailer.running and self.previews:
-      self.thumbnailer.start()
-      
-  
-  
   def makeIcon(self, index, image):
     item = self.ui.pageList.item(index)
     pixmap = QtGui.QPixmap.fromImage(image)
@@ -71,32 +57,36 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
-  def showProjectDialog(self):
-    self.projectFiles.show()    
+  def showProjectDialog(self):  self.projectFiles.show()    
 
 
 
   def showFileDialog(self):
-    directory = QtGui.QFileDialog.getExistingDirectory(self, self.trUtf8('Input directory'), QtCore.QDir.currentPath())
+    directory = QtGui.QFileDialog.getExistingDirectory(self, self.trUtf8('Input directory'), self.config.get('startup', 'input_directory'))
     
-    self.projectFilesUi.inputDirectory.setText(str(directory) + '/')
-    
-    for file in glob.glob(str(directory) + '/*.*'):
-      item = QtGui.QListWidgetItem(os.path.split(file)[-1])
-      item.setStatusTip(file)
+    if str(directory) != '':
+      self.projectFilesUi.inputDirectory.setText(str(directory) + '/')
       
-      if os.path.splitext(os.path.split(file)[-1])[-1] not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
-        item.setFlags(QtCore.Qt.NoItemFlags)
+      self.config.set('startup', 'input_directory', str(directory) + '/')
       
-      self.projectFilesUi.offProjectList.addItem(item)
-    
-    #self.fileAdded(files)
+      for file in glob.glob(str(directory) + '/*.*'):
+        item = QtGui.QListWidgetItem(os.path.split(file)[-1])
+        item.setStatusTip(file)
+        
+        if os.path.splitext(os.path.split(file)[-1])[-1] not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
+          item.setFlags(QtCore.Qt.NoItemFlags)
+        
+        self.projectFilesUi.offProjectList.addItem(item)
   
   
   
   def showSaveDialog(self):
-    self.outFile = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save output file'), self.trUtf8(os.path.normpath(str(QtCore.QDir.currentPath() + '/Book.djvu'))), self.trUtf8('DjVu Document (*.djvu)'))
-    self.projectFilesUi.outputFile.setText(self.outFile)
+    self.outFile = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save output file'), self.config.get('startup', 'output_directory') + 'Book.djvu', self.trUtf8('DjVu Document (*.djvu)'))
+    
+    if str(self.outFile) != '':
+      self.projectFilesUi.outputFile.setText(self.outFile)
+      
+      self.config.set('startup', 'output_directory', os.path.split(str(self.outFile))[0] + '/')
 
   
   def addToProject(self):
@@ -125,10 +115,13 @@ class StartQT4(QtGui.QMainWindow):
         orig = self.projectFilesUi.inProjectList.item(i)
         item = BookListWidgetItem(str(orig.text()), str(orig.statusTip()))
         
-        self.ui.pageList.addItem(item)
+        if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in xrange(self.ui.pageList.count())]:
+          self.ui.pageList.addItem(item)
       
       self.hideBackground()
       self.thumbnailer.start()
+  
+  
   
   def removeItems(self):
     for item in self.ui.pageList.selectedItems():
@@ -138,8 +131,7 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
-  def debug(self, message):
-    self.ui.debugLog.add(message)
+  def debug(self, message):  self.ui.debugLog.add(message)
   
   
   
@@ -148,6 +140,9 @@ class StartQT4(QtGui.QMainWindow):
     
     if on:
       self.thumbnailer.die = False
+      
+      while self.thumbnailer.isRunning():
+        time.wait(0.1)
       
       for i in xrange(self.ui.pageList.count()):
         self.ui.pageList.item(i).resetIcon()

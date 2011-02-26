@@ -5,6 +5,7 @@ import sys, os
 from PyQt4 import QtCore, QtGui
 
 import functions
+import config
 
 from thumbnailer import *
 from bind import *
@@ -19,6 +20,8 @@ class StartQT4(functions.StartQT4, QtGui.QMainWindow):
     
     self.previews = True
     self.outFile = None
+    
+    self.config = config.config('options.ini')
     
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)

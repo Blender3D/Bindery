@@ -29,7 +29,7 @@ class BookListWidgetItem(QtGui.QListWidgetItem):
     
     self.setText(text)
     self.filepath = filepath
-    self.image = QtGui.QImage(filepath)
+    self.image = QtGui.QImage(':/icons/blank.png')
     
     if defaultIcon:
       self.setIcon(self.icon)
