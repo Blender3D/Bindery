@@ -1,45 +1,25 @@
-"""
-Common and simple functions that are used throughout everything else.
-"""
-
-
 import os
 import subprocess
 import sys
 
 def color(text, color_name):
-    """
-    Change the text color by adding ANSI escape sequences.
-    """
-
-    # Don't bother on the windows platform.
-    if sys.platform.startswith('win'):
-        return text
-
-    colors = {}
-    colors['pink'] = '\033[95m'
-    colors['blue'] = '\033[94m'
-    colors['green'] = '\033[92m'
-    colors['yellow'] = '\033[93m'
-    colors['red'] = '\033[91m'
-    end = '\033[0m'
-
-    if color_name in colors.keys():
-        text = colors[color_name] + text + end
-
+  if sys.platform.startswith('win'):
     return text
 
+  colors = {}
+  colors['pink'] = '\033[95m'
+  colors['blue'] = '\033[94m'
+  colors['green'] = '\033[92m'
+  colors['yellow'] = '\033[93m'
+  colors['red'] = '\033[91m'
+  end = '\033[0m'
+
+  if color_name in colors.keys():
+      text = colors[color_name] + text + end
+
+  return text
+
 def split_cmd(start, files, end = ''):
-  """
-  Rumor has it that Windows has a character limit of a little more than 32,000 for commands.[1]
-  Linux seems to vary based on kernel settings and whatnot, but tends to be more in the millions.[2]
-  Supposing the images are named 'page_0001.tif', we can hit that limit very quickly.  For the
-  sake of being safe, we will split things up at the 32,000 mark.
-
-  [1] http://stackoverflow.com/questions/2381241/what-is-the-subprocess-popen-max-length-of-the-args-parameter
-  [2] http://www.linuxjournal.com/article/6060
-  """
-
   cmds = []
   start = start + ' '
   end = ' ' + end
@@ -60,11 +40,6 @@ def split_cmd(start, files, end = ''):
   return cmds
 
 def separate_cmd(cmd):
-  """
-  Convert a subprocess command string into a list, intelligently handling arguments
-  enclosed in single or double quotes.
-  """
-
   cmd = list(cmd)
   buffer = ''
   out = []
@@ -99,11 +74,6 @@ def separate_cmd(cmd):
   return out
 
 def simple_exec(cmd):
-  """
-  Execute a simple command.  Any output disregarded and exit status is
-  returned.
-  """
-
   cmd = separate_cmd(cmd)
   
   with open(os.devnull, 'w') as void:
@@ -112,11 +82,6 @@ def simple_exec(cmd):
     return int(sub.wait())
 
 def execute(cmd, capture = False):
-  """
-  Execute a command line process.  Includes the option of capturing output,
-  and checks for successful execution.
-  """
-
   with open(os.devnull, 'w') as void:
     if capture:
       sub = subprocess.Popen(cmd, shell = True, stdout = subprocess.PIPE, stderr = void)
@@ -177,10 +142,6 @@ def list_files(directory = '.', contains = None, extension = None):
   return contents
 
 def is_executable(command):
-  """
-  Checks if a given command is available.  Handy for dependency checks on external commands.
-  """
-
   if get_executable_path(command) is not None:
     return True
   else:
@@ -188,10 +149,6 @@ def is_executable(command):
 
 
 def get_executable_path(command):
-  """
-  Checks if a given command is available and returns the path to the executable (if available).
-  """
-
   # Add extension if on the windows platform.
   if sys.platform.startswith('win'):
     pathext = os.environ['PATHEXT']
@@ -209,9 +166,6 @@ def get_executable_path(command):
   return None
 
 def cpu_count():
-  """
-  Returns the number of CPU cores (both virtual an pyhsical) in the system.
-  """
   num = 0
 
   if sys.platform.startswith('win'):

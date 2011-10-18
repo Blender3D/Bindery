@@ -1,9 +1,10 @@
 import os, time, shutil, glob, sys
 import organizer, ocr, utils
 
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
-class Encoder(QtCore.QThread):
+class Encoder(QThread):
   def __init__(self, opts, parent = None):
     super(Encoder, self).__init__(parent)
     self.opts = opts
@@ -18,7 +19,7 @@ class Encoder(QtCore.QThread):
   def sendProgress(self, percent):
     self.progress = percent
     
-    self.emit(QtCore.SIGNAL('updateProgress(int, int)'), (self.progress * 0.50) + 50.0, self.count)
+    self.emit(SIGNAL('updateProgress(int, int)'), (self.progress * 0.50) + 50.0, self.count)
     self.count += 1
   
   def initialize(self, book, outfile):

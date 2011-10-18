@@ -1,6 +1,7 @@
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
-class DebugLog(QtGui.QTextEdit):
+class DebugLog(QTextEdit):
   def __init__(self, parent = None):
     super(DebugLog, self).__init__(parent)
   

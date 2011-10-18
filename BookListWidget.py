@@ -1,20 +1,21 @@
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
-class BookListWidget(QtGui.QListWidget):
+class BookListWidget(QListWidget):
   def __init__(self, type, parent = None):
     super(BookListWidget, self).__init__(parent)
     
-    self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+    self.setSelectionMode(QAbstractItemView.ExtendedSelection)
     self.setDragEnabled(True)
-    self.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
+    self.setDragDropMode(QAbstractItemView.InternalMove)
     self.setAcceptDrops(True)
     self.setDropIndicatorShown(True)
     self.setAlternatingRowColors(True)
-    self.setIconSize(QtCore.QSize(72, 72))
+    self.setIconSize(QSize(72, 72))
 
 
 
-class BookListWidgetItem(QtGui.QListWidgetItem):
+class BookListWidgetItem(QListWidgetItem):
   def __init__(self, text = '', filepath = '', defaultIcon = True, parent = None):
     super(BookListWidgetItem, self).__init__(parent)
     self.defaultIcon = True
@@ -23,13 +24,13 @@ class BookListWidgetItem(QtGui.QListWidgetItem):
     self.dpi = 0
     self.grayscale = False
     
-    self.pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(':/icons/blank.png'))
-    self.icon = QtGui.QIcon(self.pixmap)
-    self.blank = QtGui.QIcon(QtGui.QPixmap(0, 0))
+    self.pixmap = QPixmap.fromImage(QImage(':/icons/blank.png'))
+    self.icon = QIcon(self.pixmap)
+    self.blank = QIcon(QPixmap(0, 0))
     
     self.setText(text)
     self.filepath = filepath
-    self.image = QtGui.QImage(':/icons/blank.png')
+    self.image = QImage(':/icons/blank.png')
     
     if defaultIcon:
       self.setIcon(self.icon)
@@ -44,7 +45,7 @@ class BookListWidgetItem(QtGui.QListWidgetItem):
 
 
 
-class ImageViewerLabel(QtGui.QLabel):
+class ImageViewerLabel(QLabel):
   def __init__(self, parent = None):
     super(ImageViewerLabel, self).__init__(parent)
     self.scale = 1.0

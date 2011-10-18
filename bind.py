@@ -1,14 +1,11 @@
 import os, time, shutil, glob, sys
 import organizer, ocr, utils
 
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 from encoder import *
 
-class Binder(QtCore.QThread):
-  '''
-  Class for binding the actual book
-  '''
-  
+class Binder(QThread):
   def __init__(self, parent = None):
     super(Binder, self).__init__(parent)
   
@@ -23,17 +20,12 @@ class Binder(QtCore.QThread):
     self.enc = Encoder(self.options)
     self.ocr = ocr.OCR(self.options)
     
-    self.connect(self.enc, QtCore.SIGNAL('updateProgress(int, int)'), self.updateProgress)
+    self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
   
   
   
   def add_file(self, filename, type = 'page'):
-    """
-    Adds a file to the project.
-    type can be 'page', 'cover_front', 'cover_back', 'metadata', or 'bookmarks'.
-    """
-
-    self.emit(QtCore.SIGNAL('debug(QString)'), 'Adding \'{0}\' of type \'{1}\''.format(filename, type))
+    self.emit(SIGNAL('debug(QString)'), 'Adding \'{0}\' of type \'{1}\''.format(filename, type))
     
     if type == 'page':
       self.book.insert_page(filename)
@@ -45,11 +37,6 @@ class Binder(QtCore.QThread):
   
   
   def analyze(self):
-    """
-    Retrieve and store information about each image (dpi, bitonal, etc.).
-    """
-
-    # Create queue and populate with pages to process
     queue = []
     
     for page in self.book.pages:
@@ -69,23 +56,23 @@ class Binder(QtCore.QThread):
       page.get_dpi()
       
       if self.options['ocr']:
-        self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+        self.emit(SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
       else:
-        self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(50 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+        self.emit(SIGNAL('updateProgress(int, QString)'), int(50 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
       
-      self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(210, 255, 210, 120))
-      self.emit(QtCore.SIGNAL('debug(QString)'), 'Analyzing page:\n  Path:{0}\n  DPI: {1}\n  Bitonal: {2}'.format(page.path, page.dpi, page.bitonal))
+      self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(210, 255, 210, 120))
+      self.emit(SIGNAL('debug(QString)'), 'Analyzing page:\n  Path:{0}\n  DPI: {1}\n  Bitonal: {2}'.format(page.path, page.dpi, page.bitonal))
       
     return None
   
   
   def updateProgress(self, percent, item):
-    self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book...')
-    self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), int(item), QtGui.QColor(170, 255, 170, 120))
+    self.emit(SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book...')
+    self.emit(SIGNAL('updateBackground(int, QColor)'), int(item), QColor(170, 255, 170, 120))
     
     if int(percent) == 100:
       time.sleep(0.5)
-      self.emit(QtCore.SIGNAL('finishedBinding'))
+      self.emit(SIGNAL('finishedBinding'))
   
   def get_ocr(self):
     """
@@ -111,8 +98,8 @@ class Binder(QtCore.QThread):
       boxing = self.ocr.analyze_image(page.path)
       page.text = self.ocr.translate(boxing)
       
-      self.emit(QtCore.SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR...')
-      self.emit(QtCore.SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QtGui.QColor(190, 255, 190, 120))
+      self.emit(SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR...')
+      self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
     return None
   
   

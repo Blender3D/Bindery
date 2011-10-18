@@ -1,47 +1,27 @@
-import os
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
-from PIL import Image
-from PyQt4 import QtCore, QtGui
-
-class Thumbnailer(QtCore.QThread):
+class Thumbnailer(QThread):
   def __init__(self, ListWidget, parent = None):
     super(Thumbnailer, self).__init__(parent)
+    
     self.widget = ListWidget
     self.running = False
     self.die = False
-    
-    if not os.path.exists('./djvu_backup/'):
-      os.mkdir('./djvu_backup/')
-      self.emit(QtCore.SIGNAL('debug(QString)'), 'Created directory \'./djvu_backup/\'')
-      
-    if not os.path.exists('./djvu_backup/thumbnails/'):
-      os.mkdir('./djvu_backup/thumbnails/')
-      self.emit(QtCore.SIGNAL('debug(QString)'), 'Created directory \'./djvu_backup/thumbnails/\'')
   
   def run(self):
     self.running = True
     
-    for i in xrange(self.widget.count()):
+    for i in range(self.widget.count()):
       item = self.widget.item(i)
       
       if item.defaultIcon and not self.die:
-        djvu_backup = './djvu_backup/' + os.path.splitext(os.path.split(item.filepath)[1])[0]
-        thumbnail = './djvu_backup/thumbnails/' + os.path.splitext(os.path.split(item.filepath)[1])[0]
+        icon = QImage(item.filepath).scaled(72, 72, aspectRatioMode = Qt.KeepAspectRatio)
         
-        Image.open(item.filepath).save(djvu_backup, 'TIFF')
-        
-        thumb_image = Image.open(item.filepath)
-        thumb_image.thumbnail([72, 72])
-        thumb_image.save(thumbnail, 'TIFF')
-        
-        icon = QtGui.QImage(thumbnail)
-        
-        self.emit(QtCore.SIGNAL('makeIcon(int, QImage)'), i, icon)
+        self.emit(SIGNAL('makeIcon(int, QImage)'), i, icon)
         item.defaultIcon = False
-        
-        self.emit(QtCore.SIGNAL('debug(QString)'), 'Generated thumbnail for \'{0}\''.format(item.filepath))
       elif self.die:
-        for j in xrange(self.widget.count()):
+        for j in range(self.widget.count()):
           self.widget.item(j).removeIcon()
         
         break

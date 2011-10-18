@@ -8,15 +8,16 @@ from BookListWidget import *
 from thumbnailer import *
 from bind import *
 
-from PIL import Image
-from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    _fromUtf8 = lambda s: s
+  import pynotify
+  pynotify.init('Bindery')
+except:
+  pass
 
-class StartQT4(QtGui.QMainWindow):
+class StartQT4(QMainWindow):
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
     
@@ -28,7 +29,7 @@ class StartQT4(QtGui.QMainWindow):
       
       self.ui.pageGrayscale.setChecked(self.selected.grayscale)
       
-      #self.ui.imageViewer.addImage(QtGui.QPixmap(self.selected.filepath))
+      self.ui.imageViewer.addImage(QPixmap(self.selected.filepath))
     else:
       self.ui.tab.setEnabled(False)
   
@@ -39,11 +40,9 @@ class StartQT4(QtGui.QMainWindow):
   
   
   
-  def makeIcon(self, index, image):
+  def makeIcon(self, index, icon):
     item = self.ui.pageList.item(index)
-    pixmap = QtGui.QPixmap.fromImage(image)
-    icon = QtGui.QIcon(pixmap)
-    item.setIcon(icon)
+    item.setIcon(QIcon(QPixmap.fromImage(icon)))
     
     self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.filepath))[1], 500)
   
@@ -51,9 +50,9 @@ class StartQT4(QtGui.QMainWindow):
   
   def hideBackground(self):
     if self.ui.pageList.count() > 0:
-      self.ui.pageList.setStyleSheet(_fromUtf8(''))
+      self.ui.pageList.setStyleSheet('')
     else:
-      self.ui.pageList.setStyleSheet(_fromUtf8('QListWidget\n{\nbackground-image: url(\'./icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListWidget:hover\n{\nbackground-image: url(\'./icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}'))
+      self.ui.pageList.setStyleSheet('QListWidget\n{\nbackground-image: url(\':/icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListWidget:hover\n{\nbackground-image: url(\':/icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}')
   
   
   
@@ -62,7 +61,7 @@ class StartQT4(QtGui.QMainWindow):
 
 
   def showFileDialog(self):
-    directory = QtGui.QFileDialog.getExistingDirectory(self, self.trUtf8('Input directory'), self.config.get('startup', 'input_directory'))
+    directory = QFileDialog.getExistingDirectory(self, 'Input directory', self.config.get('startup', 'input_directory'))
     
     if str(directory) != '':
       self.projectFilesUi.inputDirectory.setText(str(directory) + '/')
@@ -70,22 +69,21 @@ class StartQT4(QtGui.QMainWindow):
       self.config.set('startup', 'input_directory', str(directory) + '/')
       
       for file in glob.glob(str(directory) + '/*.*'):
-        item = QtGui.QListWidgetItem(os.path.split(file)[-1])
+        item = QListWidgetItem(os.path.split(file)[-1])
         item.setStatusTip(file)
         
         if os.path.splitext(os.path.split(file)[-1])[-1] not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
-          item.setFlags(QtCore.Qt.NoItemFlags)
+          item.setFlags(Qt.NoItemFlags)
         
         self.projectFilesUi.offProjectList.addItem(item)
   
   
   
   def showSaveDialog(self):
-    self.outFile = QtGui.QFileDialog.getSaveFileName(self, self.trUtf8('Save output file'), self.config.get('startup', 'output_directory') + 'Book.djvu', self.trUtf8('DjVu Document (*.djvu)'))
+    self.outFile = QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + 'Book.djvu', 'DjVu Document (*.djvu)')
     
     if str(self.outFile) != '':
       self.projectFilesUi.outputFile.setText(self.outFile)
-      
       self.config.set('startup', 'output_directory', os.path.split(str(self.outFile))[0] + '/')
 
   
@@ -105,17 +103,17 @@ class StartQT4(QtGui.QMainWindow):
   
   def projectFilesAccepted(self):
     if self.projectFilesUi.inProjectList.count() == 0:
-      QtGui.QMessageBox.warning(self, self.trUtf8('Warning'), self.trUtf8('There are no pages to process.\nPlease add them using the green arrows.'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
+      QMessageBox.warning(self, 'Warning', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
     elif self.outFile in ['', None]:
-      QtGui.QMessageBox.warning(self, self.trUtf8('Warning'), self.trUtf8('No output file has been selected.\nPlease select one using the "Output File" form.'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
+      QMessageBox.warning(self, 'Warning', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:
       self.projectFiles.close()
       
-      for i in xrange(self.projectFilesUi.inProjectList.count()):
+      for i in range(self.projectFilesUi.inProjectList.count()):
         orig = self.projectFilesUi.inProjectList.item(i)
         item = BookListWidgetItem(str(orig.text()), str(orig.statusTip()))
         
-        if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in xrange(self.ui.pageList.count())]:
+        if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in range(self.ui.pageList.count())]:
           self.ui.pageList.addItem(item)
       
       self.hideBackground()
@@ -144,7 +142,7 @@ class StartQT4(QtGui.QMainWindow):
       while self.thumbnailer.isRunning():
         time.wait(0.1)
       
-      for i in xrange(self.ui.pageList.count()):
+      for i in range(self.ui.pageList.count()):
         self.ui.pageList.item(i).resetIcon()
       
       self.thumbnailer.start()
@@ -166,37 +164,33 @@ class StartQT4(QtGui.QMainWindow):
   
   def finishedBinding(self):
     self.ui.progressBar.reset()
-    self.ui.statusBar.showMessage('Done binding the book!')
     
-    self.ui.startButton.setText(QtCore.QString('Start'))
-    startIcon = QtGui.QIcon()
-    startIcon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-    self.ui.startButton.setIcon(startIcon)
+    self.ui.startButton.setText('Start')
+    self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
     
-    QtGui.QMessageBox.information(self, self.trUtf8('Message'), self.trUtf8('The book has been succesfully saved!'), QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
     
-    self.ui.statusBar.clearMessage()
-        
-    for i in xrange(self.ui.pageList.count()):
-      self.ui.pageList.item(i).setBackground(QtGui.QColor(0, 0, 0, 0))
+    if pynotify:
+      notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/icons/logo.png')
+      notification.show()
+    else:
+      QMessageBox.information(self, 'Message', 'The book has been succesfully saved!', QMessageBox.Ok, QMessageBox.Ok)
+    
+    for i in range(self.ui.pageList.count()):
+      self.ui.pageList.item(i).setBackground(QColor(0, 0, 0, 0))
   
   
   def startBinding(self):
-    '''
-    Starts binding the book. It's a huge task...
-    '''
     if str(self.ui.startButton.text()) == 'Start':
-      self.pages = [self.ui.pageList.item(i) for i in xrange(self.ui.pageList.count())]
+      self.pages = [self.ui.pageList.item(i) for i in range(self.ui.pageList.count())]
     
-      self.ui.startButton.setText(QtCore.QString('Stop'))
-      stopIcon = QtGui.QIcon()
-      stopIcon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-      self.ui.startButton.setIcon(stopIcon)
+      self.ui.startButton.setText('Stop')
+      self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
       
       
       self.options = {'cores':             -1,
                       'ocr':               (self.ui.enableOCR.checkState() != 0),
                       'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
+                      'output_format':     str(self.ui.outputFormat.currentText()).lower(),
                       'cuneiform_options': str(self.ui.ocrOptions.text()),
                       'tesseract_options': str(self.ui.ocrOptions.text()),
                       'bitonal_encoder':   str(self.ui.bitonalEncoder.currentText()),
@@ -216,7 +210,5 @@ class StartQT4(QtGui.QMainWindow):
       self.binder.die = True
       self.ui.progressBar.reset()
       
-      self.ui.startButton.setText(QtCore.QString('Start'))
-      startIcon = QtGui.QIcon()
-      startIcon.addPixmap(QtGui.QPixmap(_fromUtf8("./icons/media-playback-start.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-      self.ui.startButton.setIcon(startIcon)
+      self.ui.startButton.setText('Start')
+      self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
