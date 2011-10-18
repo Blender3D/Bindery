@@ -55,10 +55,9 @@ class Binder(QThread):
       page.is_bitonal()
       page.get_dpi()
       
-      if self.options['ocr']:
-        self.emit(SIGNAL('updateProgress(int, QString)'), int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
-      else:
-        self.emit(SIGNAL('updateProgress(int, QString)'), int(50 * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing...')
+      basePercent = 25 if self.options['ocr'] else 50
+      
+      self.emit(SIGNAL('updateProgress(int, QString)'), int(basePercent * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing')
       
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(210, 255, 210, 120))
       self.emit(SIGNAL('debug(QString)'), 'Analyzing page:\n  Path:{0}\n  DPI: {1}\n  Bitonal: {2}'.format(page.path, page.dpi, page.bitonal))

@@ -19,6 +19,8 @@ class StartQT4(functions.StartQT4, QMainWindow):
   def __init__(self, parent = None):
     QWidget.__init__(self, parent)
     
+    QIcon.setThemeName('elementary')
+    
     self.previews = True
     self.outFile = None
     
@@ -26,6 +28,14 @@ class StartQT4(functions.StartQT4, QMainWindow):
     
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)
+    
+    
+    
+    self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
+    self.ui.addPageButton.setIcon(QIcon.fromTheme('list-add', QIcon(':/icons/media-playback-start.png')))
+    self.ui.removePageButton.setIcon(QIcon.fromTheme('list-remove', QIcon(':/icons/list-remove.png')))
+    
+    
     
     self.thumbnailer = Thumbnailer(self.ui.pageList)
     self.binder = Binder()

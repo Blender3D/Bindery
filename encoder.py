@@ -49,7 +49,6 @@ class Encoder(QThread):
     if not os.path.isfile(outfile):
       msg = 'err: encode.Encoder._c44(): No encode errors, but "{0}" does not exist!'.format(outfile)
       print(msg)
-      sys.exit(1)
 
     # Cleanup
     if (infile == 'temp.ppm') and (os.path.isfile('temp.ppm')):
@@ -69,7 +68,6 @@ class Encoder(QThread):
     if not os.path.isfile(outfile):
       msg = 'err: encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile)
       print(msg)
-      sys.exit(1)
 
     return None
 
@@ -92,7 +90,6 @@ class Encoder(QThread):
     if not os.path.isfile(outfile):
       msg = 'err: encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile)
       print(msg)
-      sys.exit(1)
 
     # Cleanup
     if (infile == 'temp.ppm') and (os.path.isfile('temp.ppm')):
@@ -172,11 +169,9 @@ class Encoder(QThread):
     if not utils.is_executable(self.opts['bitonal_encoder']):
       msg = 'err: encoder "{0}" is not installed.'.format(self.opts['bitonal_encoder'])
       print(msg)
-      sys.exit(1)
     if not utils.is_executable(self.opts['color_encoder']):
       msg = 'err: encoder "{0}" is not installed.'.format(self.opts['color_encoder'])
       print(msg)
-      sys.exit(1)
 
     return None
 

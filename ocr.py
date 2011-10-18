@@ -118,7 +118,6 @@ class boxfileParser():
       line = line.split()
       if len(line) != 5 and len(line) != 6: # Tesseract 3 box file has 6 columns
         print('err: ocr.boxfileParser.parse_box(): The format of the boxfile is not what was expected.')
-        sys.exit(1)
 
       data.append({'char':line[0], 'xmin':int(line[1]), 'ymin':int(line[2]), 'xmax':int(line[3]), 'ymax':int(line[4])})
 
@@ -270,7 +269,6 @@ class djvuWordBox:
   def encode(self):
     if (self.xmin > self.xmax) or (self.ymin > self.ymax):
       print('err: ocr.djvuWordBox(): Boxing information is impossible (x/y min exceed x/y max).')
-      sys.exit(1)
     return '(word {0} {1} {2} {3} "{4}")'.format(self.xmin, self.ymin, self.xmax, self.ymax, self.word.encode('utf-8'))
 
 
@@ -296,7 +294,6 @@ class djvuLineBox:
   def encode(self):
     if (self.xmin > self.xmax) or (self.ymin > self.ymax):
       print('err: ocr.djvuLineBox(): Boxing information is impossible (x/y min exceed x/y max).')
-      sys.exit(1)
     line = '(line {0} {1} {2} {3}'.format(self.xmin, self.ymin, self.xmax, self.ymax)
     words = '\n  '.join([x.encode() for x in self.words])
     return line+'\n  '+words+')'
@@ -324,7 +321,6 @@ class djvuPageBox:
   def encode(self):
     if (self.xmin > self.xmax) or (self.ymin > self.ymax):
       print('err: ocr.djvuPageBox(): Boxing information is impossible (x/y min exceed x/y max).')
-      sys.exit(1)
     page = '(page {0} {1} {2} {3}'.format(self.xmin, self.ymin, self.xmax, self.ymax)
     lines = '\n  '.join([x.encode() for x in self.lines])
     return page+'\n  '+lines+')'
@@ -436,7 +432,6 @@ class OCR:
     else:
       msg = 'wrn: ocr engine "{0}" is not supported.'.format(self.opts['ocr_engine'])
       print(msg)
-      sys.exit(1)
 
     return boxing
 
@@ -456,7 +451,6 @@ class OCR:
     if (engine != 'tesseract') and (not utils.is_executable('tesseract')):
       msg = 'err: ocr engine "{0}" is not installed.  Tesseract is a mandatory dependency.'.format('tesseract')
       print(msg)
-      sys.exit(1)
 
     return None
 

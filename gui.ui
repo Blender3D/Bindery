@@ -91,10 +91,6 @@ background-color: white;
               <property name="text">
                <string>Add page</string>
               </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
-              </property>
              </widget>
             </item>
             <item>
@@ -112,12 +108,11 @@ background-color: white;
             </item>
             <item>
              <widget class="QPushButton" name="removePageButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Remove page</string>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
               </property>
               <property name="autoRepeat">
                <bool>false</bool>
@@ -402,6 +397,13 @@ background-color: white;
            </attribute>
            <layout class="QFormLayout" name="formLayout">
             <item row="0" column="0">
+             <widget class="QLabel" name="bitonalEncoderLabel">
+              <property name="text">
+               <string>Bitonal Encoder</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
              <widget class="QComboBox" name="bitonalEncoder">
               <item>
                <property name="text">
@@ -410,14 +412,14 @@ background-color: white;
               </item>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="bitonalEncoderLabel">
+            <item row="1" column="0">
+             <widget class="QLabel" name="colorEncoderLabel">
               <property name="text">
-               <string>Bitonal Encoder</string>
+               <string>Color Encoder</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="1" column="1">
              <widget class="QComboBox" name="colorEncoder">
               <item>
                <property name="text">
@@ -426,71 +428,64 @@ background-color: white;
               </item>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="colorEncoderLabel">
-              <property name="text">
-               <string>Color Encoder</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
-             <widget class="QLineEdit" name="c44Options"/>
-            </item>
-            <item row="2" column="1">
              <widget class="QLabel" name="c44OptionsLabel">
               <property name="text">
                <string>c44 Options</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QLineEdit" name="cjb2Options">
-              <property name="text">
-               <string>-lossy</string>
-              </property>
-             </widget>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="c44Options"/>
             </item>
-            <item row="3" column="1">
+            <item row="3" column="0">
              <widget class="QLabel" name="cjb2OptionsLabel">
               <property name="text">
                <string>cjb2 Options</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="QLineEdit" name="cpaldjvuOptions"/>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="cjb2Options">
+              <property name="text">
+               <string>-lossy</string>
+              </property>
+             </widget>
             </item>
-            <item row="4" column="1">
+            <item row="4" column="0">
              <widget class="QLabel" name="cpaldjvuOptionsLabel">
               <property name="text">
                <string>cpaldjvu Options</string>
               </property>
              </widget>
             </item>
-            <item row="5" column="0">
-             <widget class="QLineEdit" name="csepdjvuOptions"/>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="cpaldjvuOptions"/>
             </item>
-            <item row="5" column="1">
+            <item row="5" column="0">
              <widget class="QLabel" name="csepdjvuOptionsLabel">
               <property name="text">
                <string>csepdjvu Options</string>
               </property>
              </widget>
             </item>
+            <item row="5" column="1">
+             <widget class="QLineEdit" name="csepdjvuOptions"/>
+            </item>
             <item row="6" column="0">
+             <widget class="QLabel" name="minidjvuOptionsLabel">
+              <property name="text">
+               <string>minidjvu Options</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
              <widget class="QLineEdit" name="minidjvuOptions">
               <property name="text">
                <string>--match -pages-per-dict 100</string>
               </property>
               <property name="cursorPosition">
                <number>27</number>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1">
-             <widget class="QLabel" name="minidjvuOptionsLabel">
-              <property name="text">
-               <string>minidjvu Options</string>
               </property>
              </widget>
             </item>
@@ -535,19 +530,18 @@ p, li { white-space: pre-wrap; }
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
            <widget class="QProgressBar" name="progressBar">
-            <property name="invertedAppearance">
-             <bool>false</bool>
+            <property name="format">
+             <string>%p%</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="startButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Start</string>
-            </property>
-            <property name="icon">
-             <iconset resource="resources.qrc">
-              <normaloff>:/icons/media-playback-start.png</normaloff>:/icons/media-playback-start.png</iconset>
             </property>
            </widget>
           </item>
@@ -558,11 +552,6 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QStatusBar" name="statusBar">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

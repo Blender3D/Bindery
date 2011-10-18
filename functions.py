@@ -20,18 +20,7 @@ except:
 class StartQT4(QMainWindow):
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
-    
-    self.ui.pageGrayscale.setChecked(False)
-    
-    if len(self.selected) == 1:
-      self.selected = self.selected[0]
-      self.ui.tab.setEnabled(True)
-      
-      self.ui.pageGrayscale.setChecked(self.selected.grayscale)
-      
-      self.ui.imageViewer.addImage(QPixmap(self.selected.filepath))
-    else:
-      self.ui.tab.setEnabled(False)
+    self.ui.removePageButton.setEnabled(len(self.selected) > 0)
   
   
   
@@ -104,7 +93,7 @@ class StartQT4(QMainWindow):
   def projectFilesAccepted(self):
     if self.projectFilesUi.inProjectList.count() == 0:
       QMessageBox.warning(self, 'Warning', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
-    elif self.outFile in ['', None]:
+    elif str(self.projectFilesUi.outputFile.text()) == '':
       QMessageBox.warning(self, 'Warning', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:
       self.projectFiles.close()
@@ -118,6 +107,7 @@ class StartQT4(QMainWindow):
       
       self.hideBackground()
       self.thumbnailer.start()
+      self.ui.startButton.setEnabled(True)
   
   
   
@@ -151,9 +141,9 @@ class StartQT4(QMainWindow):
   
   
   
-  def updateProgress(self, value, message = None):
+  def updateProgress(self, value, message):
     self.ui.progressBar.setValue(value)
-    self.ui.statusBar.showMessage(message)
+    self.ui.progressBar.setFormat('{0} - %p%'.format(message))
   
   
   

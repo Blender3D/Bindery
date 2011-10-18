@@ -93,7 +93,6 @@ def execute(cmd, capture = False):
   # Exit if the command fails for any reason.
   if status != 0:
     print('err: utils.execute(): command exited with bad status.\ncmd = {0}\nexit status = {1}'.format(cmd, status))
-    sys.exit(1)
 
   if capture:
     text = sub.stdout.read()
