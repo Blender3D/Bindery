@@ -38,6 +38,8 @@ class Page:
     return None
 
   def is_bitonal(self):
+    print 'identify -ping "{0}"'.format(self.path)
+	
     if utils.execute('identify -ping "{0}"'.format(self.path), capture = True).decode('ascii').find('Bilevel')  ==  -1:
       self.bitonal = False
     else:

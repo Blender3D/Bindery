@@ -1,6 +1,4 @@
-import os
-import subprocess
-import sys
+import os, subprocess, sys, platform
 
 def color(text, color_name):
   if sys.platform.startswith('win'):
@@ -82,6 +80,9 @@ def simple_exec(cmd):
     return int(sub.wait())
 
 def execute(cmd, capture = False):
+  if platform.system() == 'Windows':
+    cmd = 'bin\\' + cmd
+  
   with open(os.devnull, 'w') as void:
     if capture:
       sub = subprocess.Popen(cmd, shell = True, stdout = subprocess.PIPE, stderr = void)

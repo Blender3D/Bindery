@@ -3,3 +3,6 @@ temp_graphics.ppm
 temp_graphics.tif
 temp_merge.mix
 temp_textual.tif
+
+build/
+dist/
