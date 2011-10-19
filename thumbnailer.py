@@ -16,7 +16,7 @@ class Thumbnailer(QThread):
       item = self.widget.item(i)
       
       if item.defaultIcon and not self.die:
-        icon = QImage(item.filepath).scaled(72, 72, aspectRatioMode = Qt.KeepAspectRatio)
+        icon = QImage(item.filepath).scaled(800, 600, aspectRatioMode = Qt.KeepAspectRatio).scaled(72, 72, aspectRatioMode = Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation)
         
         self.emit(SIGNAL('makeIcon(int, QImage)'), i, icon)
         item.defaultIcon = False

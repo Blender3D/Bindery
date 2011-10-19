@@ -5,14 +5,12 @@ import sys, os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-import functions
-import config
+import functions, config
 
 from thumbnailer import *
-from bind import *
+from binding import binder
 
-import project_files
-from gui import *
+from ui import gui, project_files, resources_rc
 from BookListWidget import *
 
 class StartQT4(functions.StartQT4, QMainWindow):
@@ -26,7 +24,7 @@ class StartQT4(functions.StartQT4, QMainWindow):
     
     self.config = config.config('options.ini')
     
-    self.ui = Ui_MainWindow()
+    self.ui = gui.Ui_MainWindow()
     self.ui.setupUi(self)
     
     
@@ -35,10 +33,21 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.ui.addPageButton.setIcon(QIcon.fromTheme('list-add', QIcon(':/icons/media-playback-start.png')))
     self.ui.removePageButton.setIcon(QIcon.fromTheme('list-remove', QIcon(':/icons/list-remove.png')))
     
+    self.ui.newMenuItem.setIcon(QIcon.fromTheme('filenew'))
+    self.ui.openMenuItem.setIcon(QIcon.fromTheme('fileopen'))
+    self.ui.saveMenuItem.setIcon(QIcon.fromTheme('filesave'))
+    
+    self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
+    self.ui.addPageMenuItem.setIcon(QIcon.fromTheme('list-add', QIcon(':/icons/media-playback-start.png')))
+    self.ui.removePageMenuItem.setIcon(QIcon.fromTheme('list-remove', QIcon(':/icons/list-remove.png')))
+    
+    self.ui.saveMenuItem.setEnabled(False)
+    self.ui.startBindingMenuItem.setEnabled(False)
+    self.ui.removePageMenuItem.setEnabled(False)
     
     
     self.thumbnailer = Thumbnailer(self.ui.pageList)
-    self.binder = Binder()
+    self.binder = binder.Binder()
     
     self.connect(self.thumbnailer, SIGNAL('makeIcon(int, QImage)'), self.makeIcon)
     self.connect(self.thumbnailer, SIGNAL('debug(QString)'), self.debug)
@@ -46,7 +55,7 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.connect(self.binder, SIGNAL('updateProgress(int, QString)'), self.updateProgress)
     self.connect(self.binder, SIGNAL('updateBackground(int, QColor)'), self.updateBackground)
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
-    self.connect(self.binder, SIGNAL('debug(QString)'), self.debug)
+    self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
     self.connect(self.ui.addPageButton, SIGNAL('clicked()'), self.showProjectDialog)
     self.connect(self.ui.removePageButton, SIGNAL('clicked()'), self.removeItems)

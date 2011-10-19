@@ -1,12 +1,9 @@
 import sys, os, time, glob
 
-import project_files
 import config
 
-from gui import *
 from BookListWidget import * 
 from thumbnailer import *
-from bind import *
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -18,6 +15,11 @@ except:
   pass
 
 class StartQT4(QMainWindow):
+  def error(self, message):
+    QMessageBox.critical(self, '', message, QMessageBox.Ok, QMessageBox.Ok)
+    self.startBinding()
+  
+  
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
     self.ui.removePageButton.setEnabled(len(self.selected) > 0)
@@ -32,8 +34,6 @@ class StartQT4(QMainWindow):
   def makeIcon(self, index, icon):
     item = self.ui.pageList.item(index)
     item.setIcon(QIcon(QPixmap.fromImage(icon)))
-    
-    self.ui.statusBar.showMessage('Thumbnailing ' + os.path.split(str(item.filepath))[1], 500)
   
   
   
@@ -41,9 +41,21 @@ class StartQT4(QMainWindow):
     if self.ui.pageList.count() > 0:
       self.ui.pageList.setStyleSheet('')
     else:
-      self.ui.pageList.setStyleSheet('QListWidget\n{\nbackground-image: url(\':/icons/go-down-big.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}\n\nQListWidget:hover\n{\nbackground-image: url(\':/icons/go-down-big-hover.png\');\nbackground-position: center;\nbackground-repeat: no-repeat;\nbackground-color: white;\n}')
+      self.ui.pageList.setStyleSheet('''QListWidget {
+                                          background-image: url(':/icons/go-down-big.png');
+                                          background-position: center;
+                                          background-repeat: no-repeat;
+                                          background-color: white;
+                                        }
+
+                                        QListWidget:hover {
+                                          background-image: url(':/icons/go-down-big-hover.png');
+                                          background-position: center;
+                                          background-repeat: no-repeat;
+                                          background-color: white;
+                                        }''')
   
-  
+
   
   def showProjectDialog(self):  self.projectFiles.show()    
 
@@ -91,9 +103,11 @@ class StartQT4(QMainWindow):
   
   
   def projectFilesAccepted(self):
+    self.outFile = str(self.projectFilesUi.outputFile.text())
+    
     if self.projectFilesUi.inProjectList.count() == 0:
       QMessageBox.warning(self, 'Warning', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
-    elif str(self.projectFilesUi.outputFile.text()) == '':
+    elif self.outFile == '':
       QMessageBox.warning(self, 'Warning', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:
       self.projectFiles.close()
@@ -160,10 +174,10 @@ class StartQT4(QMainWindow):
     
     
     if pynotify:
-      notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/icons/logo.png')
+      notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/ui/icons/logo.png')
       notification.show()
     else:
-      QMessageBox.information(self, 'Message', 'The book has been succesfully saved!', QMessageBox.Ok, QMessageBox.Ok)
+      QMessageBox.information(self, '', 'Your book has finished binding.', QMessageBox.Ok, QMessageBox.Ok)
     
     for i in range(self.ui.pageList.count()):
       self.ui.pageList.item(i).setBackground(QColor(0, 0, 0, 0))
@@ -176,9 +190,7 @@ class StartQT4(QMainWindow):
       self.ui.startButton.setText('Stop')
       self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
       
-      
-      self.options = {'cores':             -1,
-                      'ocr':               (self.ui.enableOCR.checkState() != 0),
+      self.options = {'ocr':               (self.ui.enableOCR.checkState() != 0),
                       'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
                       'output_format':     str(self.ui.outputFormat.currentText()).lower(),
                       'cuneiform_options': str(self.ui.ocrOptions.text()),
@@ -202,3 +214,6 @@ class StartQT4(QMainWindow):
       
       self.ui.startButton.setText('Start')
       self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
+      
+      for i in range(self.ui.pageList.count()):
+        self.ui.pageList.item(i).setBackground(QColor(0, 0, 0, 0))

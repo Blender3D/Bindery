@@ -21,12 +21,15 @@ class Binder(QThread):
     self.ocr = ocr.OCR(self.options)
     
     self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
+    self.connect(self.enc, SIGNAL('error(QString)'), self.error)
   
+  
+  
+  def error(self, message):
+    self.emit(SIGNAL('error(QString)'), message)
   
   
   def add_file(self, filename, type = 'page'):
-    self.emit(SIGNAL('debug(QString)'), 'Adding \'{0}\' of type \'{1}\''.format(filename, type))
-    
     if type == 'page':
       self.book.insert_page(filename)
     else:
@@ -58,15 +61,13 @@ class Binder(QThread):
       basePercent = 25 if self.options['ocr'] else 50
       
       self.emit(SIGNAL('updateProgress(int, QString)'), int(basePercent * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing')
-      
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(210, 255, 210, 120))
-      self.emit(SIGNAL('debug(QString)'), 'Analyzing page:\n  Path:{0}\n  DPI: {1}\n  Bitonal: {2}'.format(page.path, page.dpi, page.bitonal))
       
     return None
   
   
   def updateProgress(self, percent, item):
-    self.emit(SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book...')
+    self.emit(SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book')
     self.emit(SIGNAL('updateBackground(int, QColor)'), int(item), QColor(170, 255, 170, 120))
     
     if int(percent) == 100:
@@ -74,11 +75,6 @@ class Binder(QThread):
       self.emit(SIGNAL('finishedBinding'))
   
   def get_ocr(self):
-    """
-    Performs optical character analysis on all images, excluding covers.
-    """
-
-    # Create queue and populate with pages to process
     queue = []
     
     for page in self.book.pages:
@@ -97,7 +93,7 @@ class Binder(QThread):
       boxing = self.ocr.analyze_image(page.path)
       page.text = self.ocr.translate(boxing)
       
-      self.emit(SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR...')
+      self.emit(SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR')
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
     return None
   
