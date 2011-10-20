@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/project_files.ui'
 #
-# Created: Wed Oct 19 01:35:02 2011
+# Created: Wed Oct 19 23:06:50 2011
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,8 +17,12 @@ except AttributeError:
 class Ui_ProjectFilesDialog(object):
   def setupUi(self, ProjectFilesDialog):
     ProjectFilesDialog.setObjectName(_fromUtf8("ProjectFilesDialog"))
+    ProjectFilesDialog.setWindowModality(QtCore.Qt.ApplicationModal)
     ProjectFilesDialog.resize(427, 472)
     ProjectFilesDialog.setWindowTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Project Files", None, QtGui.QApplication.UnicodeUTF8))
+    icon = QtGui.QIcon()
+    icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    ProjectFilesDialog.setWindowIcon(icon)
     ProjectFilesDialog.setModal(True)
     self.gridLayout = QtGui.QGridLayout(ProjectFilesDialog)
     self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
@@ -78,9 +82,9 @@ class Ui_ProjectFilesDialog(object):
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Add selected files to project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
     self.addToProjectButton.setText(_fromUtf8(""))
-    icon = QtGui.QIcon()
-    icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/go-next.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-    self.addToProjectButton.setIcon(icon)
+    icon1 = QtGui.QIcon()
+    icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/go-next.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.addToProjectButton.setIcon(icon1)
     self.addToProjectButton.setIconSize(QtCore.QSize(24, 24))
     self.addToProjectButton.setObjectName(_fromUtf8("addToProjectButton"))
     self.vboxlayout1.addWidget(self.addToProjectButton)
@@ -90,9 +94,9 @@ class Ui_ProjectFilesDialog(object):
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Remove selected files from project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
     self.removeFromProjectButton.setText(_fromUtf8(""))
-    icon1 = QtGui.QIcon()
-    icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/go-previous.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-    self.removeFromProjectButton.setIcon(icon1)
+    icon2 = QtGui.QIcon()
+    icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/go-previous.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.removeFromProjectButton.setIcon(icon2)
     self.removeFromProjectButton.setIconSize(QtCore.QSize(24, 24))
     self.removeFromProjectButton.setObjectName(_fromUtf8("removeFromProjectButton"))
     self.vboxlayout1.addWidget(self.removeFromProjectButton)

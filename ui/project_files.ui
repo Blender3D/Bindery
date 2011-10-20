@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ProjectFilesDialog</class>
  <widget class="QDialog" name="ProjectFilesDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,10 @@
   </property>
   <property name="windowTitle">
    <string>Project Files</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/logo.png</normaloff>:/icons/logo.png</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>

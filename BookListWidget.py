@@ -13,6 +13,39 @@ class BookListWidget(QListWidget):
     self.setAlternatingRowColors(True)
     self.setIconSize(QSize(72, 72))
 
+  def dragEnterEvent(self, event):
+    if event.mimeData().hasUrls:
+      event.accept()
+    else:
+      event.ignore()
+
+  def dragMoveEvent(self, event):
+    if event.source() == self:
+      event.setDropAction(Qt.MoveAction)
+      event.accept()
+    elif event.mimeData().hasUrls:
+      event.setDropAction(Qt.CopyAction)
+      event.accept()
+    else:
+      event.ignore()
+
+  def dropEvent(self, event):
+    if event.source() == self:
+      event.setDropAction(Qt.MoveAction)
+      event.ignore()
+    elif event.mimeData().hasUrls:
+      event.setDropAction(Qt.CopyAction)
+      event.accept()
+      
+      links = []
+      
+      for url in event.mimeData().urls():
+        links.append(str(url.toLocalFile()))
+      
+      self.emit(SIGNAL('dropped'), links)
+    else:
+      event.ignore()
+
 
 
 class BookListWidgetItem(QListWidgetItem):
@@ -24,13 +57,14 @@ class BookListWidgetItem(QListWidgetItem):
     self.dpi = 0
     self.grayscale = False
     
-    self.pixmap = QPixmap.fromImage(QImage(':/icons/blank.png'))
-    self.icon = QIcon(self.pixmap)
-    self.blank = QIcon(QPixmap(0, 0))
+    self.icon = QIcon(QPixmap.fromImage(QImage(':/icons/blank.png')))
+    self.blank = QIcon(QPixmap(72, 72))
     
     self.setText(text)
     self.filepath = filepath
     self.image = QImage(':/icons/blank.png')
+    
+    self.setSizeHint(QSize(72, 72))
     
     if defaultIcon:
       self.setIcon(self.icon)
@@ -42,27 +76,3 @@ class BookListWidgetItem(QListWidgetItem):
   def removeIcon(self):
     self.setIcon(self.blank)
     self.defaultIcon = True
-
-
-
-class ImageViewerLabel(QLabel):
-  def __init__(self, parent = None):
-    super(ImageViewerLabel, self).__init__(parent)
-    self.scale = 1.0
-    self.ready = True
-  
-  def wheelEvent(self, event):
-    self.zoom(float(event.delta()) / 1200.0)
-  
-  def addImage(self, pixmap):
-    self.ready = False
-    
-    self.pixmap = pixmap
-    self.setPixmap(self.pixmap)
-    self.setFixedSize(self.pixmap.width() * self.scale, self.pixmap.height() * self.scale)
-  
-  def zoom(self, factor):
-    if 0.1 < self.scale + factor < 2.2:
-      self.scale += factor
-      print self.scale
-      self.setFixedSize(self.pixmap.width() * self.scale, self.pixmap.height() * self.scale)
