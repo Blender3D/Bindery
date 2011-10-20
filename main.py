@@ -28,6 +28,18 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.ui = gui.Ui_MainWindow()
     self.ui.setupUi(self)
     
+    self.projectFiles = QDialog()
+    self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
+    self.projectFilesUi.setupUi(self.projectFiles)
+
+    self.projectFilesUi.browseButton1.clicked.connect(self.showFileDialog)
+    self.projectFilesUi.browseButton2.clicked.connect(self.showSaveDialog)
+    self.projectFilesUi.addToProjectButton.clicked.connect(self.addToProject)
+    self.projectFilesUi.removeFromProjectButton.clicked.connect(self.removeFromProject)
+    self.projectFilesUi.okButton.clicked.connect(self.projectFilesAccepted)
+    
+    self.projectFilesUi.addToProjectButton.setIcon(QIcon.fromTheme('forward'))
+    self.projectFilesUi.removeFromProjectButton.setIcon(QIcon.fromTheme('back'))
     
     
     self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
@@ -64,16 +76,6 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.connect(self.binder, SIGNAL('updateBackground(int, QColor)'), self.updateBackground)
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
-    
-    self.projectFiles = QDialog()
-    self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
-    self.projectFilesUi.setupUi(self.projectFiles)
-    
-    self.projectFilesUi.browseButton1.clicked.connect(self.showFileDialog)
-    self.projectFilesUi.browseButton2.clicked.connect(self.showSaveDialog)
-    self.projectFilesUi.addToProjectButton.clicked.connect(self.addToProject)
-    self.projectFilesUi.removeFromProjectButton.clicked.connect(self.removeFromProject)
-    self.projectFilesUi.okButton.clicked.connect(self.projectFilesAccepted)
     
 if __name__ == '__main__':
   app = QApplication(sys.argv)
