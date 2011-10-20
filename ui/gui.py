@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Wed Oct 19 23:06:50 2011
+# Created: Thu Oct 20 00:06:13 2011
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -111,7 +111,7 @@ class Ui_MainWindow(object):
     self.verticalLayout1.setObjectName(_fromUtf8("verticalLayout1"))
     self.pagePreview = ImageViewerWidget(self.pageTab)
     self.pagePreview.setStyleSheet(_fromUtf8("QGraphicsView {\n"
-"  background-color: rgb(200, 200, 200);\n"
+"  /*background-color: rgb(200, 200, 200);*/\n"
 "}"))
     self.pagePreview.setRenderHints(QtGui.QPainter.Antialiasing|QtGui.QPainter.SmoothPixmapTransform)
     self.pagePreview.setObjectName(_fromUtf8("pagePreview"))
