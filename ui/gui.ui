@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -331,7 +331,7 @@ background-color: white;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="OCRTab">
+          <widget class="QWidget" name="ocrTab">
            <attribute name="title">
             <string>OCR</string>
            </attribute>
@@ -551,120 +551,146 @@ background-color: white;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="DjVuTab">
+          <widget class="QWidget" name="encodingTab">
            <attribute name="title">
-            <string>DjVu Encoders</string>
+            <string>Encoding Options</string>
            </attribute>
-           <layout class="QFormLayout" name="formLayout">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-            </property>
+           <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="0">
-             <widget class="QLabel" name="bitonalEncoderLabel">
-              <property name="text">
-               <string>Bitonal Encoder</string>
+             <widget class="QStackedWidget" name="stackedWidget">
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="bitonalEncoder">
-              <item>
-               <property name="text">
-                <string>cjb2</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>minidjvu</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="colorEncoderLabel">
-              <property name="text">
-               <string>Color Encoder</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QComboBox" name="colorEncoder">
-              <item>
-               <property name="text">
-                <string>csepdjvu</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>c44</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>cpaldjvu</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="c44OptionsLabel">
-              <property name="text">
-               <string>c44 Options</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="c44Options"/>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="cjb2OptionsLabel">
-              <property name="text">
-               <string>cjb2 Options</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLineEdit" name="cjb2Options">
-              <property name="text">
-               <string>-lossy</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="cpaldjvuOptionsLabel">
-              <property name="text">
-               <string>cpaldjvu Options</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
-             <widget class="QLineEdit" name="cpaldjvuOptions"/>
-            </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="csepdjvuOptionsLabel">
-              <property name="text">
-               <string>csepdjvu Options</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
-             <widget class="QLineEdit" name="csepdjvuOptions"/>
-            </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="minidjvuOptionsLabel">
-              <property name="text">
-               <string>minidjvu Options</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1">
-             <widget class="QLineEdit" name="minidjvuOptions">
-              <property name="text">
-               <string>--match -pages-per-dict 100</string>
-              </property>
-              <property name="cursorPosition">
-               <number>27</number>
-              </property>
+              <widget class="QWidget" name="page">
+               <layout class="QFormLayout" name="formLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="bitonalEncoderLabel">
+                  <property name="text">
+                   <string>Bitonal Encoder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="bitonalEncoder">
+                  <item>
+                   <property name="text">
+                    <string>cjb2</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>minidjvu</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="colorEncoderLabel">
+                  <property name="text">
+                   <string>Color Encoder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QComboBox" name="colorEncoder">
+                  <item>
+                   <property name="text">
+                    <string>csepdjvu</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>c44</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>cpaldjvu</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="c44OptionsLabel">
+                  <property name="text">
+                   <string>c44 Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="c44Options"/>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="cjb2OptionsLabel">
+                  <property name="text">
+                   <string>cjb2 Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLineEdit" name="cjb2Options">
+                  <property name="text">
+                   <string>-lossy</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="cpaldjvuOptionsLabel">
+                  <property name="text">
+                   <string>cpaldjvu Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLineEdit" name="cpaldjvuOptions"/>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="csepdjvuOptionsLabel">
+                  <property name="text">
+                   <string>csepdjvu Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QLineEdit" name="csepdjvuOptions"/>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="minidjvuOptionsLabel">
+                  <property name="text">
+                   <string>minidjvu Options</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QLineEdit" name="minidjvuOptions">
+                  <property name="text">
+                   <string>--match -pages-per-dict 100</string>
+                  </property>
+                  <property name="cursorPosition">
+                   <number>27</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_2">
+               <layout class="QGridLayout" name="gridLayout_5">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Droid Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;None yet&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -978,22 +1004,6 @@ p, li { white-space: pre-wrap; }
  </resources>
  <connections>
   <connection>
-   <sender>enableOCR</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>frame</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>368</x>
-     <y>104</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>368</x>
-     <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>addPageButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -1038,70 +1048,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>7</x>
      <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>moveToTopButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>moveItemToTop()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>467</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>350</x>
-     <y>558</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>moveUpButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>moveItemUp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>428</x>
-     <y>470</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>398</x>
-     <y>559</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>moveDownButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>moveItemDown()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>521</x>
-     <y>467</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>505</x>
-     <y>559</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>moveToBottomButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>moveItemToBottom()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>592</x>
-     <y>472</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>579</x>
-     <y>558</y>
     </hint>
    </hints>
   </connection>
@@ -1186,22 +1132,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>pageGrayscale</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>pageGrayscaleChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>489</x>
-     <y>499</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>356</x>
-     <y>282</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>removePageMenuItem</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1230,6 +1160,102 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>356</x>
      <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveDownButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>521</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>505</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveToTopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemToTop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>558</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveUpButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>470</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pageGrayscale</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pageGrayscaleChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>489</x>
+     <y>499</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>enableOCR</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>368</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>368</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveToBottomButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemToBottom()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>592</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>579</x>
+     <y>558</y>
     </hint>
    </hints>
   </connection>
@@ -1265,6 +1291,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>outputFormat</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>outputFormatChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>535</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>addFiles()</slot>
@@ -1281,5 +1323,6 @@ p, li { white-space: pre-wrap; }
   <slot>pageGrayscaleChanged()</slot>
   <slot>changeOCRLanguage()</slot>
   <slot>showSaveDialog()</slot>
+  <slot>outputFormatChanged()</slot>
  </slots>
 </ui>

@@ -42,6 +42,7 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.projectFilesUi.removeFromProjectButton.setIcon(QIcon.fromTheme('back'))
     
     
+    
     self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
     self.ui.addPageButton.setIcon(QIcon.fromTheme('list-add', QIcon(':/icons/media-playback-start.png')))
     self.ui.removePageButton.setIcon(QIcon.fromTheme('list-remove', QIcon(':/icons/list-remove.png')))

@@ -70,7 +70,7 @@ class Binder(QThread):
     self.emit(SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book')
     self.emit(SIGNAL('updateBackground(int, QColor)'), int(item), QColor(170, 255, 170, 120))
     
-    if int(percent) == 100:
+    if int(percent) == 100 and self.options['output_format'] == 'djvu':
       time.sleep(0.5)
       self.emit(SIGNAL('finishedBinding'))
   
@@ -123,3 +123,17 @@ class Binder(QThread):
     if not self.die:
       self.enc.initialize(self.book, self.outFile)
       self.enc.start()
+    
+    if not self.die and self.options['output_format'] == 'pdf':
+      self.emit(SIGNAL('updateProgress(int, QString)'), 100, 'Compressing PDF')
+      
+      
+      while self.enc.isRunning():
+        time.sleep(0.5)
+      
+      shutil.move(self.outFile, self.outFile + '.temp')
+      newFile = os.path.join(os.path.split(self.outFile)[0], os.path.splitext(os.path.split(self.outFile)[1])[0] + '.pdf')
+      utils.simple_exec('ddjvu -format=pdf "{0}" "{1}"'.format(self.outFile + '.temp', newFile))
+      os.remove(self.outFile + '.temp')
+      
+      self.emit(SIGNAL('finishedBinding'))

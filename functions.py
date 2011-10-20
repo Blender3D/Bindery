@@ -96,6 +96,10 @@ class StartQT4(QMainWindow):
   
   
   
+  def outputFormatChanged(self, choice):
+    self.ui.stackedWidget.setCurrentIndex(choice)
+  
+  
   def hideBackground(self):
     if self.ui.pageList.count() > 0:
       self.ui.pageList.setStyleSheet('')
@@ -140,7 +144,10 @@ class StartQT4(QMainWindow):
   
   
   def showSaveDialog(self):
-    self.ui.outputFile.setText(QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + 'Book.djvu', 'DjVu Document (*.djvu)'))
+    filename = 'Book.{0}'.format(str(self.ui.outputFormat.currentText()).lower())
+    filetype = '{0} Document (*.{1})'.format(self.ui.outputFormat.currentText())
+    
+    self.ui.outputFile.setText(QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + filename, filetype))
     
     if str(self.ui.outputFile.text()) != '':
       self.projectFilesUi.outputFile.setText(self.ui.outputFile.text())
