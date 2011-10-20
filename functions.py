@@ -17,7 +17,7 @@ except:
 class StartQT4(QMainWindow):
   def error(self, message):
     QMessageBox.critical(self, '', message, QMessageBox.Ok, QMessageBox.Ok)
-    self.startBinding()
+    self.toggleBinding()
   
   
   
@@ -140,11 +140,11 @@ class StartQT4(QMainWindow):
   
   
   def showSaveDialog(self):
-    self.outFile = QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + 'Book.djvu', 'DjVu Document (*.djvu)')
+    self.ui.outputFile.setText(QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + 'Book.djvu', 'DjVu Document (*.djvu)'))
     
-    if str(self.outFile) != '':
-      self.projectFilesUi.outputFile.setText(self.outFile)
-      self.config.set('startup', 'output_directory', os.path.split(str(self.outFile))[0] + '/')
+    if str(self.ui.outputFile.text()) != '':
+      self.projectFilesUi.outputFile.setText(self.ui.outputFile.text())
+      self.config.set('startup', 'output_directory', os.path.split(str(self.ui.outputFile.text()))[0] + '/')
 
   
   def addToProject(self):
@@ -163,6 +163,8 @@ class StartQT4(QMainWindow):
   
   def filesDropped(self, files):
     for file in files:
+      file = str(file)
+      
       if os.path.splitext(os.path.split(file)[-1])[-1] in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
         item = BookListWidgetItem(os.path.split(file)[-1], file)
         
@@ -197,12 +199,27 @@ class StartQT4(QMainWindow):
   
   
   
+  def changeOCRLanguage(self, language):
+    currentOptions = str(self.ui.ocrOptions.text())
+    arguments = currentOptions.split(' ')
+    
+    if currentOptions.find('-l') != -1:
+      for i in range(len(arguments) - 1):
+        if arguments[i] == '-l':
+          arguments[i + 1] = str(language).lower()[:3]
+          break
+      
+      self.ui.ocrOptions.setText(' '.join(arguments))
+    else:
+      self.ui.ocrOptions.setText('-l {0}'.format(language.toLower()[:3]))
+  
+  
   def projectFilesAccepted(self):
-    self.outFile = str(self.projectFilesUi.outputFile.text())
+    self.ui.outputFile.setText(self.projectFilesUi.outputFile.text())
     
     if self.projectFilesUi.inProjectList.count() == 0:
       QMessageBox.warning(self, '', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
-    elif self.outFile == '':
+    elif self.ui.outputFile.text() == '':
       QMessageBox.warning(self, '', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:
       self.projectFiles.close()
@@ -223,7 +240,7 @@ class StartQT4(QMainWindow):
   
   
   
-  def removeItems(self):
+  def removeFiles(self):
     for item in self.ui.pageList.selectedItems():
       self.ui.pageList.takeItem(self.ui.pageList.row(item))
     
@@ -284,9 +301,11 @@ class StartQT4(QMainWindow):
       self.ui.pageList.item(i).setBackground(QColor(0, 0, 0, 0))
   
   
-  def startBinding(self):
+  def toggleBinding(self):
     if str(self.ui.startButton.text()) == 'Start':
-      self.showSaveDialog()
+      
+      if self.ui.outputFile.text() == '':
+        self.showSaveDialog()
       
       self.pages = [self.ui.pageList.item(i) for i in range(self.ui.pageList.count())]
     
@@ -297,8 +316,7 @@ class StartQT4(QMainWindow):
       self.options = {'ocr':               (self.ui.enableOCR.checkState() != 0),
                       'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
                       'output_format':     str(self.ui.outputFormat.currentText()).lower(),
-                      'cuneiform_options': str(self.ui.ocrOptions.text()),
-                      'tesseract_options': str(self.ui.ocrOptions.text()),
+                      'ocr_options':       str(self.ui.ocrOptions.text()),
                       'bitonal_encoder':   str(self.ui.bitonalEncoder.currentText()),
                       'color_encoder':     str(self.ui.colorEncoder.currentText()),
                       'c44_options':       str(self.ui.c44Options.text()),
@@ -310,7 +328,7 @@ class StartQT4(QMainWindow):
                       'numbering_start':   [],
                       'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
       
-      self.binder.initialize(self.pages, self.options, self.outFile)
+      self.binder.initialize(self.pages, self.options, str(self.ui.outputFile.text()))
       self.binder.start()
     else:
       self.binder.die = True

@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -162,6 +162,16 @@ background-color: white;
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="0">
              <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Page Preview</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
               <item>
                <widget class="ImageViewerWidget" name="pagePreview">
                 <property name="styleSheet">
@@ -298,6 +308,27 @@ background-color: white;
               </item>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="outputFileLabel">
+              <property name="text">
+               <string>Output File</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLineEdit" name="outputFile"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="outputFileBrowseButton">
+                <property name="text">
+                 <string>Browse</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="OCRTab">
@@ -318,9 +349,6 @@ background-color: white;
                <bool>false</bool>
               </property>
               <layout class="QFormLayout" name="formLayout_2">
-               <property name="margin">
-                <number>0</number>
-               </property>
                <item row="0" column="0">
                 <widget class="QLabel" name="ocrEngineLabel">
                  <property name="text">
@@ -343,16 +371,178 @@ background-color: white;
                 </widget>
                </item>
                <item row="1" column="0">
+                <widget class="QLabel" name="ocrLanguageLabel">
+                 <property name="text">
+                  <string>Language</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QComboBox" name="ocrLanguage">
+                 <property name="currentIndex">
+                  <number>5</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Bulgarian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Catalan</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Czech</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Danish</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Dutch</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string extracomment="eng">English</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Finnish</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>French</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>German</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Greek</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Hungarian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Indonesian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Italian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Latvian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Lithuanian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Norwegian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Polish</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Portugese</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Romanian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string extracomment="rus">Russian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Serbian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Slovak</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Slovenian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Spanish</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Swedish</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Tagalog</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Turkish</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Ukranian</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Vietnamese</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="2" column="0">
                 <widget class="QLabel" name="ocrOptionsLabel">
                  <property name="text">
                   <string>Engine Options</string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="1">
+               <item row="2" column="1">
                 <widget class="QLineEdit" name="ocrOptions">
                  <property name="layoutDirection">
                   <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="text">
+                  <string>-l eng</string>
                  </property>
                 </widget>
                </item>
@@ -768,6 +958,9 @@ p, li { white-space: pre-wrap; }
    <class>BookListWidget</class>
    <extends>QListWidget</extends>
    <header>BookListWidget</header>
+   <slots>
+    <signal>dropped(QStringList)</signal>
+   </slots>
   </customwidget>
   <customwidget>
    <class>DebugLog</class>
@@ -791,14 +984,302 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>423</x>
-     <y>112</y>
+     <x>368</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>450</x>
-     <y>131</y>
+     <x>368</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addPageButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>75</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>705</x>
+     <y>54</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removePageButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>223</x>
+     <y>548</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>424</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pageList</sender>
+   <signal>dropped(QStringList)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>filesDropped()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>194</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveToTopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemToTop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>558</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveUpButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>470</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveDownButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>521</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>505</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveToBottomButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveItemToBottom()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>592</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>579</x>
+     <y>558</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggleBinding()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>659</x>
+     <y>541</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startBindingMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>toggleBinding()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>newMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showProjectDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filePreviewsMenuItem</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>togglePreviews()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pageList</sender>
+   <signal>itemSelectionChanged()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>itemSelectionChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>302</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pageGrayscale</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>pageGrayscaleChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>489</x>
+     <y>499</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removePageMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addPageMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ocrLanguage</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>changeOCRLanguage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>537</x>
+     <y>180</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>outputFileBrowseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showSaveDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>648</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>addFiles()</slot>
+  <slot>removeFiles()</slot>
+  <slot>filesDropped()</slot>
+  <slot>moveItemToTop()</slot>
+  <slot>moveItemUp()</slot>
+  <slot>moveItemDown()</slot>
+  <slot>moveItemToBottom()</slot>
+  <slot>showProjectDialog()</slot>
+  <slot>toggleBinding()</slot>
+  <slot>togglePreviews()</slot>
+  <slot>itemSelectionChanged()</slot>
+  <slot>pageGrayscaleChanged()</slot>
+  <slot>changeOCRLanguage()</slot>
+  <slot>showSaveDialog()</slot>
+ </slots>
 </ui>

@@ -22,7 +22,6 @@ class StartQT4(functions.StartQT4, QMainWindow):
     QIcon.setThemeName('elementary')
     
     self.previews = True
-    self.outFile = None
     
     self.config = config.config('options.ini')
     
@@ -66,39 +65,15 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
-    self.connect(self.ui.pageList, SIGNAL('dropped'), self.filesDropped)
-    self.connect(self.ui.pageList, SIGNAL('itemSelectionChanged()'), self.itemSelectionChanged)
-    
-    self.connect(self.ui.newMenuItem, SIGNAL('triggered()'), self.showProjectDialog)
-    self.connect(self.ui.addPageMenuItem, SIGNAL('triggered()'), self.addFiles)
-    
-    self.connect(self.ui.addPageButton, SIGNAL('clicked()'), self.addFiles)
-    self.connect(self.ui.removePageButton, SIGNAL('clicked()'), self.removeItems)
-    
-    self.connect(self.ui.moveToTopButton, SIGNAL('clicked()'), self.moveItemToTop)
-    self.connect(self.ui.moveUpButton, SIGNAL('clicked()'), self.moveItemUp)
-    self.connect(self.ui.moveDownButton, SIGNAL('clicked()'), self.moveItemDown)
-    self.connect(self.ui.moveToBottomButton, SIGNAL('clicked()'), self.moveItemToBottom)
-    
-    self.connect(self.ui.startButton, SIGNAL('clicked()'), self.startBinding)
-    self.connect(self.ui.startBindingMenuItem, SIGNAL('triggered()'), self.startBinding)
-    
-    self.connect(self.ui.filePreviewsMenuItem, SIGNAL('toggled(bool)'), self.togglePreviews)
-    
-    self.connect(self.ui.pageList, SIGNAL('itemSelectionChanged()'), self.itemSelectionChanged)
-    self.connect(self.ui.pageGrayscale, SIGNAL('stateChanged(int)'), self.pageGrayscaleChanged)
-    
-    
-    
     self.projectFiles = QDialog()
     self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
     self.projectFilesUi.setupUi(self.projectFiles)
     
-    self.connect(self.projectFilesUi.browseButton1, SIGNAL('clicked()'), self.showFileDialog)
-    self.connect(self.projectFilesUi.browseButton2, SIGNAL('clicked()'), self.showSaveDialog)
-    self.connect(self.projectFilesUi.addToProjectButton, SIGNAL('clicked()'), self.addToProject)
-    self.connect(self.projectFilesUi.removeFromProjectButton, SIGNAL('clicked()'), self.removeFromProject)
-    self.connect(self.projectFilesUi.okButton, SIGNAL('clicked()'), self.projectFilesAccepted)
+    self.projectFilesUi.browseButton1.clicked.connect(self.showFileDialog)
+    self.projectFilesUi.browseButton2.clicked.connect(self.showSaveDialog)
+    self.projectFilesUi.addToProjectButton.clicked.connect(self.addToProject)
+    self.projectFilesUi.removeFromProjectButton.clicked.connect(self.removeFromProject)
+    self.projectFilesUi.okButton.clicked.connect(self.projectFilesAccepted)
     
 if __name__ == '__main__':
   app = QApplication(sys.argv)

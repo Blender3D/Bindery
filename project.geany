@@ -3,38 +3,31 @@
 indent_width=2
 indent_type=0
 indent_hard_tab_width=8
-detect_indent=false
-detect_indent_width=true
+detect_indent=true
+detect_indent_width=false
 indent_mode=2
 
 [project]
 name=Bindery
 base_path=/opt/bindery/
+description=
+file_patterns=
 
 [long line marker]
 long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=13
+current_page=0
 FILE_NAME_0=634;Python;0;16;0;1;0;/opt/bindery/BookListWidget.py;0;2
 FILE_NAME_1=1700;Python;0;16;0;1;0;/opt/bindery/main.py;0;4
 FILE_NAME_2=540;Python;0;16;0;1;0;/opt/bindery/functions.py;0;2
-FILE_NAME_3=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/BookListWidget.py;0;4
-FILE_NAME_4=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/config.py;0;2
-FILE_NAME_5=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/DebugLog.py;0;2
-FILE_NAME_6=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/functions.py;0;2
-FILE_NAME_7=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/main.py;0;4
-FILE_NAME_8=0;Make;0;16;1;1;0;/media/FLASH DRIVE/files/Projects/Bindery/Makefile;0;2
-FILE_NAME_9=0;Conf;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/options.ini;0;2
-FILE_NAME_10=0;None;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/README;0;2
-FILE_NAME_11=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/setup.py;0;2
-FILE_NAME_12=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/thumbnailer.py;0;4
-FILE_NAME_13=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/binding/binder.py;0;2
-FILE_NAME_14=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/binding/encoder.py;0;2
-FILE_NAME_15=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/binding/ocr.py;0;2
-FILE_NAME_16=0;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/binding/organizer.py;0;4
-FILE_NAME_17=438;Python;0;16;0;1;0;/media/FLASH DRIVE/files/Projects/Bindery/binding/utils.py;0;2
 
 [VTE]
 last_dir=/home/nikita
+
+[build-menu]
+PythonFT_00_LB=_Compile
+PythonFT_00_CM=python -m py_compile "%f"
+PythonFT_00_WD=
+filetypes=Python;

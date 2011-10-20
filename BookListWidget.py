@@ -42,7 +42,7 @@ class BookListWidget(QListWidget):
       for url in event.mimeData().urls():
         links.append(str(url.toLocalFile()))
       
-      self.emit(SIGNAL('dropped'), links)
+      self.emit(SIGNAL('dropped(QStringList)'), links)
     else:
       event.ignore()
 

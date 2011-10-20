@@ -1,17 +1,6 @@
-"""
-Perform OCR operations using various engines.
-"""
-
-import difflib
-import os
-import re
-import shutil
-import sys
-
+import os, sys, re, shutil, difflib
 import codecs
-
 import HTMLParser
-
 import utils
 
 class hocrParser(HTMLParser.HTMLParser):
@@ -23,8 +12,10 @@ class hocrParser(HTMLParser.HTMLParser):
 
   def parse(self, data):
     self.data = data
+    
     if "class='ocr_cinfo'" in self.data:
       self.version = '1.0.0'
+    
     self.feed(data)
     
     return None
@@ -35,31 +26,37 @@ class hocrParser(HTMLParser.HTMLParser):
         if (len(self.boxing) > 0):
           self.boxing.append('newline')
       elif (tag == 'span'):
-        # Get the whole element (<span title="bbox n n n n">x</span>), not just the tag.
         element = {}
         element['start'] = self.data.find(self.get_starttag_text())
         element['end'] = self.data.find('>', element['start'])
         element['end'] = self.data.find('>', element['end']+1)
         element['end'] = element['end'] + 1
         element['text'] = self.data[element['start']:element['end']]
+        
         pos = element['text'].find('>') + 1
-        element['char'] = element['text'][pos:pos+1]
+        
+        element['char'] = element['text'][pos:pos + 1]
 
-        # Figure out the boxing information from the title attribute.
         attrs = dict(attrs)['title']
         attrs = attrs.split()[1:]
-        positions = {'xmin':int(attrs[0]), 'ymin':int(attrs[1]), 'xmax':int(attrs[2]), 'ymax':int(attrs[3])}
+        
+        positions = {'xmin': int(attrs[0]),
+                     'ymin': int(attrs[1]),
+                     'xmax': int(attrs[2]),
+                     'ymax': int(attrs[3])}
+        
         positions['char'] = element['char']
 
-        # Escape special characters
-        subst = {'"': '\\"', "'":"\\'", '\\': '\\\\'}
+        subst = {'"': '\\"',
+                 "'": "\\'",
+                 '\\': '\\\\'}
+        
         if positions['char'] in subst.keys():
           positions['char'] = subst[positions['char']]
         
         self.boxing.append(positions)
 
-        # A word break is indicated by a space after the </span> tag.
-        if (self.data[element['end']:element['end']+1] == ' '):
+        if (self.data[element['end']:element['end'] + 1] == ' '):
           self.boxing.append('space')
         
     elif self.version == '1.0.0':
@@ -67,7 +64,6 @@ class hocrParser(HTMLParser.HTMLParser):
         if (len(self.boxing) > 0):
           self.boxing.append('newline')
       elif (tag == 'span') and (('class', 'ocr_line') in attrs):
-        # Get the whole element, not just the tag.
         element = {}
         element['complete'] = re.search('{0}(.*?)</span>'.format(self.get_starttag_text()), self.data).group(0)
         
@@ -81,17 +77,22 @@ class hocrParser(HTMLParser.HTMLParser):
         i = 0
         
         for char in element['text']:
-          section = element['positions'][i:i+4]
-          positions = {'char':char, 'xmin':section[0], 'ymin':section[1], 'xmax':section[2], 'ymax':section[3]}
-          i = i + 4
+          section = element['positions'][i:i + 4]
+          positions = {'char': char,
+                       'xmin': section[0],
+                       'ymin': section[1],
+                       'xmax': section[2],
+                       'ymax':section[3]}
+          
+          i += 4
 
-          # A word break is indicated by a space (go figure).
           if (char == ' '):
             self.boxing.append('space')
             continue
 
-          # Escape special characters
-          subst = {'"': '\\"', "'":"\\'", '\\': '\\\\'}
+          subst = {'"': '\\"',
+                   "'":"\\'",
+                   '\\': '\\\\'}
           
           if positions['char'] in subst.keys():
             positions['char'] = subst[positions['char']]
@@ -390,8 +391,8 @@ class OCR:
     basename = os.path.split(filename)[1].split('.')[0]
     tesseractpath = utils.get_executable_path('tesseract')
 
-    status_a = utils.simple_exec('{0} "{1}" "{2}_box" {3} batch makebox'.format(tesseractpath, filename, basename, self.opts['tesseract_options']))
-    status_b = utils.simple_exec('{0} "{1}" "{2}_txt" {3} batch'.format(tesseractpath, filename, basename, self.opts['tesseract_options']))
+    status_a = utils.simple_exec('{0} "{1}" "{2}_box" {3} batch makebox'.format(tesseractpath, filename, basename, self.opts['ocr_options']))
+    status_b = utils.simple_exec('{0} "{1}" "{2}_txt" {3} batch'.format(tesseractpath, filename, basename, self.opts['ocr_options']))
     if (status_a != 0) or (status_b != 0):
       msg = 'wrn: Tesseract failed on "{0}".  There will be no ocr for this page.'.format(os.path.split(filename)[1])
       msg = utils.color(msg, 'red')
