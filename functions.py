@@ -11,8 +11,10 @@ from PyQt4.QtGui import *
 try:
   import pynotify
   pynotify.init('Bindery')
+  
+  notify = True
 except:
-  pass
+  notify = False
 
 class StartQT4(QMainWindow):
   def error(self, message):
@@ -144,8 +146,9 @@ class StartQT4(QMainWindow):
   
   
   def showSaveDialog(self):
-    filename = 'Book.{0}'.format(str(self.ui.outputFormat.currentText()).lower())
-    filetype = '{0} Document (*.{1})'.format(self.ui.outputFormat.currentText())
+    file = str(self.ui.outputFormat.currentText())
+    filename = 'Book.{0}'.format(file.lower())
+    filetype = '{0} Document (*.{1})'.format(file, file.lower())
     
     self.ui.outputFile.setText(QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + filename, filetype))
     
@@ -298,7 +301,7 @@ class StartQT4(QMainWindow):
     self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
     self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
     
-    if pynotify:
+    if notify:
       notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/ui/icons/logo.png')
       notification.show()
     else:

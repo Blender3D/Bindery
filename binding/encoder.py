@@ -1,4 +1,4 @@
-import os, time, shutil, glob, sys
+import os, time, shutil, glob, sys, platform
 import organizer, ocr, utils
 
 from PyQt4.QtCore import *
@@ -97,8 +97,12 @@ class Encoder(QThread):
     utils.execute('convert +opaque black "{0}" "temp_textual.tif"'.format(infile))
 
     self._cjb2('temp_textual.tif', 'enc_bitonal_out.djvu', dpi)
-
-    utils.execute('ddjvu -format=rle -v "enc_bitonal_out.djvu" "temp_textual.rle"')
+    
+    if platform.system() == 'Windows':
+      utils.execute('ddjvu -format=rle "enc_bitonal_out.djvu" "temp_textual.rle"')
+    else:
+      utils.execute('ddjvu -format=rle -v "enc_bitonal_out.djvu" "temp_textual.rle"')
+    
     utils.execute('convert temp_graphics.tif temp_graphics.ppm')
     
     with open('temp_merge.mix', 'wb') as mix:

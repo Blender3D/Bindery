@@ -6,12 +6,15 @@ def files(folder):
     if os.path.isfile(path):
       yield path
 
-data_files = ['bin/', files('bin')]
+data_files = ['bin/', files('bin'),
+              'ui/', files('ui')]
 
 setup(
+  #zipfile = None,
   windows = [{'script': 'main.py'}],
   options = {
     'py2exe': {
+	  'bundle_files': 3,
 	  'includes': ['sip'],
       'dll_excludes': ['MSVCP90.dll']
 	}
