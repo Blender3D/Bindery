@@ -1,6 +1,12 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+def QIconFromTheme(name):
+  if QIcon.hasThemeIcon(name):
+    return QIcon.fromTheme(name)
+  else:
+    return QIcon('./icons/{0}.svg'.format(name))
+
 class BookListWidget(QListWidget):
   def __init__(self, type, parent = None):
     super(BookListWidget, self).__init__(parent)
@@ -49,7 +55,7 @@ class BookListWidget(QListWidget):
 
 
 class BookListWidgetItem(QListWidgetItem):
-  def __init__(self, text = '', filepath = '', defaultIcon = True, parent = None):
+  def __init__(self, text = '', filepath = '', parent = None):
     super(BookListWidgetItem, self).__init__(parent)
     self.defaultIcon = True
     
@@ -57,22 +63,16 @@ class BookListWidgetItem(QListWidgetItem):
     self.dpi = 0
     self.grayscale = False
     
-    self.icon = QIcon(QPixmap.fromImage(QImage(':/icons/blank.png')))
-    self.blank = QIcon(QPixmap(72, 72))
-    
     self.setText(text)
     self.filepath = filepath
-    self.image = QImage(':/icons/blank.png')
     
     self.setSizeHint(QSize(72, 72))
-    
-    if defaultIcon:
-      self.setIcon(self.icon)
+    self.resetIcon()
   
   def resetIcon(self):
-    self.setIcon(self.icon)
+    self.setIcon(QIconFromTheme('gnome-fs-loading-icon'))
     self.defaultIcon = True
   
   def removeIcon(self):
-    self.setIcon(self.blank)
+    self.setIcon(QIcon(QPixmap(72, 72)))
     self.defaultIcon = True

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Exec=bindery
+Icon=bindery
+Terminal=false
+Type=Application
+Categories=Office;Graphics;
+StartupNotify=true
+Name=Bindery
+GenericName=Document Binder

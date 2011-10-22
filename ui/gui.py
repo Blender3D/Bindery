@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Fri Oct 21 13:03:15 2011
+# Created: Sat Oct 22 12:49:35 2011
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -178,6 +178,7 @@ class Ui_MainWindow(object):
     self.horizontalLayout_2 = QtGui.QHBoxLayout()
     self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
     self.outputFile = QtGui.QLineEdit(self.bookTab)
+    self.outputFile.setText(QtGui.QApplication.translate("MainWindow", "/opt/bindery/source/tests/book.pdf", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFile.setObjectName(_fromUtf8("outputFile"))
     self.horizontalLayout_2.addWidget(self.outputFile)
     self.outputFileBrowseButton = QtGui.QPushButton(self.bookTab)
@@ -391,7 +392,7 @@ class Ui_MainWindow(object):
     self.debugLog.setHtml(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Monospace\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Monospace\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
     self.debugLog.setObjectName(_fromUtf8("debugLog"))
     self.verticalLayout1.addWidget(self.debugLog)
@@ -413,7 +414,7 @@ class Ui_MainWindow(object):
     self.gridLayout_2.addWidget(self.splitter, 0, 0, 1, 1)
     MainWindow.setCentralWidget(self.centralwidget)
     self.menuBar = QtGui.QMenuBar(MainWindow)
-    self.menuBar.setGeometry(QtCore.QRect(0, 0, 713, 21))
+    self.menuBar.setGeometry(QtCore.QRect(0, 0, 713, 25))
     self.menuBar.setObjectName(_fromUtf8("menuBar"))
     self.menuFile = QtGui.QMenu(self.menuBar)
     self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
@@ -539,7 +540,8 @@ class Ui_MainWindow(object):
     self.toolBar.addAction(self.startBindingMenuItem)
 
     self.retranslateUi(MainWindow)
-    self.tabWidget.setCurrentIndex(0)
+    self.tabWidget.setCurrentIndex(1)
+    self.outputFormat.setCurrentIndex(1)
     self.ocrLanguage.setCurrentIndex(5)
     self.stackedWidget.setCurrentIndex(0)
     QtCore.QObject.connect(self.addPageButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.addFiles)

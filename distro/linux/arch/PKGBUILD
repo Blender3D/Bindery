@@ -1,0 +1,36 @@
+# Maintainer: Blender3D  <>
+
+pkgname=bindery
+pkgver=20111021
+pkgrel=1
+pkgdesc="Interactive digital document binding tool for post-processed scanned images"
+
+arch=('i686' 'x86_64')
+url="http://blender3d.github.com/Bindery/"
+license=('GPL')
+
+optdepends=('tesseract: OCR engine'
+            'cuneiform: OCR engine')
+makedepends=('git')
+depends=('python2' 'pyqt' 'djvulibre' 'minidjvu')
+
+install='bindery.install'
+
+_gitroot="git://github.com/Blender3D/Bindery.git"
+_gitname="bindery"
+
+build() {
+  git clone ${_gitroot} ${_gitname}
+}
+
+package() {
+  mkdir -p $pkgdir/usr/{share, bin}
+  
+  mv ${_gitname} $pkgdir/usr/
+  
+  echo "#/bin/bash" > $pkgdir/usr/bin/bindery
+  echo "cd /opt/bindery/" >> $pkgdir/usr/bin/bindery
+  echo "python2 main.py" >> $pkgdir/usr/bin/bindery
+  
+  chmod +x $pkgdir/usr/bin/bindery
+}

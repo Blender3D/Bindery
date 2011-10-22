@@ -302,7 +302,7 @@ class StartQT4(QMainWindow):
     self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
     
     if notify:
-      notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/ui/icons/logo.png')
+      notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/source/ui/icons/logo.png')
       notification.show()
     else:
       QMessageBox.information(self, '', 'Your book has finished binding.', QMessageBox.Ok, QMessageBox.Ok)

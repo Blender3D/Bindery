@@ -72,6 +72,7 @@ def separate_cmd(cmd):
   return out
 
 def simple_exec(cmd):
+  print cmd
   cmd = separate_cmd(cmd)
   
   with open(os.devnull, 'w') as void:
@@ -80,6 +81,7 @@ def simple_exec(cmd):
     return int(sub.wait())
 
 def execute(cmd, capture = False):
+  print cmd
   if platform.system() == 'Windows':
     cmd = 'bin\\' + cmd
   

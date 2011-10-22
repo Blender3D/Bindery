@@ -15,12 +15,6 @@ from binding import binder
 from ui import gui, project_files, resources_rc
 from BookListWidget import *
 
-def QIconFromTheme(name):
-  if QIcon.hasThemeIcon(name):
-    return QIcon.fromTheme(name)
-  else:
-    return QIcon('./icons/{0}.svg'.format(name))
-
 class StartQT4(functions.StartQT4, QMainWindow):
   def __init__(self, parent = None):
     QWidget.__init__(self, parent)
@@ -28,7 +22,6 @@ class StartQT4(functions.StartQT4, QMainWindow):
     QIcon.setThemeName('elementary')
     
     self.previews = True
-    
     self.config = config.config('options.ini')
     
     self.ui = gui.Ui_MainWindow()
@@ -44,27 +37,27 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.projectFilesUi.removeFromProjectButton.clicked.connect(self.removeFromProject)
     self.projectFilesUi.okButton.clicked.connect(self.projectFilesAccepted)
     
-    self.projectFilesUi.addToProjectButton.setIcon(QIconFromTheme('go-next'))
-    self.projectFilesUi.removeFromProjectButton.setIcon(QIconFromTheme('go-previous'))
+    self.projectFilesUi.addToProjectButton.setIcon(QIcon.fromTheme('go-next'))
+    self.projectFilesUi.removeFromProjectButton.setIcon(QIcon.fromTheme('go-previous'))
     
     
     
-    self.ui.startButton.setIcon(QIconFromTheme('media-playback-start'))
-    self.ui.addPageButton.setIcon(QIconFromTheme('list-add'))
-    self.ui.removePageButton.setIcon(QIconFromTheme('list-remove'))
+    self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start'))
+    self.ui.addPageButton.setIcon(QIcon.fromTheme('list-add'))
+    self.ui.removePageButton.setIcon(QIcon.fromTheme('list-remove'))
     
-    self.ui.newMenuItem.setIcon(QIconFromTheme('document-new'))
-    self.ui.openMenuItem.setIcon(QIconFromTheme('document-open'))
-    self.ui.saveMenuItem.setIcon(QIconFromTheme('document-save'))
+    self.ui.newMenuItem.setIcon(QIcon.fromTheme('document-new'))
+    self.ui.openMenuItem.setIcon(QIcon.fromTheme('document-open'))
+    self.ui.saveMenuItem.setIcon(QIcon.fromTheme('document-save'))
     
-    self.ui.startBindingMenuItem.setIcon(QIconFromTheme('media-playback-start'))
-    self.ui.addPageMenuItem.setIcon(QIconFromTheme('list-add'))
-    self.ui.removePageMenuItem.setIcon(QIconFromTheme('list-remove'))
+    self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-start'))
+    self.ui.addPageMenuItem.setIcon(QIcon.fromTheme('list-add'))
+    self.ui.removePageMenuItem.setIcon(QIcon.fromTheme('list-remove'))
     
-    self.ui.moveToTopButton.setIcon(QIconFromTheme('go-top'))
-    self.ui.moveUpButton.setIcon(QIconFromTheme('go-up'))
-    self.ui.moveDownButton.setIcon(QIconFromTheme('go-down'))
-    self.ui.moveToBottomButton.setIcon(QIconFromTheme('go-bottom'))
+    self.ui.moveToTopButton.setIcon(QIcon.fromTheme('go-top'))
+    self.ui.moveUpButton.setIcon(QIcon.fromTheme('go-up'))
+    self.ui.moveDownButton.setIcon(QIcon.fromTheme('go-down'))
+    self.ui.moveToBottomButton.setIcon(QIcon.fromTheme('go-bottom'))
     
     self.ui.saveMenuItem.setEnabled(False)
     self.ui.startBindingMenuItem.setEnabled(False)

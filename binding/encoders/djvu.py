@@ -1,12 +1,13 @@
 import os, time, shutil, glob, sys, platform
-import organizer, ocr, utils
+
+from binding import organizer, ocr, utils
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-class Encoder(QThread):
+class DjVuEncoder(QThread):
   def __init__(self, opts, parent = None):
-    super(Encoder, self).__init__(parent)
+    super(DjVuEncoder, self).__init__(parent)
     
     self.opts = opts
     
@@ -18,35 +19,25 @@ class Encoder(QThread):
     
     self.dep_check()
   
-  
-  
   def progress(self):
     self.done += 1
     self.sendProgress(100.0 * float(self.done) / float(self.total))
-  
 
   def sendProgress(self, percent):
     self.emit(SIGNAL('updateProgress(int, int)'), (percent * 0.50) + 50.0, self.count)
     self.count += 1
   
-  
-  
   def sendError(self, message):
     self.emit(SIGNAL('error(QString)'), message)
     self.exit()
-  
   
   def initialize(self, book, outfile):
     self.book = book
     self.outfile = outfile
     self.pages = len(self.book.pages)
   
-  
-  
   def run(self):
     self.enc_book(self.book, self.outfile)
-  
-  
   
   def _c44(self, infile, outfile, dpi):
     if os.path.splitext(infile) not in ['.pgm', '.ppm', '.jpg', '.jpeg']:
@@ -63,8 +54,6 @@ class Encoder(QThread):
 
     return None
 
-
-
   def _cjb2(self, infile, outfile, dpi):
     utils.execute('cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cjb2_options'], infile, outfile))
     
@@ -72,8 +61,6 @@ class Encoder(QThread):
       self.sendError('encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile))
     
     return None
-
-
 
   def _cpaldjvu(self, infile, outfile, dpi):
     if os.path.splitext(infile) not in ['.ppm']:
@@ -89,8 +76,6 @@ class Encoder(QThread):
       os.remove('temp.ppm')
     
     return None
-
-
 
   def _csepdjvu(self, infile, outfile, dpi):
     utils.execute('convert -opaque black "{0}" "temp_graphics.tif"'.format(infile))
@@ -134,8 +119,6 @@ class Encoder(QThread):
     
     return None
 
-
-
   def _minidjvu(self, infiles, outfile, dpi):
     tempfile = 'enc_temp.djvu'
     
@@ -147,8 +130,6 @@ class Encoder(QThread):
     
     return None
 
-
-
   def dep_check(self):
     if not utils.is_executable(self.opts['bitonal_encoder']):
       self.sendError('encoder "{0}" is not installed.'.format(self.opts['bitonal_encoder']))
@@ -157,8 +138,6 @@ class Encoder(QThread):
     
     return None
 
-
-
   def djvu_insert(self, infile, djvufile, page_num = None):
     if not os.path.isfile(djvufile):
       shutil.copy(infile, djvufile)
@@ -166,8 +145,6 @@ class Encoder(QThread):
       utils.execute('djvm -i "{0}" "{1}"'.format(djvufile, infile))
     else:
       utils.execute('djvm -i "{0}" "{1}" {2}'.format(djvufile, infile, int(page_num)))
-  
-  
   
   def enc_book(self, book, outfile):
     self.total = len(book.pages)

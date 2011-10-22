@@ -3,13 +3,13 @@ import organizer, ocr, utils
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from encoder import *
+
+from encoders.djvu import DjVuEncoder
+from encoders.pdf import PDFEncoder
 
 class Binder(QThread):
   def __init__(self, parent = None):
     super(Binder, self).__init__(parent)
-  
-  
   
   def initialize(self, pages, options, outfile):
     self.pages = pages
@@ -17,17 +17,19 @@ class Binder(QThread):
     self.outFile = outfile
     
     self.book = organizer.Book()
-    self.enc = Encoder(self.options)
+    
+    if self.options['output_format'] == 'djvu':
+      self.enc = DjVuEncoder(self.options)
+    elif self.options['output_format'] == 'pdf':
+      self.enc = PDFEncoder(self.options)
+    
     self.ocr = ocr.OCR(self.options)
     
     self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
     self.connect(self.enc, SIGNAL('error(QString)'), self.error)
   
-  
-  
   def error(self, message):
     self.emit(SIGNAL('error(QString)'), message)
-  
   
   def add_file(self, filename, type = 'page'):
     if type == 'page':
@@ -36,8 +38,6 @@ class Binder(QThread):
       self.book.suppliments[type] = filename
 
     return None
-  
-  
   
   def analyze(self):
     queue = []
@@ -64,7 +64,6 @@ class Binder(QThread):
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(210, 255, 210, 120))
       
     return None
-  
   
   def updateProgress(self, percent, item):
     self.emit(SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book')
@@ -97,7 +96,6 @@ class Binder(QThread):
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
     return None
   
-  
   def run(self):
     self.die = False
     
@@ -123,17 +121,3 @@ class Binder(QThread):
     if not self.die:
       self.enc.initialize(self.book, self.outFile)
       self.enc.start()
-    
-    if not self.die and self.options['output_format'] == 'pdf':
-      self.emit(SIGNAL('updateProgress(int, QString)'), 100, 'Compressing PDF')
-      
-      
-      while self.enc.isRunning():
-        time.sleep(0.5)
-      
-      shutil.move(self.outFile, self.outFile + '.temp')
-      newFile = os.path.join(os.path.split(self.outFile)[0], os.path.splitext(os.path.split(self.outFile)[1])[0] + '.pdf')
-      utils.simple_exec('ddjvu -format=pdf "{0}" "{1}"'.format(self.outFile + '.temp', newFile))
-      os.remove(self.outFile + '.temp')
-      
-      self.emit(SIGNAL('finishedBinding'))
