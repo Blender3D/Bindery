@@ -69,7 +69,7 @@ class Binder(QThread):
     self.emit(SIGNAL('updateProgress(int, QString)'), int(percent), 'Binding the book')
     self.emit(SIGNAL('updateBackground(int, QColor)'), int(item), QColor(170, 255, 170, 120))
     
-    if int(percent) == 100 and self.options['output_format'] == 'djvu':
+    if int(percent) == 100:
       time.sleep(0.5)
       self.emit(SIGNAL('finishedBinding'))
   

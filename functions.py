@@ -327,8 +327,7 @@ class StartQT4(QMainWindow):
                       'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
                       'output_format':     str(self.ui.outputFormat.currentText()).lower(),
                       'ocr_options':       str(self.ui.ocrOptions.text()),
-                      'bitonal_encoder':   str(self.ui.bitonalEncoder.currentText()),
-                      'color_encoder':     str(self.ui.colorEncoder.currentText()),
+                      'color_encoder':     str(self.ui.djvuColorEncoder.currentText()),
                       'c44_options':       str(self.ui.c44Options.text()),
                       'cjb2_options':      str(self.ui.cjb2Options.text()),
                       'cpaldjvu_options':  str(self.ui.cpaldjvuOptions.text()),
@@ -337,6 +336,13 @@ class StartQT4(QMainWindow):
                       'numbering_type':    [],
                       'numbering_start':   [],
                       'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
+      
+     
+      if self.options['output_format'] == 'djvu':
+        self.options['bitonal_encoder'] = str(self.ui.djvuBitonalEncoder.currentText())
+      elif self.options['output_format'] == 'pdf':
+        self.options['bitonal_encoder'] = str(self.ui.pdfBitonalEncoder.currentText())
+      
       
       self.binder.initialize(self.pages, self.options, str(self.ui.outputFile.text()))
       self.binder.start()

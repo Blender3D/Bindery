@@ -1,4 +1,6 @@
-import os, time, shutil, glob, sys, platform
+import os, time, shutil, glob, sys, shlex, platform
+from subprocess import Popen, PIPE, STDOUT
+
 from pyPdf import PdfFileWriter, PdfFileReader
 
 from binding import organizer, ocr, utils
@@ -40,26 +42,30 @@ class PDFEncoder(QThread):
   def run(self):
     self.enc_book(self.book, self.outfile)
   
-  def _c44(self, infile, outfile, dpi):
-    if os.path.splitext(infile) not in ['.pgm', '.ppm', '.jpg', '.jpeg']:
-      utils.execute('convert {0} {1}'.format(infile, 'temp.ppm'))
-      infile = 'temp.ppm'
-    
-    utils.execute('c44 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['c44_options'], infile, outfile))
+  def _jbig2(self, basename, inputs):
+    process = Popen(shlex.split('jbig2 -v -b "{0}" -p -s "{1}"'.format(basename, '" "'.join(inputs))), stdout = PIPE, stderr = STDOUT)
 
-    if not os.path.isfile(outfile):
-      self.sendError('encode.Encoder._c44(): No encode errors, but "{0}" does not exist!'.format(outfile))
+    count = 0
 
-    if infile == 'temp.ppm' and os.path.isfile('temp.ppm'):
-      os.remove('temp.ppm')
+    while True:
+      output = process.stdout.readline()
+
+      if output == '' and process.poll() != None:
+        break
+
+      if output != '':
+        count += 1
+        
+        if count % 2:
+          self.progress()
+          
+          if count == 2 * len(inputs) - 1:
+            break
 
     return None
-
-  def _cjb2(self, infile, outfile, dpi):
-    utils.execute('cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cjb2_options'], infile, outfile))
     
-    if not os.path.isfile(outfile):
-      self.sendError('encode.Encoder._cpalpdf(): No encode errors, but "{0}" does not exist!'.format(outfile))
+  def _pdfpy(self, basename, output):
+    pdf = utils.execute('pdf.py "{0}" > "{1}"'.format(basename, output))
     
     return None
 
@@ -97,26 +103,11 @@ class PDFEncoder(QThread):
     self.total = len(book.pages)
     self.done = 0
     
-    tempfile = 'temp.pdf'
-    
-    if self.opts['bitonal_encoder'] == 'cjb2':
-      for page in book.pages:
-        if page.bitonal:
-          self._cjb2(page.path, tempfile, page.dpi)
-          self.pdf_insert(tempfile, outfile)
-          os.remove(tempfile)
-          
-          self.progress()
-    
-    if self.opts['color_encoder'] == 'c44':
-      for page in book.pages:
-        if not page.bitonal:
-          page_number = book.pages.index(page) + 1
-          self._c44(page.path, tempfile, page.dpi)
-          self.pdf_insert(tempfile, outfile, page_number)
-          os.remove(tempfile)
-          
-          self.progress()
+    if self.opts['bitonal_encoder'] == 'jbig2':
+      self._jbig2('jbig2', [page.path for page in book.pages])
+      self._pdfpy('jbig2', self.outfile)
+      
+#      os.remove('jbig2.*')
     
     if self.opts['ocr']:
       for page in book.pages:
@@ -128,9 +119,6 @@ class PDFEncoder(QThread):
         utils.simple_exec('pdfsed -e "select {0}; remove-txt; set-txt \'ocr.txt\'; save" "{1}"'.format(page_number, outfile))
         os.remove('ocr.txt')
 
-    if os.path.isfile(tempfile):
-      os.remove(tempfile)
-    
     self.exit()
     
     return None
