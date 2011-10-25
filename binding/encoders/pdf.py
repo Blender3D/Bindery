@@ -1,8 +1,6 @@
 import os, time, shutil, glob, sys, shlex, platform
 from subprocess import Popen, PIPE, STDOUT
 
-from pyPdf import PdfFileWriter, PdfFileReader
-
 from binding import organizer, ocr, utils
 
 from PyQt4.QtCore import *
