@@ -2,8 +2,7 @@ import sys, os, time, glob
 
 import config
 
-from BookListWidget import * 
-from thumbnailer import *
+from ui.BookListWidget import BookListWidget, BookListWidgetItem
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *

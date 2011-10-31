@@ -1,7 +1,6 @@
 <RCC>
   <qresource>
     <file>icons/go-down-big-hover.png</file>
-    <file>icons/blank.png</file>
     <file>icons/document-new.svg</file>
     <file>icons/document-open.svg</file>
     <file>icons/document-save.svg</file>
@@ -14,6 +13,7 @@
     <file>icons/go-previous.svg</file>
     <file>icons/go-top.svg</file>
     <file>icons/go-up.svg</file>
+    <file>icons/image-loading.svg</file>
     <file>icons/list-add.svg</file>
     <file>icons/list-remove.svg</file>
     <file>icons/logo.png</file>
