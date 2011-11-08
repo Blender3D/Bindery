@@ -6,15 +6,19 @@ import utils
 class Book:
   def __init__(self):
     self.pages = []
-    self.suppliments = {'cover_front': None, 'cover_back': None, 'metadata': None, 'bookmarks': None}
+    self.suppliments = {'cover_front': None,
+                        'cover_back': None,
+                        'metadata': None,
+                        'bookmarks': None
+                       }
     self.dpi = None
 
   def get_dpi(self):
     for page in self.pages:
-      if (self.dpi is not None) and (page.dpi !=  self.dpi):
-        print("wrn: {0}".format(page.path))
-        print("wrn: organizer.Book.analyze(): Page dpi is different from the previous page.")
-        print("wrn: organizer.Book.analyze(): If you encounter problems with minidjvu, this is probably why.")
+      if self.dpi is not None and page.dpi != self.dpi:
+        print 'wrn: {0}'.format(page.path)
+        print 'wrn: organizer.Book.analyze(): Page dpi is different from the previous page.'
+        print 'wrn: organizer.Book.analyze(): If you encounter problems with minidjvu, this is probably why.'
       
       self.dpi = page.dpi
     
@@ -22,6 +26,7 @@ class Book:
 
   def insert_page(self, path):
     self.pages.append(Page(path))
+    
     return None
 
 class Page:
@@ -33,8 +38,7 @@ class Page:
     self.text = ''
 
   def get_dpi(self):
-    dpi = utils.execute('identify -ping -format %x "{0}"'.format(self.path), capture = True).decode('ascii').split(' ')[0]
-    self.dpi = int(float(dpi))
+    self.dpi = int(utils.execute('identify -ping -format %x "{0}"'.format(self.path), capture = True).decode('ascii').split(' ')[0])
     return None
 
   def is_bitonal(self):
