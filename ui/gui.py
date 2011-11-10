@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Tue Nov  8 00:39:46 2011
+# Created: Thu Nov 10 01:14:22 2011
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -378,24 +378,32 @@ class Ui_MainWindow(object):
     self.debugTab = QtGui.QWidget()
     self.debugTab.setEnabled(True)
     self.debugTab.setObjectName(_fromUtf8("debugTab"))
-    self.gridLayout_7 = QtGui.QGridLayout(self.debugTab)
-    self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
-    self.verticalLayout1 = QtGui.QVBoxLayout()
-    self.verticalLayout1.setObjectName(_fromUtf8("verticalLayout1"))
+    self.gridLayout_5 = QtGui.QGridLayout(self.debugTab)
+    self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
     self.debugLog = DebugLog(self.debugTab)
-    font = QtGui.QFont()
-    font.setFamily(_fromUtf8("Monospace"))
-    self.debugLog.setFont(font)
-    self.debugLog.setLineWrapMode(QtGui.QTextEdit.NoWrap)
-    self.debugLog.setReadOnly(True)
-    self.debugLog.setHtml(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Monospace\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;\"></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+    self.debugLog.setIndentation(0)
+    self.debugLog.setUniformRowHeights(True)
+    self.debugLog.setAnimated(True)
+    self.debugLog.setWordWrap(True)
     self.debugLog.setObjectName(_fromUtf8("debugLog"))
-    self.verticalLayout1.addWidget(self.debugLog)
-    self.gridLayout_7.addLayout(self.verticalLayout1, 0, 0, 1, 1)
+    self.debugLog.headerItem().setText(0, QtGui.QApplication.translate("MainWindow", "Time", None, QtGui.QApplication.UnicodeUTF8))
+    self.debugLog.headerItem().setText(1, QtGui.QApplication.translate("MainWindow", "Sender", None, QtGui.QApplication.UnicodeUTF8))
+    self.debugLog.headerItem().setText(2, QtGui.QApplication.translate("MainWindow", "Event", None, QtGui.QApplication.UnicodeUTF8))
+    self.debugLog.headerItem().setText(3, QtGui.QApplication.translate("MainWindow", "Level", None, QtGui.QApplication.UnicodeUTF8))
+    self.debugLog.header().setCascadingSectionResizes(True)
+    self.debugLog.header().setMinimumSectionSize(20)
+    self.debugLog.header().setSortIndicatorShown(True)
+    self.gridLayout_5.addWidget(self.debugLog, 0, 0, 1, 3)
+    self.clearLogButton = QtGui.QPushButton(self.debugTab)
+    self.clearLogButton.setText(QtGui.QApplication.translate("MainWindow", "Clear log", None, QtGui.QApplication.UnicodeUTF8))
+    self.clearLogButton.setObjectName(_fromUtf8("clearLogButton"))
+    self.gridLayout_5.addWidget(self.clearLogButton, 1, 0, 1, 1)
+    spacerItem3 = QtGui.QSpacerItem(220, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+    self.gridLayout_5.addItem(spacerItem3, 1, 1, 1, 1)
+    self.saveLogButton = QtGui.QPushButton(self.debugTab)
+    self.saveLogButton.setText(QtGui.QApplication.translate("MainWindow", "Save log", None, QtGui.QApplication.UnicodeUTF8))
+    self.saveLogButton.setObjectName(_fromUtf8("saveLogButton"))
+    self.gridLayout_5.addWidget(self.saveLogButton, 1, 2, 1, 1)
     self.tabWidget.addTab(self.debugTab, _fromUtf8(""))
     self.verticalLayout.addWidget(self.tabWidget)
     self.horizontalLayout_7 = QtGui.QHBoxLayout()
@@ -539,7 +547,7 @@ class Ui_MainWindow(object):
     self.toolBar.addAction(self.startBindingMenuItem)
 
     self.retranslateUi(MainWindow)
-    self.tabWidget.setCurrentIndex(1)
+    self.tabWidget.setCurrentIndex(4)
     self.outputFormat.setCurrentIndex(0)
     self.ocrLanguage.setCurrentIndex(5)
     self.stackedWidget.setCurrentIndex(0)
@@ -562,6 +570,8 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.ocrLanguage, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(QString)")), MainWindow.changeOCRLanguage)
     QtCore.QObject.connect(self.outputFileBrowseButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.showSaveDialog)
     QtCore.QObject.connect(self.outputFormat, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), MainWindow.outputFormatChanged)
+    QtCore.QObject.connect(self.clearLogButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.clearDebugLog)
+    QtCore.QObject.connect(self.saveLogButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.saveDebugLog)
     QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
   def retranslateUi(self, MainWindow):
@@ -569,6 +579,7 @@ class Ui_MainWindow(object):
     self.tabWidget.setTabText(self.tabWidget.indexOf(self.bookTab), QtGui.QApplication.translate("MainWindow", "Book", None, QtGui.QApplication.UnicodeUTF8))
     self.tabWidget.setTabText(self.tabWidget.indexOf(self.ocrTab), QtGui.QApplication.translate("MainWindow", "OCR", None, QtGui.QApplication.UnicodeUTF8))
     self.tabWidget.setTabText(self.tabWidget.indexOf(self.encodingTab), QtGui.QApplication.translate("MainWindow", "Encoding Options", None, QtGui.QApplication.UnicodeUTF8))
+    self.debugLog.setSortingEnabled(True)
     self.tabWidget.setTabText(self.tabWidget.indexOf(self.debugTab), QtGui.QApplication.translate("MainWindow", "Debug Log", None, QtGui.QApplication.UnicodeUTF8))
 
 from ImageViewerWidget import ImageViewerWidget

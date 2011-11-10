@@ -10,28 +10,24 @@ import functions, config
 from thumbnailer import Thumbnailer
 from previewer import Previewer
 
-from binding import binder
+from binding.binder import Binder
 
 from ui import gui, project_files, resources_rc, BookListWidget, DebugLog, ImageViewerWidget
 
-def QIconFromTheme(name):
-  if QIcon.hasThemeIcon(name):
-    return QIcon.fromTheme(name)
-  else:
-    print 'Loading icon: {0}'.format(name)
-    return QIcon(':/icons/{0}.svg'.format(name))
-
 class StartQT4(functions.StartQT4, QMainWindow):
   def __init__(self, parent = None):
-    QWidget.__init__(self, parent)
+    QMainWindow.__init__(self, parent)
     
-    #QIcon.setThemeName('elementary')
-	
-    self.previews = True
+    QIcon.setThemeName('elementary')
+	  
+    self.version = '2.6'
     self.config = config.config('options.ini')
     
     self.ui = gui.Ui_MainWindow()
     self.ui.setupUi(self)
+    
+    self.log = self.ui.debugLog
+    
     
     self.projectFiles = QDialog(self)
     self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
@@ -43,37 +39,35 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.projectFilesUi.removeFromProjectButton.clicked.connect(self.removeFromProject)
     self.projectFilesUi.okButton.clicked.connect(self.projectFilesAccepted)
     
-    self.projectFilesUi.addToProjectButton.setIcon(QIconFromTheme('go-next'))
-    self.projectFilesUi.removeFromProjectButton.setIcon(QIconFromTheme('go-previous'))
+    self.projectFilesUi.addToProjectButton.setIcon(self.QIconFromTheme('go-next'))
+    self.projectFilesUi.removeFromProjectButton.setIcon(self.QIconFromTheme('go-previous'))
     
     
+    self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-start'))
+    self.ui.addPageButton.setIcon(self.QIconFromTheme('list-add'))
+    self.ui.removePageButton.setIcon(self.QIconFromTheme('list-remove'))
     
-    self.ui.startButton.setIcon(QIconFromTheme('media-playback-start'))
-    self.ui.addPageButton.setIcon(QIconFromTheme('list-add'))
-    self.ui.removePageButton.setIcon(QIconFromTheme('list-remove'))
+    self.ui.newMenuItem.setIcon(self.QIconFromTheme('document-new'))
+    self.ui.openMenuItem.setIcon(self.QIconFromTheme('document-open'))
+    self.ui.saveMenuItem.setIcon(self.QIconFromTheme('document-save'))
     
-    self.ui.newMenuItem.setIcon(QIconFromTheme('document-new'))
-    self.ui.openMenuItem.setIcon(QIconFromTheme('document-open'))
-    self.ui.saveMenuItem.setIcon(QIconFromTheme('document-save'))
+    self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
+    self.ui.addPageMenuItem.setIcon(self.QIconFromTheme('list-add'))
+    self.ui.removePageMenuItem.setIcon(self.QIconFromTheme('list-remove'))
     
-    self.ui.startBindingMenuItem.setIcon(QIconFromTheme('media-playback-start'))
-    self.ui.addPageMenuItem.setIcon(QIconFromTheme('list-add'))
-    self.ui.removePageMenuItem.setIcon(QIconFromTheme('list-remove'))
-    
-    self.ui.moveToTopButton.setIcon(QIconFromTheme('go-top'))
-    self.ui.moveUpButton.setIcon(QIconFromTheme('go-up'))
-    self.ui.moveDownButton.setIcon(QIconFromTheme('go-down'))
-    self.ui.moveToBottomButton.setIcon(QIconFromTheme('go-bottom'))
+    self.ui.moveToTopButton.setIcon(self.QIconFromTheme('go-top'))
+    self.ui.moveUpButton.setIcon(self.QIconFromTheme('go-up'))
+    self.ui.moveDownButton.setIcon(self.QIconFromTheme('go-down'))
+    self.ui.moveToBottomButton.setIcon(self.QIconFromTheme('go-bottom'))
     
     self.ui.saveMenuItem.setEnabled(False)
     self.ui.startBindingMenuItem.setEnabled(False)
     self.ui.removePageMenuItem.setEnabled(False)
     
     
-    
     self.thumbnailer = Thumbnailer(self.ui.pageList)
     self.previewer = Previewer()
-    self.binder = binder.Binder()
+    self.binder = Binder()
     
     self.connect(self.thumbnailer, SIGNAL('makeIcon(int, QImage)'), self.makeIcon)
     self.connect(self.previewer, SIGNAL('previewPage(QImage)'), self.previewPage)    
@@ -83,8 +77,18 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
+  def QIconFromTheme(self, name):
+    if QIcon.hasThemeIcon(name):
+      self.log.log('Loading icon (theme): {0}'.format(name))
+      return QIcon.fromTheme(name)
+    else:
+      self.log.log('Loading icon (fallback): {0}'.format(name))
+      return QIcon(':/icons/{0}.svg'.format(name))
+
 if __name__ == '__main__':
   app = QApplication(sys.argv)
-  myapp = StartQT4()
-  myapp.show()
+  
+  bindery = StartQT4()
+  bindery.show()
+  
   sys.exit(app.exec_())

@@ -1,14 +1,15 @@
+from datetime import datetime
+import inspect
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-class DebugLog(QTextEdit):
+class DebugLog(QTreeWidget):
   def __init__(self, parent = None):
     super(DebugLog, self).__init__(parent)
   
-  
-  
-  def add(self, message, status = 'normal'):
-    if self.toPlainText() != '':
-      self.setText(self.toPlainText() + '\n' + message)
-    else:
-      self.setText(message)
+  def log(self, message, level = 'normal'):
+    time = datetime.now()
+    timestamp = '{hour}:{minute}:{second}'.format(hour = str(time.hour).zfill(2), minute = str(time.minute).zfill(2), second = str(time.second).zfill(2))
+    
+    self.addTopLevelItem(QTreeWidgetItem([timestamp, inspect.getouterframes(inspect.currentframe(), 2)[1][3], message, level]))

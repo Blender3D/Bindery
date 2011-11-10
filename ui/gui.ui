@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>4</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -707,32 +707,81 @@ background-color: white;
            <attribute name="title">
             <string>Debug Log</string>
            </attribute>
-           <layout class="QGridLayout" name="gridLayout_7">
-            <item row="0" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout1">
-              <item>
-               <widget class="DebugLog" name="debugLog">
-                <property name="font">
-                 <font>
-                  <family>Monospace</family>
-                 </font>
-                </property>
-                <property name="lineWrapMode">
-                 <enum>QTextEdit::NoWrap</enum>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-                <property name="html">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Monospace'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0" colspan="3">
+             <widget class="DebugLog" name="debugLog">
+              <property name="indentation">
+               <number>0</number>
+              </property>
+              <property name="uniformRowHeights">
+               <bool>true</bool>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+              <property name="animated">
+               <bool>true</bool>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+              <attribute name="headerCascadingSectionResizes">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="headerMinimumSectionSize">
+               <number>20</number>
+              </attribute>
+              <attribute name="headerShowSortIndicator" stdset="0">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Time</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Sender</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Event</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Level</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="clearLogButton">
+              <property name="text">
+               <string>Clear log</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>220</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="saveLogButton">
+              <property name="text">
+               <string>Save log</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -994,14 +1043,14 @@ p, li { white-space: pre-wrap; }
    </slots>
   </customwidget>
   <customwidget>
-   <class>DebugLog</class>
-   <extends>QTextEdit</extends>
-   <header>DebugLog</header>
-  </customwidget>
-  <customwidget>
    <class>ImageViewerWidget</class>
    <extends>QGraphicsView</extends>
    <header>ImageViewerWidget</header>
+  </customwidget>
+  <customwidget>
+   <class>DebugLog</class>
+   <extends>QTreeWidget</extends>
+   <header>DebugLog</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -1312,6 +1361,38 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>clearLogButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>clearDebugLog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>651</x>
+     <y>59</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saveLogButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveDebugLog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>628</x>
+     <y>494</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>708</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>addFiles()</slot>
@@ -1329,5 +1410,7 @@ p, li { white-space: pre-wrap; }
   <slot>changeOCRLanguage()</slot>
   <slot>showSaveDialog()</slot>
   <slot>outputFormatChanged()</slot>
+  <slot>clearDebugLog()</slot>
+  <slot>saveDebugLog()</slot>
  </slots>
 </ui>
