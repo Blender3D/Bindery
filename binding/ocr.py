@@ -351,7 +351,10 @@ class OCR:
   def __init__(self, opts):
     self.opts = opts
     self.dep_check()
-
+  
+  def _ocropus(self, filename):
+    pass
+  
   def _cuneiform(self, filename):
     status = utils.simple_exec('cuneiform -f hocr -o "{0}.hocr" {1} "{0}"'.format(filename, self.opts['cuneiform_options']))
     

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/project_files.ui'
 #
-# Created: Thu Nov 10 01:14:22 2011
-#      by: PyQt4 UI code generator 4.8.6
+# Created: Sun Dec 25 16:17:03 2011
+#      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -19,7 +19,6 @@ class Ui_ProjectFilesDialog(object):
     ProjectFilesDialog.setObjectName(_fromUtf8("ProjectFilesDialog"))
     ProjectFilesDialog.setWindowModality(QtCore.Qt.ApplicationModal)
     ProjectFilesDialog.resize(427, 472)
-    ProjectFilesDialog.setWindowTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Project Files", None, QtGui.QApplication.UnicodeUTF8))
     icon = QtGui.QIcon()
     icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
     ProjectFilesDialog.setWindowIcon(icon)
@@ -29,7 +28,6 @@ class Ui_ProjectFilesDialog(object):
     self.verticalLayout_2 = QtGui.QVBoxLayout()
     self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
     self.groupBox_2 = QtGui.QGroupBox(ProjectFilesDialog)
-    self.groupBox_2.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Input Directory", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
     self.hboxlayout = QtGui.QHBoxLayout(self.groupBox_2)
     self.hboxlayout.setObjectName(_fromUtf8("hboxlayout"))
@@ -38,12 +36,10 @@ class Ui_ProjectFilesDialog(object):
     self.inputDirectory.setObjectName(_fromUtf8("inputDirectory"))
     self.hboxlayout.addWidget(self.inputDirectory)
     self.browseButton1 = QtGui.QPushButton(self.groupBox_2)
-    self.browseButton1.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
     self.browseButton1.setObjectName(_fromUtf8("browseButton1"))
     self.hboxlayout.addWidget(self.browseButton1)
     self.verticalLayout_2.addWidget(self.groupBox_2)
     self.groupBox = QtGui.QGroupBox(ProjectFilesDialog)
-    self.groupBox.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Output File", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox.setObjectName(_fromUtf8("groupBox"))
     self.hboxlayout1 = QtGui.QHBoxLayout(self.groupBox)
     self.hboxlayout1.setObjectName(_fromUtf8("hboxlayout1"))
@@ -51,7 +47,6 @@ class Ui_ProjectFilesDialog(object):
     self.outputFile.setObjectName(_fromUtf8("outputFile"))
     self.hboxlayout1.addWidget(self.outputFile)
     self.browseButton2 = QtGui.QPushButton(self.groupBox)
-    self.browseButton2.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
     self.browseButton2.setObjectName(_fromUtf8("browseButton2"))
     self.hboxlayout1.addWidget(self.browseButton2)
     self.verticalLayout_2.addWidget(self.groupBox)
@@ -59,7 +54,6 @@ class Ui_ProjectFilesDialog(object):
     self.hboxlayout2 = QtGui.QHBoxLayout()
     self.hboxlayout2.setObjectName(_fromUtf8("hboxlayout2"))
     self.groupBox_3 = QtGui.QGroupBox(ProjectFilesDialog)
-    self.groupBox_3.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Files Not In Project", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
     self.vboxlayout = QtGui.QVBoxLayout(self.groupBox_3)
     self.vboxlayout.setObjectName(_fromUtf8("vboxlayout"))
@@ -68,7 +62,6 @@ class Ui_ProjectFilesDialog(object):
     self.offProjectList.setObjectName(_fromUtf8("offProjectList"))
     self.vboxlayout.addWidget(self.offProjectList)
     self.selectAllButton1 = QtGui.QPushButton(self.groupBox_3)
-    self.selectAllButton1.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Select All", None, QtGui.QApplication.UnicodeUTF8))
     self.selectAllButton1.setObjectName(_fromUtf8("selectAllButton1"))
     self.vboxlayout.addWidget(self.selectAllButton1)
     self.hboxlayout2.addWidget(self.groupBox_3)
@@ -77,10 +70,6 @@ class Ui_ProjectFilesDialog(object):
     spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
     self.vboxlayout1.addItem(spacerItem)
     self.addToProjectButton = QtGui.QToolButton(ProjectFilesDialog)
-    self.addToProjectButton.setToolTip(QtGui.QApplication.translate("ProjectFilesDialog", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Add selected files to project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
     self.addToProjectButton.setText(_fromUtf8(""))
     icon1 = QtGui.QIcon()
     icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/go-next.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -89,10 +78,6 @@ class Ui_ProjectFilesDialog(object):
     self.addToProjectButton.setObjectName(_fromUtf8("addToProjectButton"))
     self.vboxlayout1.addWidget(self.addToProjectButton)
     self.removeFromProjectButton = QtGui.QToolButton(ProjectFilesDialog)
-    self.removeFromProjectButton.setToolTip(QtGui.QApplication.translate("ProjectFilesDialog", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Remove selected files from project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
     self.removeFromProjectButton.setText(_fromUtf8(""))
     icon2 = QtGui.QIcon()
     icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/go-previous.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -104,7 +89,6 @@ class Ui_ProjectFilesDialog(object):
     self.vboxlayout1.addItem(spacerItem1)
     self.hboxlayout2.addLayout(self.vboxlayout1)
     self.groupBox_4 = QtGui.QGroupBox(ProjectFilesDialog)
-    self.groupBox_4.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Files In Project", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_4.setObjectName(_fromUtf8("groupBox_4"))
     self.vboxlayout2 = QtGui.QVBoxLayout(self.groupBox_4)
     self.vboxlayout2.setObjectName(_fromUtf8("vboxlayout2"))
@@ -114,7 +98,6 @@ class Ui_ProjectFilesDialog(object):
     self.inProjectList.setObjectName(_fromUtf8("inProjectList"))
     self.vboxlayout2.addWidget(self.inProjectList)
     self.selectAllButton2 = QtGui.QPushButton(self.groupBox_4)
-    self.selectAllButton2.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Select All", None, QtGui.QApplication.UnicodeUTF8))
     self.selectAllButton2.setObjectName(_fromUtf8("selectAllButton2"))
     self.vboxlayout2.addWidget(self.selectAllButton2)
     self.hboxlayout2.addWidget(self.groupBox_4)
@@ -126,11 +109,9 @@ class Ui_ProjectFilesDialog(object):
     spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
     self.horizontalLayout.addItem(spacerItem2)
     self.cancelButton = QtGui.QPushButton(ProjectFilesDialog)
-    self.cancelButton.setText(QtGui.QApplication.translate("ProjectFilesDialog", "&Cancel", None, QtGui.QApplication.UnicodeUTF8))
     self.cancelButton.setObjectName(_fromUtf8("cancelButton"))
     self.horizontalLayout.addWidget(self.cancelButton)
     self.okButton = QtGui.QPushButton(ProjectFilesDialog)
-    self.okButton.setText(QtGui.QApplication.translate("ProjectFilesDialog", "&OK", None, QtGui.QApplication.UnicodeUTF8))
     self.okButton.setDefault(True)
     self.okButton.setObjectName(_fromUtf8("okButton"))
     self.horizontalLayout.addWidget(self.okButton)
@@ -144,7 +125,26 @@ class Ui_ProjectFilesDialog(object):
     QtCore.QMetaObject.connectSlotsByName(ProjectFilesDialog)
 
   def retranslateUi(self, ProjectFilesDialog):
+    ProjectFilesDialog.setWindowTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Project Files", None, QtGui.QApplication.UnicodeUTF8))
+    self.groupBox_2.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Input Directory", None, QtGui.QApplication.UnicodeUTF8))
+    self.browseButton1.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
+    self.groupBox.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Output File", None, QtGui.QApplication.UnicodeUTF8))
+    self.browseButton2.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
+    self.groupBox_3.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Files Not In Project", None, QtGui.QApplication.UnicodeUTF8))
     self.offProjectList.setSortingEnabled(True)
+    self.selectAllButton1.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Select All", None, QtGui.QApplication.UnicodeUTF8))
+    self.addToProjectButton.setToolTip(QtGui.QApplication.translate("ProjectFilesDialog", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Add selected files to project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+    self.removeFromProjectButton.setToolTip(QtGui.QApplication.translate("ProjectFilesDialog", "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Remove selected files from project.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+    self.groupBox_4.setTitle(QtGui.QApplication.translate("ProjectFilesDialog", "Files In Project", None, QtGui.QApplication.UnicodeUTF8))
     self.inProjectList.setSortingEnabled(True)
+    self.selectAllButton2.setText(QtGui.QApplication.translate("ProjectFilesDialog", "Select All", None, QtGui.QApplication.UnicodeUTF8))
+    self.cancelButton.setText(QtGui.QApplication.translate("ProjectFilesDialog", "&Cancel", None, QtGui.QApplication.UnicodeUTF8))
+    self.okButton.setText(QtGui.QApplication.translate("ProjectFilesDialog", "&OK", None, QtGui.QApplication.UnicodeUTF8))
 
 import resources_rc

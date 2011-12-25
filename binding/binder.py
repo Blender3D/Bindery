@@ -37,7 +37,7 @@ class Binder(QThread):
     else:
       self.book.suppliments[type] = filename
 
-    return None
+    return self.book.pages[-1]
   
   def analyze(self):
     queue = []
@@ -57,6 +57,10 @@ class Binder(QThread):
       page = self.queue.pop()
       page.is_bitonal()
       page.get_dpi()
+
+      if page.make_grayscale and not page.bitonal:
+        utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.path))
+        page.path += '.grayscale'
       
       basePercent = 25 if self.options['ocr'] else 50
       
@@ -99,14 +103,9 @@ class Binder(QThread):
   def run(self):
     self.die = False
     
-    if not self.die:
-      for page in self.pages:
-        if page.grayscale:
-          utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.filepath))
-          page.filepath += '.grayscale'
-    
     for page in self.pages:
-      self.add_file(page.filepath, 'page')
+      book_page = self.add_file(page.filepath, 'page')
+      book_page.make_grayscale = page.grayscale
       print page.filepath
     
     if not self.die:

@@ -77,6 +77,8 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
+    self.itemSelectionChanged()
+    
   def QIconFromTheme(self, name):
     if QIcon.hasThemeIcon(name):
       self.log.log('Loading icon (theme): {0}'.format(name))

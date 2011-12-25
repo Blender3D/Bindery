@@ -15,6 +15,9 @@ try:
 except:
   notify = False
 
+def all_same(items):
+  return all(x == items[0] for x in items)
+
 class StartQT4(QMainWindow):
   def error(self, message):
     self.log.log('Error: {error}'.format(message), level = 'critical')
@@ -39,23 +42,36 @@ class StartQT4(QMainWindow):
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
     
-    for widget in [self.ui.removePageButton, self.ui.removePageMenuItem]:
-      widget.setEnabled(len(self.selected) > 0)
-    
-    self.ui.pageTab.setEnabled(len(self.selected) == 1)
-    
-    if len(self.selected) == 1:
-      row = self.ui.pageList.row(self.selected[0])
+    if self.selected:
+      self.ui.pageTab.setEnabled(True)
       
-      self.ui.moveToTopButton.setEnabled(row != 0)
-      self.ui.moveUpButton.setEnabled(row != 0)
+      for widget in [self.ui.removePageButton, self.ui.removePageMenuItem, self.ui.pageGrayscale]:
+        widget.setEnabled(len(self.selected) > 0)
       
-      self.ui.moveToBottomButton.setEnabled(row != self.ui.pageList.count() - 1)
-      self.ui.moveDownButton.setEnabled(row != self.ui.pageList.count() - 1)
+      if all_same([page.grayscale for page in self.selected]):
+        if self.selected[0].grayscale:
+          self.ui.pageGrayscale.setCheckState(Qt.Checked)
+        else:
+          self.ui.pageGrayscale.setCheckState(Qt.Unchecked)
+      else:
+        self.ui.pageGrayscale.setCheckState(Qt.PartiallyChecked)
       
-      self.previewer.image = self.selected[0].filepath
-      self.previewer.size = [self.ui.pagePreview.size().width() * 2, self.ui.pagePreview.size().width() * 2]
-      self.previewer.start()
+      self.ui.singlePageFrame.setEnabled(len(self.selected) == 1)
+      
+      if len(self.selected) == 1:
+        row = self.ui.pageList.row(self.selected[0])
+        
+        self.ui.moveToTopButton.setEnabled(row != 0)
+        self.ui.moveUpButton.setEnabled(row != 0)
+        
+        self.ui.moveToBottomButton.setEnabled(row != self.ui.pageList.count() - 1)
+        self.ui.moveDownButton.setEnabled(row != self.ui.pageList.count() - 1)
+        
+        self.previewer.image = self.selected[0].filepath
+        self.previewer.size = [self.ui.pagePreview.size().width() * 2, self.ui.pagePreview.size().width() * 2]
+        self.previewer.start()
+    else:
+      self.ui.pageTab.setEnabled(False)
   
   
   
@@ -95,8 +111,16 @@ class StartQT4(QMainWindow):
   
   
   def pageGrayscaleChanged(self, state):
-    self.log.log('Page grayscale changed to {state}'.format(state = (state == 2)))
-    self.ui.pageList.selectedItems()[0].grayscale = (state == 2)
+    if state == Qt.PartiallyChecked:
+      state = Qt.Checked
+      self.ui.pageGrayscale.setCheckState(Qt.Checked)
+    
+    self.log.log('Page grayscale changed to {state}'.format(state = (state == Qt.Checked)))
+    
+    print [page.grayscale for page in self.ui.pageList.selectedItems()]
+    
+    for page in self.ui.pageList.selectedItems():
+      page.grayscale = (state == Qt.Checked)
   
   
   

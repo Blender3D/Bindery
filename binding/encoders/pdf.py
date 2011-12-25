@@ -1,6 +1,8 @@
 import os, time, shutil, glob, sys, shlex, platform, struct
 from subprocess import Popen, PIPE, STDOUT
 
+from itertools import count
+
 from binding import organizer, ocr, utils
 
 from PyQt4.QtCore import *
@@ -13,26 +15,21 @@ class Dict:
   def __str__(self):
     temp = '<< '
     
-    for (key, value) in self.values.items():
+    for key, value in self.values.items():
       temp += '/{key} {value}\n'.format(key = key, value = value)
     
     return temp + '>>\n'
 
-global_next_id = 1
-
 class Obj:
-  next_id = 1
-  
   def __init__(self, d = {}, stream = None):
-    global global_next_id
+    ids = count(0)
 
     if stream is not None:
       d['Length'] = str(len(stream))
     
     self.dictionary = Dict(d)
     self.stream = stream
-    self.id = global_next_id
-    global_next_id += 1
+    self.id = self.ids.next()
 
   def __str__(self):
     stream = str(self.dictionary)

@@ -34,6 +34,7 @@ class Page:
     self.path = os.path.abspath(path)
 
     self.bitonal = None
+    self.make_grayscale = False
     self.dpi = 0
     self.text = ''
 
