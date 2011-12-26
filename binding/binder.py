@@ -11,11 +11,9 @@ class Binder(QThread):
   def __init__(self, parent = None):
     super(Binder, self).__init__(parent)
   
-  def initialize(self, pages, options, outfile):
+  def initialize(self, pages, options):
     self.pages = pages
     self.options = options
-    self.outFile = outfile
-    
     self.book = organizer.Book()
     
     if self.options['output_format'] == 'djvu':
@@ -57,6 +55,7 @@ class Binder(QThread):
       page = self.queue.pop()
       page.is_bitonal()
       page.get_dpi()
+      page.get_size()
 
       if page.make_grayscale and not page.bitonal:
         utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.path))
@@ -98,6 +97,7 @@ class Binder(QThread):
       
       self.emit(SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR')
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
+    
     return None
   
   def run(self):
@@ -118,5 +118,5 @@ class Binder(QThread):
       self.get_ocr()
     
     if not self.die:
-      self.enc.initialize(self.book, self.outFile)
+      self.enc.book = self.book
       self.enc.start()

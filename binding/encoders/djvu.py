@@ -6,16 +6,15 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 class DjVuEncoder(QThread):
-  def __init__(self, opts, parent = None):
+  def __init__(self, options, parent = None):
     super(DjVuEncoder, self).__init__(parent)
     
-    self.opts = opts
+    self.options = options
     
     self.count = 0
     self.done = 0
     
     self.book = None
-    self.outfile = None
     
     self.dep_check()
   
@@ -31,20 +30,20 @@ class DjVuEncoder(QThread):
     self.emit(SIGNAL('error(QString)'), message)
     self.exit()
   
-  def initialize(self, book, outfile):
+  def initialize(self, book, options):
     self.book = book
-    self.outfile = outfile
+    self.options = options
     self.pages = len(self.book.pages)
   
   def run(self):
-    self.enc_book(self.book, self.outfile)
+    self.enc_book(self.book, self.options['output_file'])
   
   def _c44(self, infile, outfile, dpi):
     if os.path.splitext(infile) not in ['.pgm', '.ppm', '.jpg', '.jpeg']:
       utils.execute('convert {0} {1}'.format(infile, 'temp.ppm'))
       infile = 'temp.ppm'
     
-    utils.execute('c44 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['c44_options'], infile, outfile))
+    utils.execute('c44 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.options['c44_options'], infile, outfile))
 
     if not os.path.isfile(outfile):
       self.sendError('encode.Encoder._c44(): No encode errors, but "{0}" does not exist!'.format(outfile))
@@ -55,7 +54,7 @@ class DjVuEncoder(QThread):
     return None
 
   def _cjb2(self, infile, outfile, dpi):
-    utils.execute('cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cjb2_options'], infile, outfile))
+    utils.execute('cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.options['cjb2_options'], infile, outfile))
     
     if not os.path.isfile(outfile):
       self.sendError('encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile))
@@ -67,7 +66,7 @@ class DjVuEncoder(QThread):
       utils.execute('convert {0} {1}'.format(infile, 'temp.ppm'))
       infile = 'temp.ppm'
     
-    utils.execute('cpaldjvu -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cpaldjvu_options'], infile, outfile))
+    utils.execute('cpaldjvu -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.options['cpaldjvu_options'], infile, outfile))
     
     if not os.path.isfile(outfile):
       self.sendError('encode.Encoder._cpaldjvu(): No encode errors, but "{0}" does not exist!'.format(outfile))
@@ -105,7 +104,7 @@ class DjVuEncoder(QThread):
           mix.write(buffer)
           buffer = ppm.read(1024)
     
-    utils.execute('csepdjvu -d {0} {1} "temp_merge.mix" "temp_final.djvu"'.format(dpi, self.opts['csepdjvu_options']))
+    utils.execute('csepdjvu -d {0} {1} "temp_merge.mix" "temp_final.djvu"'.format(dpi, self.options['csepdjvu_options']))
 
     if not os.path.isfile(outfile):
       shutil.move('temp_final.djvu', outfile)
@@ -122,7 +121,7 @@ class DjVuEncoder(QThread):
   def _minidjvu(self, infiles, outfile, dpi):
     tempfile = 'enc_temp.djvu'
     
-    for cmd in utils.split_cmd('minidjvu -d {0} {1}'.format(dpi, self.opts['minidjvu_options']), infiles, tempfile):
+    for cmd in utils.split_cmd('minidjvu -d {0} {1}'.format(dpi, self.options['minidjvu_options']), infiles, tempfile):
       utils.execute(cmd)
       self.djvu_insert(tempfile, outfile)
     
@@ -131,10 +130,10 @@ class DjVuEncoder(QThread):
     return None
 
   def dep_check(self):
-    if not utils.is_executable(self.opts['bitonal_encoder']):
-      self.sendError('encoder "{0}" is not installed.'.format(self.opts['bitonal_encoder']))
-    if not utils.is_executable(self.opts['color_encoder']):
-      self.sendError('encoder "{0}" is not installed.'.format(self.opts['color_encoder']))
+    if not utils.is_executable(self.options['bitonal_encoder']):
+      self.sendError('encoder "{0}" is not installed.'.format(self.options['bitonal_encoder']))
+    if not utils.is_executable(self.options['color_encoder']):
+      self.sendError('encoder "{0}" is not installed.'.format(self.options['color_encoder']))
     
     return None
 
@@ -152,7 +151,7 @@ class DjVuEncoder(QThread):
     
     tempfile = 'temp.djvu'
     
-    if self.opts['bitonal_encoder'] == 'minidjvu':
+    if self.options['bitonal_encoder'] == 'minidjvu':
       bitonals = []
       
       for page in book.pages:
@@ -166,7 +165,7 @@ class DjVuEncoder(QThread):
         os.remove(tempfile)
         
         self.progress()
-    elif self.opts['bitonal_encoder'] == 'cjb2':
+    elif self.options['bitonal_encoder'] == 'cjb2':
       for page in book.pages:
         if page.bitonal:
           self._cjb2(page.path, tempfile, page.dpi)
@@ -175,7 +174,7 @@ class DjVuEncoder(QThread):
           
           self.progress()
     
-    if self.opts['color_encoder'] == 'csepdjvu':
+    if self.options['color_encoder'] == 'csepdjvu':
       for page in book.pages:
         if not page.bitonal:
           page_number = book.pages.index(page) + 1
@@ -184,7 +183,7 @@ class DjVuEncoder(QThread):
           os.remove(tempfile)
           
           self.progress()
-    elif self.opts['color_encoder'] == 'c44':
+    elif self.options['color_encoder'] == 'c44':
       for page in book.pages:
         if not page.bitonal:
           page_number = book.pages.index(page) + 1
@@ -193,7 +192,7 @@ class DjVuEncoder(QThread):
           os.remove(tempfile)
           
           self.progress()
-    elif self.opts['color_encoder'] == 'cpaldjvu':
+    elif self.options['color_encoder'] == 'cpaldjvu':
       for page in book.pages:
         if not page.bitonal:
           page_number = book.pages.index(page) + 1
@@ -203,7 +202,7 @@ class DjVuEncoder(QThread):
           
           self.progress()
 
-    if self.opts['ocr']:
+    if self.options['ocr']:
       for page in book.pages:
         handle = open('ocr.txt', 'w')
         handle.write(page.text)

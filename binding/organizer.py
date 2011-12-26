@@ -9,8 +9,7 @@ class Book:
     self.suppliments = {'cover_front': None,
                         'cover_back': None,
                         'metadata': None,
-                        'bookmarks': None
-                       }
+                        'bookmarks': None}
     self.dpi = None
 
   def get_dpi(self):
@@ -32,24 +31,32 @@ class Book:
 class Page:
   def __init__(self, path):
     self.path = os.path.abspath(path)
-
+    
     self.bitonal = None
-    self.make_grayscale = False
+    self.width = None
+    self.height = None
     self.dpi = 0
+    
     self.text = ''
-
+    
+    self.textual = None
+    self.graphical = None
+    
+    self.make_grayscale = False
+    
+  def get_size(self):
+    self.width, self.height = map(int, utils.execute('identify -ping -format %wx%h "{0}"'.format(self.path), capture = True).split('x'))
+    return [self.width, self.height]
+  
   def get_dpi(self):
     self.dpi = int(utils.execute('identify -ping -format %x "{0}"'.format(self.path), capture = True).decode('ascii').split(' ')[0])
-    return None
+    return self.dpi
 
   def is_bitonal(self):
-    print 'identify -ping "{0}"'.format(self.path)
-	
-    if utils.execute('identify -ping "{0}"'.format(self.path), capture = True).decode('ascii').find('Bilevel')  ==  -1:
+    if utils.execute('identify -ping "{0}"'.format(self.path), capture = True).decode('ascii').find('Bilevel') == -1:
       self.bitonal = False
     else:
-      if (utils.execute('identify -ping -format %z "{0}"'.format(self.path), capture = True).decode('ascii') !=  ('1' + os.linesep)):
-        print("msg: {0}: Bitonal image but with a depth greater than 1.  Modifying image depth.".format(os.path.split(self.path)[1]))
+      if utils.execute('identify -ping -format %z "{0}"'.format(self.path), capture = True).decode('ascii') != ('1' + os.linesep):
         utils.execute('mogrify -colors 2 "{0}"'.format(self.path))
       self.bitonal = True
-    return None
+    return self.bitonal

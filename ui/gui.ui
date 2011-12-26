@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -297,93 +297,192 @@ background-color: white;
            <attribute name="title">
             <string>Book</string>
            </attribute>
-           <layout class="QFormLayout" name="formLayout_3">
+           <layout class="QGridLayout" name="gridLayout_8">
             <item row="0" column="0">
-             <widget class="QLabel" name="outputFormatLabel">
-              <property name="text">
-               <string>Output Format</string>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Book Metadata</string>
               </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="outputFormat">
-              <property name="currentIndex">
-               <number>0</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>DjVu</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>PDF</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>PostScript</string>
-               </property>
-              </item>
+              <layout class="QFormLayout" name="formLayout_8">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Title</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="bookTitle"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Subject</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="bookSubject"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Author</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="bookAuthor"/>
+               </item>
+              </layout>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="outputFileLabel">
-              <property name="text">
-               <string>Output File</string>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Book Options</string>
               </property>
+              <layout class="QFormLayout" name="formLayout_3">
+               <property name="fieldGrowthPolicy">
+                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="outputFormatLabel">
+                 <property name="text">
+                  <string>Output Format</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QComboBox" name="outputFormat">
+                 <property name="currentIndex">
+                  <number>1</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>DjVu</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PDF</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PostScript</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="outputFileLabel">
+                 <property name="text">
+                  <string>Output File</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QLineEdit" name="outputFile">
+                   <property name="text">
+                    <string>/opt/bindery/source/tests/test_pdf/pdf_bindery.pdf</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="outputFileBrowseButton">
+                   <property name="text">
+                    <string>Browse</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
              </widget>
-            </item>
-            <item row="1" column="1">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-               <widget class="QLineEdit" name="outputFile">
-                <property name="text">
-                 <string>/media/Data Drive/Output/OW/</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="outputFileBrowseButton">
-                <property name="text">
-                 <string>Browse</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Scale Pages</string>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>Page Options</string>
               </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QSpinBox" name="pageScale">
-              <property name="suffix">
-               <string>%</string>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>200</number>
-              </property>
-              <property name="value">
-               <number>100</number>
-              </property>
+              <layout class="QFormLayout" name="formLayout_6">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Scale Pages</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QSpinBox" name="pageScale">
+                 <property name="suffix">
+                  <string>%</string>
+                 </property>
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>100</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="pageGrayscaleLabel_2">
+                 <property name="text">
+                  <string>Convert to grayscale</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QCheckBox" name="pageGrayscale2"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Normalize page size</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QComboBox" name="comboBox">
+                 <item>
+                  <property name="text">
+                   <string>Scale to maximum</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Scale to minimum</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Scale to average</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="pageGrayscaleLabel_2">
-              <property name="text">
-               <string>Convert to grayscale</string>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QCheckBox" name="pageGrayscale2"/>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>

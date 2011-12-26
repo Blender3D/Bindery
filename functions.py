@@ -460,7 +460,8 @@ class StartQT4(QMainWindow):
       self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
       self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
       
-      self.options = {'ocr':               (self.ui.enableOCR.checkState() != 0),
+      self.options = {'output_file':       str(self.ui.outputFile.text()),
+                      'ocr':               (self.ui.enableOCR.checkState() == Qt.Checked),
                       'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
                       'output_format':     str(self.ui.outputFormat.currentText()).lower(),
                       'ocr_options':       str(self.ui.ocrOptions.text()),
@@ -472,6 +473,9 @@ class StartQT4(QMainWindow):
                       'minidjvu_options':  str(self.ui.minidjvuOptions.text()),
                       'numbering_type':    [],
                       'numbering_start':   [],
+                      'title':             str(self.ui.bookTitle.text()),
+                      'author':            str(self.ui.bookAuthor.text()),
+                      'subject':           str(self.ui.bookSubject.text()),
                       'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
       
       self.log.log('Output format is {format}'.format(format = self.ui.djvuBitonalEncoder.currentText()))
@@ -482,7 +486,7 @@ class StartQT4(QMainWindow):
         self.options['bitonal_encoder'] = str(self.ui.pdfBitonalEncoder.currentText())
       
       self.log.log('Initializing binder...')
-      self.binder.initialize(self.pages, self.options, str(self.ui.outputFile.text()))
+      self.binder.initialize(self.pages, self.options)
       self.log.log('Starting binder...')
       self.binder.start()
     else:

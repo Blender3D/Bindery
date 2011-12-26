@@ -13,17 +13,17 @@ class Dict:
     self.values = values
   
   def __str__(self):
-    temp = '<< '
+    temp = '<<\n'
     
-    for key, value in self.values.items():
+    for key, value in self.values.items()[::-1]:
       temp += '/{key} {value}\n'.format(key = key, value = value)
     
     return temp + '>>\n'
 
 class Obj:
+  ids = count(1)
+  
   def __init__(self, d = {}, stream = None):
-    ids = count(0)
-
     if stream is not None:
       d['Length'] = str(len(stream))
     
@@ -55,7 +55,7 @@ class Document:
     return self.add_object(object)
 
   def __str__(self):
-    string = ['%PDF-1.4']
+    string = ['%PDF-1.5']
     size = 9
     offsets = []
 
@@ -79,7 +79,7 @@ class Document:
     
     string.append('')
     string.append('trailer')
-    string.append('<< /Size {size}\n/Root 1 0 R >>'.format(size = len(offsets) + 1))
+    string.append('<< /Size {size}\n/Root 1 0 R\n/Info 2 0 R>>'.format(size = len(offsets) + 1))
     string.append('startxreference')
     string.append(str(size))
     string.append('%%EOF')
@@ -92,16 +92,13 @@ def reference(x):
 
 
 class PDFEncoder(QThread):
-  def __init__(self, opts, parent = None):
+  def __init__(self, options, parent = None):
     super(PDFEncoder, self).__init__(parent)
-    
-    self.opts = opts
     
     self.count = 0
     self.done = 0
     
-    self.book = None
-    self.outfile = None
+    self.options = options
   
   def progress(self):
     self.done += 1
@@ -115,20 +112,25 @@ class PDFEncoder(QThread):
     self.emit(SIGNAL('error(QString)'), message)
     self.exit()
   
-  def initialize(self, book, outfile):
-    self.book = book
-    self.outfile = outfile
-    self.pages = len(self.book.pages)
-  
   def run(self):
-    self.enc_book(self.book, self.outfile)
+    self.enc_book(self.book, self.options['output_file'])
   
-  def _jbig2pdf(self, symboltable = 'jbig2.sym', pagefiles = glob.glob('jbig2.[0-9]*'), dpi = 600):
+  def _jbig2pdf(self, symboltable, book):
     document = Document()
     
     document.add_object(Obj({'Type':     '/Catalog',
-                              'Outlines': reference(2),
-                              'Pages':    reference(3)}))
+                              'Outlines': reference(3),
+                              'Pages':    reference(4)}))
+    
+    metadata = {'Creator':      '(Bindery)',
+                'Producer':     '(Bindery)',
+                'CreationDate': '(D:{date}--5\'00)'.format(date = time.strftime('%Y%m%d%H%M%S', time.gmtime()))}
+    
+    for option in ['title', 'author', 'subject']:
+      if self.options[option]:
+        metadata[option.title()] = '({value})'.format(value = self.options[option])
+    
+    document.add_object(Obj(metadata))
     
     document.add_object(Obj({'Type': '/Outlines',
                              'Count': '0'}))
@@ -139,41 +141,42 @@ class PDFEncoder(QThread):
     symd = document.add_object(Obj({}, open(symboltable, 'rb').read()))
     page_objects = []
 
-    pagefiles.sort()
-    
-    for page in pagefiles:
-      contents = open(page, 'rb').read()
-      width, height = struct.unpack('>II', contents[11:19])
-      
-      xobj = Obj({'Type':            '/XObject',
-                  'Subtype':         '/Image',
-                  'Width':            str(width),
-                  'Height':           str(height),
-                  'ColorSpace':       '/DeviceGray',
-                  'BitsPerComponent': '1',
-                  'Filter':           '/JBIG2Decode',
-                  'DecodeParms':      ' << /JBIG2Globals {id} 0 R >>'.format(id = symd.id)},
-                 contents)
-      
-      contents = Obj({}, 'q {width} 0 0 {height} 0 0 cm /Im1 Do Q'.format(width = float(width * 72) / dpi, height = float(height * 72) / dpi))
-      resources = Obj({'ProcSet': '[/PDF /ImageB]',
-                       'XObject': '<< /Im1 {id} 0 R >>'.format(id = xobj.id)})
-      
-      page = Obj({'Type':     '/Page',
-                  'Parent':   '3 0 R',
-                  'MediaBox': '[ 0 0 {width} {height} ]'.format(width = float(width * 72) / dpi, height = float(height * 72) / dpi),
-                  'Contents':  reference(contents.id),
-                  'Resources': reference(resources.id)})
-      
-      for object in [xobj, contents, resources, page]:
-        document.add_object(object)
-      
-      page_objects.append(page)
+    for page in book.pages:
+      if page.graphical:
+        print 'This would be an image with text'
+      else:
+        contents = open(page.textual, 'rb').read()
+        print page.textual
+        
+        xobj = Obj({'Type':            '/XObject',
+                    'Subtype':         '/Image',
+                    'Width':            str(page.width),
+                    'Height':           str(page.height),
+                    'ColorSpace':       '/DeviceGray',
+                    'BitsPerComponent': '1',
+                    'Filter':           '/JBIG2Decode',
+                    'DecodeParms':      ' << /JBIG2Globals {id} 0 R >>'.format(id = symd.id)},
+                    contents)
+        
+        contents = Obj({}, 'q {width} 0 0 {height} 0 0 cm /Im1 Do Q'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi))
+        resources = Obj({'ProcSet': '[/PDF /ImageB]',
+                         'XObject': '<< /Im1 {id} 0 R >>'.format(id = xobj.id)})
+        
+        page = Obj({'Type':     '/Page',
+                    'Parent':   '3 0 R',
+                    'MediaBox': '[ 0 0 {width} {height} ]'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi),
+                    'Contents':  reference(contents.id),
+                    'Resources': reference(resources.id)})
+        
+        for object in [xobj, contents, resources, page]:
+          document.add_object(object)
+        
+        page_objects.append(page)
 
-      pages.dictionary.values['Count'] = str(len(page_objects))
-      pages.dictionary.values['Kids'] = '[' + ' '.join([reference(x.id) for x in page_objects]) + ']'
+        pages.dictionary.values['Count'] = str(len(page_objects))
+        pages.dictionary.values['Kids'] = '[' + ' '.join([reference(x.id) for x in page_objects]) + ']'
     
-    output = open(self.outfile, 'wb')
+    output = open(self.options['output_file'], 'wb')
     output.write(str(document))
     output.close()
 
@@ -198,38 +201,36 @@ class PDFEncoder(QThread):
             break
 
     return None
-    
-  def pdf_insert(self, infile, pdffile, page_num = None):
-    output = PdfFileWriter()
-    
-    print infile, pdffile
-    
-    if not os.path.isopen(pdffile):
-      shutil.copy(infile, pdffile)
-    else:
-      input = PdfFileReader(open(infile, 'rb'))
-      
-      if page_num is None:
-        for page in input.pages.getNumPages():
-          output.addPage(page)
-      else:
-        for i in range(input.pages.getNumPages()):
-          page = input.getPage(i)
-          output.insertPage(page, page_num + i)
-      
-      stream = open(pdffile, 'wb')
-      output.write(stream)
-      stream.close()
 
   def enc_book(self, book, outfile):
+    Obj.ids = count(1)
+    
     self.total = len(book.pages)
     self.done = 0
     
-    if self.opts['bitonal_encoder'] == 'jbig2':
-      self._jbig2('jbig2', [page.path for page in book.pages])
-      self._jbig2pdf('jbig2.sym', glob.glob('jbig2.[0-9]*'), book.dpi)
+    if self.options['bitonal_encoder'] == 'jbig2':
+      bitonals = 0
+      
+      for page in book.pages:
+        basename = os.path.splitext(os.path.split(page.path)[-1])[0]
+        folder = os.path.split(page.path)[0]
+
+        if page.bitonal:
+          page.textual = os.path.abspath('jbig2.{number}'.format(number = str(bitonals).zfill(4)))
+        else:
+          utils.execute('convert -opaque black "{input}" "{basename}.graphics.tif"'.format(input = page.path, basename = basename))
+          utils.execute('convert +opaque black "{input}" "{basename}.text.tif"'.format(input = page.path, basename = basename))
+          #utils.execute('convert "{basename}.graphics.tif"  -limit memory 64 -limit map 128 -define jp2:mode=real -define jp2:rate=0.015625 -define jp2:numrlvls=4 "{basename}.graphics.jp2"'.format(basename = basename))
+          
+          page.textual = os.path.abspath('jbig2.{number}'.format(number = str(bitonals).zfill(4)))
+          page.graphical = os.path.abspath(basename + '.graphics.jp2')
+          
+          bitonals += 1
+          
+      self._jbig2('jbig2', [page.textual for page in book.pages if page.textual])
+      self._jbig2pdf('jbig2.sym', book)
     
-    if self.opts['ocr']:
+    if self.options['ocr']:
       for page in book.pages:
         handle = open('ocr.txt', 'w')
         handle.write(page.text)
@@ -238,7 +239,7 @@ class PDFEncoder(QThread):
         page_number = book.pages.index(page) + 1
         utils.simple_exec('pdfsed -e "select {0}; remove-txt; set-txt \'ocr.txt\'; save" "{1}"'.format(page_number, outfile))
         os.remove('ocr.txt')
-
+    
     self.exit()
     
     return None
