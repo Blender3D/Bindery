@@ -119,8 +119,8 @@ class PDFEncoder(QThread):
     document = Document()
     
     document.add_object(Obj({'Type':     '/Catalog',
-                              'Outlines': reference(3),
-                              'Pages':    reference(4)}))
+                             'Outlines': reference(3),
+                             'Pages':    reference(4)}))
     
     metadata = {'Creator':      '(Bindery)',
                 'Producer':     '(Bindery)',
@@ -134,18 +134,68 @@ class PDFEncoder(QThread):
     
     document.add_object(Obj({'Type': '/Outlines',
                              'Count': '0'}))
-    
+                             
     pages = Obj({'Type' : '/Pages'})
     document.add_object(pages)
     
+    artwork = Obj({'Subtype': '/Artwork',
+                   'Creator': '(Bindery)',
+                   'Feature': '/Layers'})
+    document.add_object(artwork)
+    
+    foreground = Obj({'Type': '/OGC',
+                      'Name': '(Foreground)',
+                      'Usage': '<</CreatorInfo {id} 0 R>>'.format(id = artwork.id)})
+    
+    document.add_object(foreground)
+    
+    background = Obj({'Type': '/OGC',
+                      'Name': '(Background)',
+                      'Usage': '<</CreatorInfo {id} 0 R>>'.format(id = artwork.id)})
+    
+    document.add_object(background)
+
     symd = document.add_object(Obj({}, open(symboltable, 'rb').read()))
     page_objects = []
 
     for page in book.pages:
       if page.graphical:
-        print 'This would be an image with text'
+        graphical = Obj({'Type':            '/XObject',
+                         'Subtype':         '/Image',
+                         'Width':            str(page.width),
+                         'Height':           str(page.height),
+                         'ColorSpace':       '/DeviceGray',
+                         'Interpolate':      'true',
+                         'Filter':           '/JPXDecode',
+                         'OC':               reference(background.id)}, 
+                          open(page.graphical, 'rb').read())
+        
+        textual = Obj({'Type':            '/XObject',
+                       'Subtype':         '/Image',
+                       'Width':            str(page.width),
+                       'Height':           str(page.height),
+                       'ColorSpace':       '/DeviceGray',
+                       'BitsPerComponent': '1',
+                       'Filter':           '/JBIG2Decode',
+                       'DecodeParms':      ' << /JBIG2Globals {id} 0 R >>'.format(id = symd.id)},
+                       open(page.textual, 'rb').read())
+        
+        group = Obj({'Im0': reference(graphical.id),
+                     'Im1': reference(textual.id)})
+        
+        procset = Obj({'XObject': reference(group.id),
+                       'ProcSet': '[ /PDF /ImageB /ImageC ]'})
+        
+        page = Obj({'Type':     '/Page',
+                    'Parent':   reference(3),
+                    'MediaBox': '[ 0 0 {width} {height} ]'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi),
+                    'Contents':  reference(group.id),
+                    'Resources': reference(procset.id)})
+        
+        for object in [graphical, textual, group, procset, page]:
+          document.add_object(object)
+        
       else:
-        contents = open(page.textual, 'rb').read()
         print page.textual
         
         xobj = Obj({'Type':            '/XObject',
@@ -156,14 +206,14 @@ class PDFEncoder(QThread):
                     'BitsPerComponent': '1',
                     'Filter':           '/JBIG2Decode',
                     'DecodeParms':      ' << /JBIG2Globals {id} 0 R >>'.format(id = symd.id)},
-                    contents)
+                    open(page.textual, 'rb').read())
         
         contents = Obj({}, 'q {width} 0 0 {height} 0 0 cm /Im1 Do Q'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi))
         resources = Obj({'ProcSet': '[/PDF /ImageB]',
                          'XObject': '<< /Im1 {id} 0 R >>'.format(id = xobj.id)})
         
         page = Obj({'Type':     '/Page',
-                    'Parent':   '3 0 R',
+                    'Parent':   reference(3),
                     'MediaBox': '[ 0 0 {width} {height} ]'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi),
                     'Contents':  reference(contents.id),
                     'Resources': reference(resources.id)})
@@ -171,10 +221,10 @@ class PDFEncoder(QThread):
         for object in [xobj, contents, resources, page]:
           document.add_object(object)
         
-        page_objects.append(page)
-
-        pages.dictionary.values['Count'] = str(len(page_objects))
-        pages.dictionary.values['Kids'] = '[' + ' '.join([reference(x.id) for x in page_objects]) + ']'
+      page_objects.append(page)
+    
+    pages.dictionary.values['Count'] = str(len(page_objects))
+    pages.dictionary.values['Kids'] = '[' + ' '.join([reference(x.id) for x in page_objects]) + ']'
     
     output = open(self.options['output_file'], 'wb')
     output.write(str(document))
