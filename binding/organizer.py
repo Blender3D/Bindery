@@ -28,6 +28,14 @@ class Book:
     
     return None
 
+class Image:
+  '''
+  DeviceGray
+  Indexed
+  DeviceRGB
+  '''
+  pass
+
 class Page:
   def __init__(self, path):
     self.path = os.path.abspath(path)

@@ -16,7 +16,7 @@ class Dict:
     temp = '<<\n'
     
     for key, value in self.values.items()[::-1]:
-      temp += '/{key} {value}\n'.format(key = key, value = value)
+      temp += '/{key} {value}\n'.format(key=key, value=value)
     
     return temp + '>>\n'
 
@@ -30,7 +30,15 @@ class Obj:
     self.dictionary = Dict(d)
     self.stream = stream
     self.id = self.ids.next()
-
+  
+  def addTo(self, document):
+    document.add_object(self)
+    
+    return self
+  
+  def ref(self):
+    return '{id} 0 R'.format(id=self.id)
+  
   def __str__(self):
     stream = str(self.dictionary)
     
@@ -62,7 +70,7 @@ class Document:
     for object in self.objects:
       offsets.append(size)
       
-      obj_size = '{id} 0 obj'.format(id = object.id)
+      obj_size = '{id} 0 obj'.format(id=object.id)
       str_object = str(object)
       
       string.append(obj_size)
@@ -70,8 +78,8 @@ class Document:
       
       size += len(obj_size) + len(str_object) + 2
     
-    string.append('xreference')
-    string.append('0 {size}'.format(size = len(offsets) + 1))
+    string.append('xref')
+    string.append('0 {size}'.format(size=len(offsets) + 1))
     string.append('0000000000 65535 f ')
     
     for offset in offsets:
@@ -79,16 +87,31 @@ class Document:
     
     string.append('')
     string.append('trailer')
-    string.append('<< /Size {size}\n/Root 1 0 R\n/Info 2 0 R>>'.format(size = len(offsets) + 1))
-    string.append('startxreference')
+    string.append('<< /Size {size}\n/Root 1 0 R\n/Info 2 0 R>>'.format(size=len(offsets) + 1))
+    string.append('startxref')
     string.append(str(size))
     string.append('%%EOF')
 
     return '\n'.join(string)
 
-def reference(x):
-  return '%d 0 R' % x
 
+def loadImage(image, oc, procSet):
+  if '/ImageC' not in procSet:
+    procSet.append('/ImageC')
+
+  image_obj = Obj({
+    'Type':             '/XObject',
+    'Subtype':          '/Image',
+    'OC':               oc.ref(),
+    'Width':            image.width,
+    'Height':           image.height,
+    'Interpolate':      'True',
+    'Filter':           '/JPXDecode',
+    'BitsPerComponent': '24',
+    'ColorSpace':       '/DeviceRGB'
+  }, open(image.path, 'rb').read())
+
+  return image_obj
 
 
 class PDFEncoder(QThread):
@@ -118,113 +141,150 @@ class PDFEncoder(QThread):
   def _jbig2pdf(self, symboltable, book):
     document = Document()
     
-    document.add_object(Obj({'Type':     '/Catalog',
-                             'Outlines': reference(3),
-                             'Pages':    reference(4)}))
-    
-    metadata = {'Creator':      '(Bindery)',
-                'Producer':     '(Bindery)',
-                'CreationDate': '(D:{date}--5\'00)'.format(date = time.strftime('%Y%m%d%H%M%S', time.gmtime()))}
+    metadata = Obj({
+      'Creator':      '(Bindery)',
+      'Producer':     '(Bindery)',
+      'CreationDate': '(D:{date}--5\'00)'.format(date=time.strftime('%Y%m%d%H%M%S', time.gmtime()))
+    })
     
     for option in ['title', 'author', 'subject']:
       if self.options[option]:
-        metadata[option.title()] = '({value})'.format(value = self.options[option])
+        metadata.dictionary[option.title()] = '({value})'.format(value=self.options[option])
     
-    document.add_object(Obj(metadata))
+    document.add_object(metadata)
     
-    document.add_object(Obj({'Type': '/Outlines',
-                             'Count': '0'}))
-                             
-    pages = Obj({'Type' : '/Pages'})
-    document.add_object(pages)
+    outlines = Obj({
+      'Type': '/Outlines',
+      'Count': '0'
+    }).addTo(document)
     
-    artwork = Obj({'Subtype': '/Artwork',
-                   'Creator': '(Bindery)',
-                   'Feature': '/Layers'})
-    document.add_object(artwork)
+    pages = Obj({
+      'Type' : '/Pages'
+    }).addTo(document)
     
-    foreground = Obj({'Type': '/OGC',
-                      'Name': '(Foreground)',
-                      'Usage': '<</CreatorInfo {id} 0 R>>'.format(id = artwork.id)})
+    creator = Obj({
+      'Subtype': '/Artwork',
+      'Creator': '(Bindery)',
+      'Feature': '/Layers'
+    }).addTo(document)
     
-    document.add_object(foreground)
+    foreground = Obj({
+      'Type':    '/OGC',
+      'Name':    '(Foreground)',
+      'Usage':   '<</CreatorInfo {ref} >>'.format(ref=creator.ref()),
+      'Intent' : '[/View/Design]'
+    }).addTo(document)
     
-    background = Obj({'Type': '/OGC',
-                      'Name': '(Background)',
-                      'Usage': '<</CreatorInfo {id} 0 R>>'.format(id = artwork.id)})
+    background = Obj({
+      'Type':    '/OGC',
+      'Name':    '(Background)',
+      'Usage':   '<</CreatorInfo {ref} >>'.format(ref=creator.ref()),
+      'Intent' : '[/View/Design]'
+    }).addTo(document)
     
-    document.add_object(background)
+    catalog = Obj({
+      'Type':         '/Catalog',
+      'Outlines':     outlines.ref(),
+      'Pages':        pages.ref(),
+      'PageLayout':   '/TwoPageRight',
+      'OCProperties': '<< /OCGs[{fore} {back}] /D<< /Intent /View /BaseState (ON) /Order[{fore} {back}] >>>>'.format(
+        fore=foreground.ref(),
+        back=background.ref())
+    }).addTo(document)
 
-    symd = document.add_object(Obj({}, open(symboltable, 'rb').read()))
+    symd = Obj({}, open(symboltable, 'rb').read()).addTo(document)
     page_objects = []
 
     for page in book.pages:
+      images = 0
+      procSet = ['/PDF', '/ImageB']
+      
       if page.graphical:
-        graphical = Obj({'Type':            '/XObject',
-                         'Subtype':         '/Image',
-                         'Width':            str(page.width),
-                         'Height':           str(page.height),
-                         'ColorSpace':       '/DeviceGray',
-                         'Interpolate':      'true',
-                         'Filter':           '/JPXDecode',
-                         'OC':               reference(background.id)}, 
-                          open(page.graphical, 'rb').read())
+        graphical = Obj({
+          'Type':             '/XObject',
+          'Subtype':          '/Image',
+          'Width':            str(page.width),
+          'Height':           str(page.height),
+          'ColorSpace':       '/DeviceRGB',
+          'Interpolate':      'true',
+          'Filter':           '/JPXDecode',
+          'BitsPerComponent': '24',
+          'OC':                background.ref()
+        }, open(page.graphical, 'rb').read()).addTo(document)
         
-        textual = Obj({'Type':            '/XObject',
-                       'Subtype':         '/Image',
-                       'Width':            str(page.width),
-                       'Height':           str(page.height),
-                       'ColorSpace':       '/DeviceGray',
-                       'BitsPerComponent': '1',
-                       'Filter':           '/JBIG2Decode',
-                       'DecodeParms':      ' << /JBIG2Globals {id} 0 R >>'.format(id = symd.id)},
-                       open(page.textual, 'rb').read())
+        if '/ImageC' not in procSet:
+          procSet.append('/ImageC')
         
-        group = Obj({'Im0': reference(graphical.id),
-                     'Im1': reference(textual.id)})
+        if page.textual:
+          textual = Obj({
+            'Type':             '/XObject',
+            'Subtype':          '/Image',
+            'Width':            str(page.width),
+            'Height':           str(page.height),
+            'ColorSpace':       '/DeviceGray',
+            'BitsPerComponent': '1',
+            'Filter':           '/JBIG2Decode',
+            'DecodeParms':      ' << /JBIG2Globals {ref} >>'.format(ref=symd.ref())
+          }, open(page.textual, 'rb').read()).addTo(document)
         
-        procset = Obj({'XObject': reference(group.id),
-                       'ProcSet': '[ /PDF /ImageB /ImageC ]'})
+        contents = Obj({
+          'Filter': '/FlateDecode'
+        })
+        resobj = Obj({})
+        resources = Obj({
+          'XObject': resobj.ref()
+        })
         
-        page = Obj({'Type':     '/Page',
-                    'Parent':   reference(3),
-                    'MediaBox': '[ 0 0 {width} {height} ]'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi),
-                    'Contents':  reference(group.id),
-                    'Resources': reference(procset.id)})
+        foreground.dictionary['SMask'] = textual.ref()
         
-        for object in [graphical, textual, group, procset, page]:
-          document.add_object(object)
+        page = Obj({
+          'Type':     '/Page',
+          'Parent':   outlines.ref(),
+          'MediaBox': '[ 0 0 {width} {height} ]'.format(
+            width=float(page.width * 72) / book.dpi,
+            height=float(page.height * 72) / book.dpi),
+          'Contents':  group.ref(),
+          'Resources': procset.ref()
+        }).addTo(document)
         
       else:
-        print page.textual
+        xobj = Obj({
+          'Type':              '/XObject',
+          'Subtype':           '/Image',
+          'OC':                ocref,
+          'Width':             str(page.width),
+          'Height':            str(page.height),
+          'ImageMask':         'true',
+          'ColorSpace':        '/DeviceGray',
+          'BitsPerComponent':  '1',
+          'Filter':            '/JBIG2Decode',
+          'DecodeParms':       "<< /JBIG2Globals {ref} >>".format(ref=symd.ref())
+        }, open(jbig2, 'rb').read())
         
-        xobj = Obj({'Type':            '/XObject',
-                    'Subtype':         '/Image',
-                    'Width':            str(page.width),
-                    'Height':           str(page.height),
-                    'ColorSpace':       '/DeviceGray',
-                    'BitsPerComponent': '1',
-                    'Filter':           '/JBIG2Decode',
-                    'DecodeParms':      ' << /JBIG2Globals {id} 0 R >>'.format(id = symd.id)},
-                    open(page.textual, 'rb').read())
+        contents = Obj({}, 'q {width} 0 0 {height} 0 0 cm /Im1 Do Q'.format(
+          width=float(page.width * 72) / book.dpi,
+          height=float(page.height * 72) / book.dpi)
+        ).addTo(document)
         
-        contents = Obj({}, 'q {width} 0 0 {height} 0 0 cm /Im1 Do Q'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi))
-        resources = Obj({'ProcSet': '[/PDF /ImageB]',
-                         'XObject': '<< /Im1 {id} 0 R >>'.format(id = xobj.id)})
+        resources = Obj({
+          'ProcSet': '[/PDF /ImageB]',
+          'XObject': '<< /Im1 {ref} >>'.format(ref=xobj.ref)
+        }).addTo(document)
         
-        page = Obj({'Type':     '/Page',
-                    'Parent':   reference(3),
-                    'MediaBox': '[ 0 0 {width} {height} ]'.format(width = float(page.width * 72) / book.dpi, height = float(page.height * 72) / book.dpi),
-                    'Contents':  reference(contents.id),
-                    'Resources': reference(resources.id)})
-        
-        for object in [xobj, contents, resources, page]:
-          document.add_object(object)
+        page = Obj({
+          'Type':     '/Page',
+          'Parent':   outlines.ref(),
+          'MediaBox': '[ 0 0 {width} {height} ]'.format(
+            width=float(page.width * 72) / book.dpi,
+            height=float(page.height * 72) / book.dpi),
+          'Contents':  contents.ref(),
+          'Resources': resources.ref()
+        }).addTo(document)
         
       page_objects.append(page)
     
     pages.dictionary.values['Count'] = str(len(page_objects))
-    pages.dictionary.values['Kids'] = '[' + ' '.join([reference(x.id) for x in page_objects]) + ']'
+    pages.dictionary.values['Kids'] = '[' + ' '.join([x.ref() for x in page_objects]) + ']'
     
     output = open(self.options['output_file'], 'wb')
     output.write(str(document))
