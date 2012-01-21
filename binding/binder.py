@@ -1,11 +1,14 @@
 import os, time, shutil, glob, sys
-import organizer, ocr, utils
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from encoders.djvu import DjVuEncoder
-from encoders.pdf import PDFEncoder
+from .djvubind import ocr, utils
+
+from . import organizer
+
+from .encoders.djvu import DjVuEncoder
+from .encoders.pdf import PDFEncoder
 
 class Binder(QThread):
   def __init__(self, parent = None):
@@ -21,7 +24,7 @@ class Binder(QThread):
     elif self.options['output_format'] == 'pdf':
       self.enc = PDFEncoder(self.options)
     
-    self.ocr = ocr.OCR(self.options)
+    self.ocr = ocr.engine(self.options['ocr_engine'], self.options['ocr_options'])
     
     self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
     self.connect(self.enc, SIGNAL('error(QString)'), self.error)
@@ -92,8 +95,8 @@ class Binder(QThread):
         break
       
       page = self.queue.pop()
-      boxing = self.ocr.analyze_image(page.path)
-      page.text = self.ocr.translate(boxing)
+      boxing = self.ocr.analyze(page.path)
+      page.text = ocr.translate(boxing)
       
       self.emit(SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR')
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
@@ -106,7 +109,7 @@ class Binder(QThread):
     for page in self.pages:
       book_page = self.add_file(page.filepath, 'page')
       book_page.make_grayscale = page.grayscale
-      print page.filepath
+      print(page.filepath)
     
     if not self.die:
       self.analyze()

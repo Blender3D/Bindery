@@ -8,7 +8,8 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 try:
-  import pynotify
+  # Pynotify makes Qt4 segfault. Why?
+  #import pynotify
   pynotify.init('Bindery')
   
   notify = True
@@ -117,8 +118,6 @@ class StartQT4(QMainWindow):
     
     self.log.log('Page grayscale changed to {state}'.format(state = (state == Qt.Checked)))
     
-    print [page.grayscale for page in self.ui.pageList.selectedItems()]
-    
     for page in self.ui.pageList.selectedItems():
       page.grayscale = (state == Qt.Checked)
   
@@ -140,19 +139,21 @@ class StartQT4(QMainWindow):
     if self.ui.pageList.count() > 0:
       self.ui.pageList.setStyleSheet('')
     else:
-      self.ui.pageList.setStyleSheet('''QListWidget {
-                                          background-image: url(':/icons/go-down-big.png');
-                                          background-position: center;
-                                          background-repeat: no-repeat;
-                                          background-color: white;
-                                        }
+      self.ui.pageList.setStyleSheet(
+        '''QListWidget {
+          background-image: url(':/icons/go-down-big.png');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-color: white;
+        }
 
-                                        QListWidget:hover {
-                                          background-image: url(':/icons/go-down-big-hover.png');
-                                          background-position: center;
-                                          background-repeat: no-repeat;
-                                          background-color: white;
-                                        }''')
+        QListWidget:hover {
+          background-image: url(':/icons/go-down-big-hover.png');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-color: white;
+        }'''
+      )
   
 
   

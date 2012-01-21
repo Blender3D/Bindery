@@ -3,10 +3,45 @@ from subprocess import Popen, PIPE, STDOUT
 
 from itertools import count
 
-from binding import organizer, ocr, utils
+from binding import organizer, utils
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+'''
+def loadJBIG2(image):
+  data = open(image.path, 'rb').read()
+  
+  image_obj = DictionaryObject({
+    'Type':             '/XObject',
+    'Subtype':          '/Image',
+    'Width':            image.width,
+    'Height':           image.height,
+    'ColorSpace':       '/DeviceGray',
+    'BitsPerComponent': '1',
+    'Length':           len(data),
+    'Filter':           '/JBIG2Decode',
+    '/DecodeParms':     ' [null << /JBIG2Globals 6 0 R >>]'
+  })
+
+  return image_obj
+
+
+def loadJPEG2000(image):
+  image_obj = Obj({
+    'Type':             '/XObject',
+    'Subtype':          '/Image',
+    'OC':               oc.ref(),
+    'Width':            image.width,
+    'Height':           image.height,
+    'Interpolate':      'True',
+    'Filter':           '/JPXDecode',
+    'BitsPerComponent': '24',
+    'ColorSpace':       '/DeviceRGB'
+  })
+
+  return image_obj
+'''
 
 class Dict:
   def __init__(self, values = {}):
@@ -93,26 +128,6 @@ class Document:
     string.append('%%EOF')
 
     return '\n'.join(string)
-
-
-def loadImage(image, oc, procSet):
-  if '/ImageC' not in procSet:
-    procSet.append('/ImageC')
-
-  image_obj = Obj({
-    'Type':             '/XObject',
-    'Subtype':          '/Image',
-    'OC':               oc.ref(),
-    'Width':            image.width,
-    'Height':           image.height,
-    'Interpolate':      'True',
-    'Filter':           '/JPXDecode',
-    'BitsPerComponent': '24',
-    'ColorSpace':       '/DeviceRGB'
-  }, open(image.path, 'rb').read())
-
-  return image_obj
-
 
 class PDFEncoder(QThread):
   def __init__(self, options, parent = None):

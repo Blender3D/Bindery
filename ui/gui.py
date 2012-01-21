@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Wed Jan  4 23:07:06 2012
+# Created: Sat Jan 21 03:21:02 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -534,7 +534,7 @@ class Ui_MainWindow(object):
     self.toolBar.addAction(self.startBindingMenuItem)
 
     self.retranslateUi(MainWindow)
-    self.tabWidget.setCurrentIndex(1)
+    self.tabWidget.setCurrentIndex(0)
     self.outputFormat.setCurrentIndex(1)
     self.ocrLanguage.setCurrentIndex(5)
     self.stackedWidget_2.setCurrentIndex(0)
@@ -696,7 +696,7 @@ class Ui_MainWindow(object):
     self.removePageMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Remove Page", None, QtGui.QApplication.UnicodeUTF8))
     self.startBindingMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Start Binding", None, QtGui.QApplication.UnicodeUTF8))
 
-from ImageViewerWidget import ImageViewerWidget
-from BookListWidget import BookListWidget
-from DebugLog import DebugLog
-import resources_rc
+from .DebugLog import DebugLog
+from .BookListWidget import BookListWidget
+from .ImageViewerWidget import ImageViewerWidget
+from . import resources_rc

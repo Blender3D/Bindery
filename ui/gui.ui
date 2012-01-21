@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -1233,7 +1233,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>BookListWidget</class>
    <extends>QListWidget</extends>
-   <header>BookListWidget</header>
+   <header>.BookListWidget</header>
    <slots>
     <signal>dropped(QStringList)</signal>
    </slots>
@@ -1241,12 +1241,12 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>ImageViewerWidget</class>
    <extends>QGraphicsView</extends>
-   <header>ImageViewerWidget</header>
+   <header>.ImageViewerWidget</header>
   </customwidget>
   <customwidget>
    <class>DebugLog</class>
    <extends>QTreeWidget</extends>
-   <header>DebugLog</header>
+   <header>.DebugLog</header>
   </customwidget>
  </customwidgets>
  <resources>
