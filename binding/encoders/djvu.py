@@ -1,8 +1,6 @@
 import os, time, shutil, glob, sys, platform
 
-from .. import djvubind
-
-from binding.djvubind import encode
+from djvubind import encode
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *

@@ -3,7 +3,7 @@ from subprocess import Popen, PIPE, STDOUT
 
 from itertools import count
 
-from binding import organizer, utils
+from djvubind import organizer, utils
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *

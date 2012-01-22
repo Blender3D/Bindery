@@ -1,6 +1,8 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from binding import organizer
+
 from ui import resources_rc
 
 def QIconFromTheme(name):
@@ -55,18 +57,18 @@ class BookListWidget(QListWidget):
       event.ignore()
 
 
-
-class BookListWidgetItem(QListWidgetItem):
-  def __init__(self, text = '', filepath = '', parent = None):
-    super(BookListWidgetItem, self).__init__(parent)
+class BookListWidgetItem(QListWidgetItem, organizer.Page):
+  def __init__(self, text='', filepath='', parent=None):    
+    QListWidgetItem.__init__(self)
+    organizer.Page.__init__(self, filepath)
+    
+    print(self.height)
+    
     self.defaultIcon = True
     
     self.number = 0
-    self.dpi = 0
-    self.grayscale = False
     
     self.setText(text)
-    self.filepath = filepath
     
     self.setSizeHint(QSize(72, 72))
     self.resetIcon()

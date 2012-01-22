@@ -3,7 +3,7 @@ import os, time, shutil, glob, sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from .djvubind import ocr, utils
+from djvubind.ocr import OCR
 
 from . import organizer
 
@@ -24,7 +24,7 @@ class Binder(QThread):
     elif self.options['output_format'] == 'pdf':
       self.enc = PDFEncoder(self.options)
     
-    self.ocr = ocr.engine(self.options['ocr_engine'], self.options['ocr_options'])
+    self.ocr = OCR(self.options)
     
     self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
     self.connect(self.enc, SIGNAL('error(QString)'), self.error)
@@ -60,7 +60,7 @@ class Binder(QThread):
       page.get_dpi()
       page.get_size()
 
-      if page.make_grayscale and not page.bitonal:
+      if page.grayscale and not page.bitonal:
         utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.path))
         page.path += '.grayscale'
       
@@ -107,9 +107,7 @@ class Binder(QThread):
     self.die = False
     
     for page in self.pages:
-      book_page = self.add_file(page.filepath, 'page')
-      book_page.make_grayscale = page.grayscale
-      print(page.filepath)
+      self.book.pages.append(page)
     
     if not self.die:
       self.analyze()

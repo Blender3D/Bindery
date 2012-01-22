@@ -1,6 +1,7 @@
 import sys, os, time, glob
 
-import config
+import config, tempfile
+from djvubind import utils
 
 from ui.BookListWidget import BookListWidget, BookListWidgetItem
 
@@ -40,6 +41,7 @@ class StartQT4(QMainWindow):
       self.ui.pagePreview.setScene(scene)
   
   
+  
   def itemSelectionChanged(self):
     self.selected = self.ui.pageList.selectedItems()
     
@@ -68,7 +70,7 @@ class StartQT4(QMainWindow):
         self.ui.moveToBottomButton.setEnabled(row != self.ui.pageList.count() - 1)
         self.ui.moveDownButton.setEnabled(row != self.ui.pageList.count() - 1)
         
-        self.previewer.image = self.selected[0].filepath
+        self.previewer.image = self.selected[0].path
         self.previewer.size = [self.ui.pagePreview.size().width() * 2, self.ui.pagePreview.size().width() * 2]
         self.previewer.start()
     else:
@@ -102,6 +104,7 @@ class StartQT4(QMainWindow):
     self.ui.pageList.setCurrentRow(currentRow + 1 if currentRow != self.ui.pageList.count() - 1 else self.ui.pageList.count() - 1) 
   
   
+  
   def moveItemToBottom(self):
     self.log.log('Moving selected item to bottom')
     currentRow = self.ui.pageList.row(self.ui.pageList.currentItem())
@@ -133,6 +136,27 @@ class StartQT4(QMainWindow):
   def outputFormatChanged(self, choice):
     self.log.log('Output file format changed to {format}'.format(format = self.ui.outputFormat.currentText()))
     self.ui.stackedWidget.setCurrentIndex(choice)
+  
+  
+  
+  def addBlankPage(self):
+    self.blank_image = tempfile.NamedTemporaryFile(delete=False, suffix='.png')
+    
+    index = self.ui.pageList.row(self.ui.pageList.currentItem())
+    image_size = self.ui.pageList.currentItem().get_size()
+    
+    utils.execute('convert -size {width}x{height} xc:white "{filename}"'.format(
+      width=image_size[0],
+      height=image_size[1],
+      filename=self.blank_image.name
+    ))
+    
+    self.addFile(self.blank_image.name, index=self.ui.pageList.currentRow(), title='blank.tif')
+    self.blank_image.close()
+    
+    self.log.log('Starting thumbnailer...')
+    self.thumbnailer.start()
+
   
   
   def hideBackground(self):
@@ -180,9 +204,9 @@ class StartQT4(QMainWindow):
         if os.path.splitext(os.path.split(file)[-1])[-1] not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
           item.setFlags(Qt.NoItemFlags)
         else:
-          self.log.log('Rejecting file due to extension: {file}'.format(file = file))
+          self.log.log('Rejecting file due to extension: {filename}'.format(filename=filename))
 
-        self.log.log('Adding file: {file}'.format(file = file))
+        self.log.log('Adding file: {filename}'.format(filename=filename))
         self.projectFilesUi.offProjectList.addItem(item)
     else:
       self.log.log('User closed dialog')
@@ -190,24 +214,26 @@ class StartQT4(QMainWindow):
   
   
   def showSaveDialog(self):
-    file = str(self.ui.outputFormat.currentText())
-    filename = 'Book.{0}'.format(file.lower())
-    filetype = '{0} Document (*.{1})'.format(file, file.lower())
+    filename = str(self.ui.outputFormat.currentText())
+    filename = 'Book.{extension}'.format(extension=filename.lower())
+    filetype = '{filetype} Document (*.{extension})'.format(filetype=filename, extension=filename.lower())
     
     self.log.log('Displaying file save dialog...')
     self.ui.outputFile.setText(QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + filename, filetype))
     
     if str(self.ui.outputFile.text()) != '':
-      self.log.log('File name is: "{filename}"'.format(filename = self.ui.outputFile.text()))
+      self.log.log('File name is: "{filename}"'.format(filename=self.ui.outputFile.text()))
       
       self.projectFilesUi.outputFile.setText(self.ui.outputFile.text())
       self.config.set('startup', 'output_directory', os.path.split(str(self.ui.outputFile.text()))[0] + '/')
     else:
       self.log.log('User closed dialog')
   
+  
+  
   def addToProject(self):
     for item in self.projectFilesUi.offProjectList.selectedItems():
-      self.log.log('Adding file to page list: {file}'.format(item.filepath))
+      self.log.log('Adding file to page list: {filename}'.format(filename=item.path))
       
       self.projectFilesUi.offProjectList.takeItem(self.projectFilesUi.offProjectList.row(item))
       self.projectFilesUi.inProjectList.addItem(item)
@@ -216,31 +242,43 @@ class StartQT4(QMainWindow):
   
   def removeFromProject(self):
     for item in self.projectFilesUi.inProjectList.selectedItems():
-      self.log.log('Removing file from page list: {file}'.format(item.filepath))
+      self.log.log('Removing file from page list: {filename}'.format(filename=item.path))
       
       self.projectFilesUi.inProjectList.takeItem(self.projectFilesUi.inProjectList.row(item))
       self.projectFilesUi.offProjectList.addItem(item)
+  
+  
+  def addFile(self, filename, index=None, title=None):
+    filename = str(filename)
+    
+    if os.path.splitext(os.path.split(filename)[-1])[-1] in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
+      item = BookListWidgetItem(os.path.split(filename)[-1] if not title else title, filename)
+      
+      if filename not in [str(self.ui.pageList.item(i).path) for i in range(self.ui.pageList.count())]:
+        self.log.log('Adding file: {filename}'.format(filename=filename))
+        
+        if index:
+          self.ui.pageList.insertItem(index, item)
+        else:
+          self.ui.pageList.addItem(item)
+        
+        return True
+      else:
+        self.log.log('Rejecting duplicate file')
+    else:
+      self.log.log('Rejecting file due to extension: {filename}'.format(filename=filename))
+    
+    return False
   
   
   
   def filesDropped(self, files):
     self.log.log('Files dropped')
     
-    for file in files:
-      file = str(file)
+    for filename in files:
+      self.log.log('Dropped file name: {filename}'.format(filename=filename))
       
-      self.log.log('Dropped file name: {name}'.format(name = file))
-      
-      if os.path.splitext(os.path.split(file)[-1])[-1] in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
-        item = BookListWidgetItem(os.path.split(file)[-1], file)
-        
-        if file not in [str(self.ui.pageList.item(i).filepath) for i in range(self.ui.pageList.count())]:
-          self.log.log('Adding file: {file}'.format(file = file))
-          self.ui.pageList.addItem(item)
-        else:
-          self.log.log('Rejecting duplicate file')
-      else:
-        self.log.log('Rejecting file due to extension: {file}'.format(file = file))
+      self.addFile(filename)
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
       widget.setEnabled(self.ui.pageList.count() > 0)
@@ -256,22 +294,10 @@ class StartQT4(QMainWindow):
   def addFiles(self):
     self.log.log('Files selected')
     
-    for file in QFileDialog.getOpenFileNames(self, 'Add files to project', self.config.get('startup', 'input_directory')):
-      file = str(file)
-      
-      self.log.log('Selected file name: {name}'.format(name = file))
+    for filename in QFileDialog.getOpenFileNames(self, 'Add files to project', self.config.get('startup', 'input_directory')):
+      self.log.log('Selected file name: {filename}'.format(filename=filename))
 
-      if os.path.splitext(os.path.split(file)[-1])[-1] in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
-        item = BookListWidgetItem(os.path.split(file)[-1], file)
-        
-        if file not in [str(self.ui.pageList.item(i).filepath) for i in range(self.ui.pageList.count())]:
-          self.log.log('Adding file: {file}'.format(file = file))
-          self.ui.pageList.addItem(item)
-        else:
-          self.log.log('Rejecting duplicate file')
-
-      else:
-        self.log.log('Rejecting file due to extension: {file}'.format(file = file))
+      self.addFile(filename)
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
       widget.setEnabled(self.ui.pageList.count() > 0)
@@ -319,7 +345,7 @@ class StartQT4(QMainWindow):
         item = BookListWidgetItem(str(orig.text()), str(orig.statusTip()))
         
         if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in range(self.ui.pageList.count())]:
-          self.log.log('Adding file: {file}'.format(file = item.filepath))
+          self.log.log('Adding file: {file}'.format(file = item.path))
           self.ui.pageList.addItem(item)
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
@@ -335,7 +361,7 @@ class StartQT4(QMainWindow):
   
   def removeFiles(self):
     for item in self.ui.pageList.selectedItems():
-      self.log.log('Removing page: {file}'.format(file = item.filepath))
+      self.log.log('Removing page: {file}'.format(file = item.path))
       self.ui.pageList.takeItem(self.ui.pageList.row(item))
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
@@ -434,7 +460,7 @@ class StartQT4(QMainWindow):
     
     if notify:
       self.log.log('Showing notification via notification daemon...')
-      notification = pynotify.Notification('Bindery', 'Your book has finished binding', '/opt/bindery/source/ui/icons/logo.png')
+      notification = pynotify.Notification('Bindery', 'Your book has finished binding', 'ui/icons/logo.png')
       notification.show()
     else:
       self.log.log('Showing notification via standard message box...')
@@ -461,25 +487,27 @@ class StartQT4(QMainWindow):
       self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
       self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
       
-      self.options = {'output_file':       str(self.ui.outputFile.text()),
-                      'ocr':               (self.ui.enableOCR.checkState() == Qt.Checked),
-                      'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
-                      'output_format':     str(self.ui.outputFormat.currentText()).lower(),
-                      'ocr_options':       str(self.ui.ocrOptions.text()),
-                      'color_encoder':     str(self.ui.djvuColorEncoder.currentText()),
-                      'c44_options':       str(self.ui.c44Options.text()),
-                      'cjb2_options':      str(self.ui.cjb2Options.text()),
-                      'cpaldjvu_options':  str(self.ui.cpaldjvuOptions.text()),
-                      'csepdjvu_options':  str(self.ui.csepdjvuOptions.text()),
-                      'minidjvu_options':  str(self.ui.minidjvuOptions.text()),
-                      'numbering_type':    [],
-                      'numbering_start':   [],
-                      'title':             str(self.ui.bookTitle.text()),
-                      'author':            str(self.ui.bookAuthor.text()),
-                      'subject':           str(self.ui.bookSubject.text()),
-                      'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'}
+      self.options = {
+        'output_file':       str(self.ui.outputFile.text()),
+        'ocr':               (self.ui.enableOCR.checkState() == Qt.Checked),
+        'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
+        'output_format':     str(self.ui.outputFormat.currentText()).lower(),
+        'ocr_options':       str(self.ui.ocrOptions.text()),
+        'color_encoder':     str(self.ui.djvuColorEncoder.currentText()),
+        'c44_options':       str(self.ui.c44Options.text()),
+        'cjb2_options':      str(self.ui.cjb2Options.text()),
+        'cpaldjvu_options':  str(self.ui.cpaldjvuOptions.text()),
+        'csepdjvu_options':  str(self.ui.csepdjvuOptions.text()),
+        'minidjvu_options':  str(self.ui.minidjvuOptions.text()),
+        'numbering_type':    [],
+        'numbering_start':   [],
+        'title':             str(self.ui.bookTitle.text()),
+        'author':            str(self.ui.bookAuthor.text()),
+        'subject':           str(self.ui.bookSubject.text()),
+        'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'
+      }
       
-      self.log.log('Output format is {format}'.format(format = self.ui.djvuBitonalEncoder.currentText()))
+      self.log.log('Output format is {format}'.format(format=self.ui.djvuBitonalEncoder.currentText()))
       
       if self.options['output_format'] == 'djvu':
         self.options['bitonal_encoder'] = str(self.ui.djvuBitonalEncoder.currentText())

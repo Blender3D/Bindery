@@ -51,6 +51,8 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.ui.openMenuItem.setIcon(self.QIconFromTheme('document-open'))
     self.ui.saveMenuItem.setIcon(self.QIconFromTheme('document-save'))
     
+    self.ui.insertBlankPageMenuItem.setIcon(self.QIconFromTheme('document-new'))
+    
     self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
     self.ui.addPageMenuItem.setIcon(self.QIconFromTheme('list-add'))
     self.ui.removePageMenuItem.setIcon(self.QIconFromTheme('list-remove'))

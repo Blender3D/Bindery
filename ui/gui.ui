@@ -1067,10 +1067,17 @@ p, li { white-space: pre-wrap; }
     <addaction name="addPageMenuItem"/>
     <addaction name="removePageMenuItem"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="insertBlankPageMenuItem"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuPage"/>
    <addaction name="menuView"/>
+   <addaction name="menu_Tools"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -1089,6 +1096,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="separator"/>
    <addaction name="addPageMenuItem"/>
    <addaction name="removePageMenuItem"/>
+   <addaction name="insertBlankPageMenuItem"/>
    <addaction name="separator"/>
    <addaction name="startBindingMenuItem"/>
   </widget>
@@ -1226,6 +1234,14 @@ p, li { white-space: pre-wrap; }
   <action name="startBindingMenuItem">
    <property name="text">
     <string>Start Binding</string>
+   </property>
+  </action>
+  <action name="insertBlankPageMenuItem">
+   <property name="text">
+    <string>Insert Blank Page</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
  </widget>
@@ -1516,8 +1532,8 @@ p, li { white-space: pre-wrap; }
    <slot>showSaveDialog()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>648</x>
-     <y>147</y>
+     <x>681</x>
+     <y>314</y>
     </hint>
     <hint type="destinationlabel">
      <x>356</x>
@@ -1532,8 +1548,8 @@ p, li { white-space: pre-wrap; }
    <slot>outputFormatChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>535</x>
-     <y>114</y>
+     <x>682</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
      <x>356</x>
@@ -1605,6 +1621,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>insertBlankPageMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addBlankPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>addFiles()</slot>
@@ -1624,5 +1656,6 @@ p, li { white-space: pre-wrap; }
   <slot>outputFormatChanged()</slot>
   <slot>clearDebugLog()</slot>
   <slot>saveDebugLog()</slot>
+  <slot>addBlankPage()</slot>
  </slots>
 </ui>

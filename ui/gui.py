@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Sat Jan 21 03:21:02 2012
+# Created: Sun Jan 22 01:05:36 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -451,6 +451,8 @@ class Ui_MainWindow(object):
     self.menuPage_Style.setObjectName(_fromUtf8("menuPage_Style"))
     self.menuPage = QtGui.QMenu(self.menuBar)
     self.menuPage.setObjectName(_fromUtf8("menuPage"))
+    self.menu_Tools = QtGui.QMenu(self.menuBar)
+    self.menu_Tools.setObjectName(_fromUtf8("menu_Tools"))
     MainWindow.setMenuBar(self.menuBar)
     self.toolBar = QtGui.QToolBar(MainWindow)
     self.toolBar.setMovable(False)
@@ -501,6 +503,9 @@ class Ui_MainWindow(object):
     self.removePageMenuItem.setObjectName(_fromUtf8("removePageMenuItem"))
     self.startBindingMenuItem = QtGui.QAction(MainWindow)
     self.startBindingMenuItem.setObjectName(_fromUtf8("startBindingMenuItem"))
+    self.insertBlankPageMenuItem = QtGui.QAction(MainWindow)
+    self.insertBlankPageMenuItem.setIconVisibleInMenu(True)
+    self.insertBlankPageMenuItem.setObjectName(_fromUtf8("insertBlankPageMenuItem"))
     self.menuFile.addAction(self.newMenuItem)
     self.menuFile.addAction(self.openMenuItem)
     self.menuFile.addSeparator()
@@ -519,10 +524,12 @@ class Ui_MainWindow(object):
     self.menuView.addAction(self.filePreviewsMenuItem)
     self.menuPage.addAction(self.addPageMenuItem)
     self.menuPage.addAction(self.removePageMenuItem)
+    self.menu_Tools.addAction(self.insertBlankPageMenuItem)
     self.menuBar.addAction(self.menuFile.menuAction())
     self.menuBar.addAction(self.menuEdit.menuAction())
     self.menuBar.addAction(self.menuPage.menuAction())
     self.menuBar.addAction(self.menuView.menuAction())
+    self.menuBar.addAction(self.menu_Tools.menuAction())
     self.menuBar.addAction(self.menuAbout.menuAction())
     self.toolBar.addAction(self.newMenuItem)
     self.toolBar.addAction(self.openMenuItem)
@@ -530,6 +537,7 @@ class Ui_MainWindow(object):
     self.toolBar.addSeparator()
     self.toolBar.addAction(self.addPageMenuItem)
     self.toolBar.addAction(self.removePageMenuItem)
+    self.toolBar.addAction(self.insertBlankPageMenuItem)
     self.toolBar.addSeparator()
     self.toolBar.addAction(self.startBindingMenuItem)
 
@@ -561,6 +569,7 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.saveLogButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.saveDebugLog)
     QtCore.QObject.connect(self.ocrEngine, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), self.stackedWidget_2.setCurrentIndex)
     QtCore.QObject.connect(self.pageGrayscale, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), MainWindow.pageGrayscaleChanged)
+    QtCore.QObject.connect(self.insertBlankPageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.addBlankPage)
     QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
   def retranslateUi(self, MainWindow):
@@ -672,6 +681,7 @@ class Ui_MainWindow(object):
     self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "&View", None, QtGui.QApplication.UnicodeUTF8))
     self.menuPage_Style.setTitle(QtGui.QApplication.translate("MainWindow", "Page Style", None, QtGui.QApplication.UnicodeUTF8))
     self.menuPage.setTitle(QtGui.QApplication.translate("MainWindow", "Page", None, QtGui.QApplication.UnicodeUTF8))
+    self.menu_Tools.setTitle(QtGui.QApplication.translate("MainWindow", "&Tools", None, QtGui.QApplication.UnicodeUTF8))
     self.newMenuItem.setText(QtGui.QApplication.translate("MainWindow", "&New", None, QtGui.QApplication.UnicodeUTF8))
     self.newMenuItem.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
     self.openMenuItem.setText(QtGui.QApplication.translate("MainWindow", "&Open", None, QtGui.QApplication.UnicodeUTF8))
@@ -695,6 +705,7 @@ class Ui_MainWindow(object):
     self.addPageMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Add Page", None, QtGui.QApplication.UnicodeUTF8))
     self.removePageMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Remove Page", None, QtGui.QApplication.UnicodeUTF8))
     self.startBindingMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Start Binding", None, QtGui.QApplication.UnicodeUTF8))
+    self.insertBlankPageMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Insert Blank Page", None, QtGui.QApplication.UnicodeUTF8))
 
 from .DebugLog import DebugLog
 from .BookListWidget import BookListWidget
