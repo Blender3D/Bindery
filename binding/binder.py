@@ -3,9 +3,9 @@ import os, time, shutil, glob, sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from djvubind.ocr import OCR
+import djvubind.ocr
 
-from . import organizer
+from . import organizer, ocr
 
 from .encoders.djvu import DjVuEncoder
 from .encoders.pdf import PDFEncoder
@@ -24,7 +24,10 @@ class Binder(QThread):
     elif self.options['output_format'] == 'pdf':
       self.enc = PDFEncoder(self.options)
     
-    self.ocr = OCR(self.options)
+    if self.options['ocr_engine'] == 'tesseract':
+      self.ocr = djvubind.ocr.Tesseract(self.options)
+    elif self.options['ocr_engine'] == 'cuneiform':
+      self.ocr = djvubind.ocr.Cuneiform(self.options)
     
     self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
     self.connect(self.enc, SIGNAL('error(QString)'), self.error)
@@ -49,11 +52,21 @@ class Binder(QThread):
     self.queue = queue
     self.quit = False
     self.total = len(self.queue)
+    base_percent = 25 if self.options['ocr'] else 50
     
     while not self.quit:
       if len(self.queue) == 0:
         self.quit = True
         break
+      
+      self.emit(
+        SIGNAL('updateProgress(int, QString)'),
+        int(base_percent * (1 - float(len(self.queue)) / float(self.total))),
+        'Analyzing ({number}/{total})'.format(
+          number=len(self.book.pages) - len(self.queue) + 1,
+          total=len(self.book.pages)
+        )
+      )
       
       page = self.queue.pop()
       page.is_bitonal()
@@ -64,9 +77,6 @@ class Binder(QThread):
         utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.path))
         page.path += '.grayscale'
       
-      basePercent = 25 if self.options['ocr'] else 50
-      
-      self.emit(SIGNAL('updateProgress(int, QString)'), int(basePercent * (1 - float(len(self.queue)) / float(self.total))), 'Analyzing')
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(210, 255, 210, 120))
       
     return None
@@ -94,11 +104,21 @@ class Binder(QThread):
         self.quit = True
         break
       
+      self.emit(
+        SIGNAL('updateProgress(int, QString)'),
+        25 + int(25 * (1 - float(len(self.queue)) / float(self.total))),
+        'Performing OCR ({number}/{total})'.format(
+          number=len(self.book.pages) - len(self.queue) + 1,
+          total=len(self.book.pages)
+        )
+      )
+      
       page = self.queue.pop()
       boxing = self.ocr.analyze(page.path)
-      page.text = ocr.translate(boxing)
       
-      self.emit(SIGNAL('updateProgress(int, QString)'), 25 + int(25 * (1 - float(len(self.queue)) / float(self.total))), 'Performing OCR')
+      page.text = ocr.translate(boxing)
+      page.boxing = ocr.translate(boxing, False)
+      
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
     
     return None
@@ -117,6 +137,7 @@ class Binder(QThread):
     
     if self.options['ocr'] and not self.die:
       self.get_ocr()
+      self.emit(SIGNAL('ocrFinished'))
     
     if not self.die:
       self.enc.book = self.book

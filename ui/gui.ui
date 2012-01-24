@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -356,7 +356,7 @@ background-color: white;
                <item row="0" column="1">
                 <widget class="QComboBox" name="outputFormat">
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
@@ -387,7 +387,7 @@ background-color: white;
                  <item>
                   <widget class="QLineEdit" name="outputFile">
                    <property name="text">
-                    <string>/opt/bindery/source/tests/test_pdf/pdf_bindery.pdf</string>
+                    <string>/home/nikita/Desktop/book.djvu</string>
                    </property>
                   </widget>
                  </item>
@@ -496,6 +496,9 @@ background-color: white;
               <property name="text">
                <string>Enable OCR</string>
               </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
              </widget>
             </item>
             <item row="1" column="0">
@@ -543,7 +546,7 @@ background-color: white;
                <item row="1" column="1">
                 <widget class="QComboBox" name="ocrLanguage">
                  <property name="currentIndex">
-                  <number>5</number>
+                  <number>19</number>
                  </property>
                  <item>
                   <property name="text">
@@ -705,7 +708,7 @@ background-color: white;
                   <enum>Qt::LeftToRight</enum>
                  </property>
                  <property name="text">
-                  <string>-l eng</string>
+                  <string>-l rus</string>
                  </property>
                 </widget>
                </item>

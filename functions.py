@@ -28,6 +28,32 @@ class StartQT4(QMainWindow):
     self.toggleBinding()
   
   
+  def ocrFinished(self):
+    for i in range(self.ui.pageList.count()):
+      page = self.ui.pageList.item(i)
+      
+      scaleFactor = self.ui.pagePreview.sceneRect().width() / page.get_size()[0]
+      height = self.ui.pagePreview.sceneRect().height()
+      y_coord = self.ui.pagePreview.sceneRect().y()
+      print(y_coord)
+      print('Scale Factor: ' + str(scaleFactor))
+      
+      for line in page.boxing.children:
+        for word in line.children:
+          scene = self.ui.pagePreview.scene()
+          
+          self.ui.pagePreview.rectangles.append(
+            scene.addRect(
+              word.perimeter['xmin'] * scaleFactor,
+              height - word.perimeter['ymin'] * scaleFactor + y_coord,
+              (word.perimeter['xmax'] - word.perimeter['xmin']) * scaleFactor,
+              (word.perimeter['ymin'] - word.perimeter['ymax']) * scaleFactor
+              ,
+              self.ui.pagePreview.defaultPen
+            )
+          )
+          
+  
   
   def previewPage(self, image):
     self.log.log('Displaying page preview image')
@@ -492,7 +518,8 @@ class StartQT4(QMainWindow):
         'ocr':               (self.ui.enableOCR.checkState() == Qt.Checked),
         'ocr_engine':        str(self.ui.ocrEngine.currentText()).lower(),
         'output_format':     str(self.ui.outputFormat.currentText()).lower(),
-        'ocr_options':       str(self.ui.ocrOptions.text()),
+        'tesseract_options': str(self.ui.ocrOptions.text()),
+        'cuneiform_options': str(self.ui.ocrOptions.text()),
         'color_encoder':     str(self.ui.djvuColorEncoder.currentText()),
         'c44_options':       str(self.ui.c44Options.text()),
         'cjb2_options':      str(self.ui.cjb2Options.text()),
@@ -513,6 +540,10 @@ class StartQT4(QMainWindow):
         self.options['bitonal_encoder'] = str(self.ui.djvuBitonalEncoder.currentText())
       elif self.options['output_format'] == 'pdf':
         self.options['bitonal_encoder'] = str(self.ui.pdfBitonalEncoder.currentText())
+      
+      if os.path.isfile(self.options['output_file']):
+        self.log.log('Removing existing book...')
+        os.remove(self.options['output_file'])
       
       self.log.log('Initializing binder...')
       self.binder.initialize(self.pages, self.options)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Sun Jan 22 01:05:36 2012
+# Created: Tue Jan 24 03:55:50 2012
 #      by: PyQt4 UI code generator 4.9
 #
 # WARNING! All changes made in this file will be lost!
@@ -247,6 +247,7 @@ class Ui_MainWindow(object):
     self.gridLayout_3 = QtGui.QGridLayout(self.ocrTab)
     self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
     self.enableOCR = QtGui.QCheckBox(self.ocrTab)
+    self.enableOCR.setChecked(False)
     self.enableOCR.setObjectName(_fromUtf8("enableOCR"))
     self.gridLayout_3.addWidget(self.enableOCR, 0, 0, 1, 1)
     self.frame = QtGui.QFrame(self.ocrTab)
@@ -542,9 +543,9 @@ class Ui_MainWindow(object):
     self.toolBar.addAction(self.startBindingMenuItem)
 
     self.retranslateUi(MainWindow)
-    self.tabWidget.setCurrentIndex(0)
-    self.outputFormat.setCurrentIndex(1)
-    self.ocrLanguage.setCurrentIndex(5)
+    self.tabWidget.setCurrentIndex(2)
+    self.outputFormat.setCurrentIndex(0)
+    self.ocrLanguage.setCurrentIndex(19)
     self.stackedWidget_2.setCurrentIndex(0)
     self.stackedWidget.setCurrentIndex(0)
     QtCore.QObject.connect(self.addPageButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.addFiles)
@@ -594,7 +595,7 @@ class Ui_MainWindow(object):
     self.outputFormat.setItemText(1, QtGui.QApplication.translate("MainWindow", "PDF", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFormat.setItemText(2, QtGui.QApplication.translate("MainWindow", "PostScript", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFileLabel.setText(QtGui.QApplication.translate("MainWindow", "Output File", None, QtGui.QApplication.UnicodeUTF8))
-    self.outputFile.setText(QtGui.QApplication.translate("MainWindow", "/opt/bindery/source/tests/test_pdf/pdf_bindery.pdf", None, QtGui.QApplication.UnicodeUTF8))
+    self.outputFile.setText(QtGui.QApplication.translate("MainWindow", "/home/nikita/Desktop/book.djvu", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFileBrowseButton.setText(QtGui.QApplication.translate("MainWindow", "Browse", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Page Options", None, QtGui.QApplication.UnicodeUTF8))
     self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Scale Pages", None, QtGui.QApplication.UnicodeUTF8))
@@ -641,7 +642,7 @@ class Ui_MainWindow(object):
     self.ocrLanguage.setItemText(27, QtGui.QApplication.translate("MainWindow", "Ukranian", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrLanguage.setItemText(28, QtGui.QApplication.translate("MainWindow", "Vietnamese", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrOptionsLabel.setText(QtGui.QApplication.translate("MainWindow", "Engine Options", None, QtGui.QApplication.UnicodeUTF8))
-    self.ocrOptions.setText(QtGui.QApplication.translate("MainWindow", "-l eng", None, QtGui.QApplication.UnicodeUTF8))
+    self.ocrOptions.setText(QtGui.QApplication.translate("MainWindow", "-l rus", None, QtGui.QApplication.UnicodeUTF8))
     self.label_3.setText(QtGui.QApplication.translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

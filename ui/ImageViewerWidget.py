@@ -7,10 +7,23 @@ class ImageViewerWidget(QGraphicsView):
     
     self.setCursor(Qt.OpenHandCursor)
     
+    self.rectangles = []
+    self.lastRectangle = None
+    
+    self.painter = None
     self.lastClick = None
     self.currentCenter = None
     
     self.setCenter(QPointF(0, 0))
+    self.setMouseTracking(True)
+    
+    self.defaultPen = QPen()
+    self.defaultPen.setBrush(Qt.red)
+    self.defaultPen.setWidth(2)
+    
+    self.hoverPen = QPen()
+    self.hoverPen.setBrush(Qt.green)
+    self.hoverPen.setWidth(2)
 
   def setCenter(self, centerPoint):
     visibleArea = self.mapToScene(self.rect()).boundingRect()
@@ -59,6 +72,15 @@ class ImageViewerWidget(QGraphicsView):
     
     self.setCenter(newCenter)
   
+  def getRectangle(self, point):
+    if type(point) == QPoint:
+      point = QPointF(point)
+    
+    for rectangle in self.rectangles:
+      if rectangle.contains(point):
+        return rectangle
+    
+  
   def mousePressEvent(self, event):
     self.lastClick = event.pos()
     self.setCursor(Qt.ClosedHandCursor)
@@ -68,11 +90,21 @@ class ImageViewerWidget(QGraphicsView):
     self.lastClick = None
   
   def mouseMoveEvent(self, event):
+    rectangle = self.getRectangle(self.mapToScene(event.pos()))
+    
+    if rectangle:
+      rectangle.setPen(self.hoverPen)
+      self.lastRectangle = rectangle
+    elif self.lastRectangle:
+      self.lastRectangle.setPen(self.defaultPen)
+      self.lastRectangle = None
+    
     if self.lastClick != None:
       delta = QPointF(self.mapToScene(self.lastClick) - self.mapToScene(event.pos()))
       self.lastClick = event.pos()
 
       self.setCenter(self.currentCenter + delta)
+
   
   def resizeEvent(self, event):
     self.setCenter(self.mapToScene(self.rect()).boundingRect().center())

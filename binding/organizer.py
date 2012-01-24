@@ -13,6 +13,8 @@ class Page(organizer.Page):
   def __init__(self, path=None):
     organizer.Page.__init__(self, path)
     
+    self.boxing = None
+    
     self.width = None
     self.height = None
     
