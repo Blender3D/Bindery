@@ -18,7 +18,9 @@ install='bindery.install'
 _download_url="https://github.com/Blender3D/Bindery/tarball/master"
 
 build() {
-  wget -c --no-check-certificate "$_download_url" -O "$pkgname".tar.gz
+  rm "$pkgname".tar.gz
+
+  wget --no-check-certificate "$_download_url" -O "$pkgname".tar.gz
   tar xvzf "$pkgname".tar.gz
   
   mv Blender3D-Bindery-* $pkgname
@@ -32,7 +34,7 @@ package() {
   cp $pkgdir/usr/share/bindery/ui/icons/logo.png $pkgdir/usr/share/icons/bindery.png 
   cp $pkgdir/usr/share/bindery/distro/linux/arch/bindery.desktop $pkgdir/usr/share/applications/
   
-  rm -R $pkgdir/usr/share/$pkgname/{distro,bin}
+  rm -R $pkgdir/usr/share/$pkgname/distro
   
   echo "#/bin/bash" > $pkgdir/usr/bin/bindery
   echo "cd /usr/share/bindery/" >> $pkgdir/usr/bin/bindery

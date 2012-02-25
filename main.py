@@ -79,13 +79,6 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
-    self.itemSelectionChanged()
-    
-    self.addFile('/home/nikita/Downloads/out1.tif')
-    self.hideBackground()
-    self.thumbnailer.start()
-    self.ui.enableOCR.setChecked(Qt.Checked)
-
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
       widget.setEnabled(self.ui.pageList.count() > 0)
     

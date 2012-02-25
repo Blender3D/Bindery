@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Fri Feb 24 23:50:47 2012
+# Created: Sat Feb 25 00:00:55 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -203,6 +203,7 @@ class Ui_MainWindow(object):
     self.horizontalLayout_2 = QtGui.QHBoxLayout()
     self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
     self.outputFile = QtGui.QLineEdit(self.groupBox)
+    self.outputFile.setText(_fromUtf8(""))
     self.outputFile.setObjectName(_fromUtf8("outputFile"))
     self.horizontalLayout_2.addWidget(self.outputFile)
     self.outputFileBrowseButton = QtGui.QPushButton(self.groupBox)
@@ -543,7 +544,7 @@ class Ui_MainWindow(object):
     self.toolBar.addAction(self.startBindingMenuItem)
 
     self.retranslateUi(MainWindow)
-    self.tabWidget.setCurrentIndex(2)
+    self.tabWidget.setCurrentIndex(1)
     self.outputFormat.setCurrentIndex(0)
     self.ocrLanguage.setCurrentIndex(19)
     self.stackedWidget_2.setCurrentIndex(0)
@@ -595,7 +596,6 @@ class Ui_MainWindow(object):
     self.outputFormat.setItemText(1, QtGui.QApplication.translate("MainWindow", "PDF", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFormat.setItemText(2, QtGui.QApplication.translate("MainWindow", "PostScript", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFileLabel.setText(QtGui.QApplication.translate("MainWindow", "Output File", None, QtGui.QApplication.UnicodeUTF8))
-    self.outputFile.setText(QtGui.QApplication.translate("MainWindow", "/home/nikita/Desktop/book.djvu", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFileBrowseButton.setText(QtGui.QApplication.translate("MainWindow", "Browse", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Page Options", None, QtGui.QApplication.UnicodeUTF8))
     self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Scale Pages", None, QtGui.QApplication.UnicodeUTF8))

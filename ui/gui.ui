@@ -147,7 +147,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -387,7 +387,7 @@ background-color: white;
                  <item>
                   <widget class="QLineEdit" name="outputFile">
                    <property name="text">
-                    <string>/home/nikita/Desktop/book.djvu</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
