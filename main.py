@@ -76,7 +76,6 @@ class StartQT4(functions.StartQT4, QMainWindow):
     
     self.connect(self.binder, SIGNAL('updateProgress(int, QString)'), self.updateProgress)
     self.connect(self.binder, SIGNAL('updateBackground(int, QColor)'), self.updateBackground)
-    self.connect(self.binder, SIGNAL('ocrFinished'), self.ocrFinished)
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     

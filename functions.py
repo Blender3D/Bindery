@@ -11,7 +11,7 @@ from PyQt4.QtGui import *
 try:
   # Pynotify makes Qt4 segfault. Why?
   #import pynotify
-  pynotify.init('Bindery')
+  #pynotify.init('Bindery')
   
   notify = True
 except:
@@ -26,34 +26,8 @@ class StartQT4(QMainWindow):
     
     QMessageBox.critical(self, '', message, QMessageBox.Ok, QMessageBox.Ok)
     self.toggleBinding()
-  
-  
-  def ocrFinished(self):
-    for i in range(self.ui.pageList.count()):
-      page = self.ui.pageList.item(i)
-      
-      scaleFactor = self.ui.pagePreview.sceneRect().width() / page.get_size()[0]
-      height = self.ui.pagePreview.sceneRect().height()
-      y_coord = self.ui.pagePreview.sceneRect().y()
-      print(y_coord)
-      print('Scale Factor: ' + str(scaleFactor))
-      
-      for line in page.boxing.children:
-        for word in line.children:
-          scene = self.ui.pagePreview.scene()
-          
-          self.ui.pagePreview.rectangles.append(
-            scene.addRect(
-              word.perimeter['xmin'] * scaleFactor,
-              height - word.perimeter['ymin'] * scaleFactor + y_coord,
-              (word.perimeter['xmax'] - word.perimeter['xmin']) * scaleFactor,
-              (word.perimeter['ymin'] - word.perimeter['ymax']) * scaleFactor
-              ,
-              self.ui.pagePreview.defaultPen
-            )
-          )
-          
-  
+
+
   
   def previewPage(self, image):
     self.log.log('Displaying page preview image')
