@@ -18,13 +18,13 @@ class StartQT4(functions.StartQT4, QMainWindow):
   def __init__(self, parent = None):
     QMainWindow.__init__(self, parent)
     
-    QIcon.setThemeName('elementary')
-	  
-    self.version = '2.6'
+    self.version = 'Bindery 2.7.0 (Beta PDF)'
     self.config = config.config('options.ini')
     
     self.ui = gui.Ui_MainWindow()
     self.ui.setupUi(self)
+    
+    self.setWindowTitle(self.version)
     
     self.log = self.ui.debugLog
     

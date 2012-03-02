@@ -368,11 +368,6 @@ background-color: white;
                    <string>PDF</string>
                   </property>
                  </item>
-                 <item>
-                  <property name="text">
-                   <string>PostScript</string>
-                  </property>
-                 </item>
                 </widget>
                </item>
                <item row="1" column="0">
@@ -405,6 +400,9 @@ background-color: white;
             </item>
             <item row="2" column="0">
              <widget class="QGroupBox" name="groupBox_2">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="title">
                <string>Page Options</string>
               </property>
@@ -546,7 +544,7 @@ background-color: white;
                <item row="1" column="1">
                 <widget class="QComboBox" name="ocrLanguage">
                  <property name="currentIndex">
-                  <number>19</number>
+                  <number>5</number>
                  </property>
                  <item>
                   <property name="text">
@@ -708,7 +706,7 @@ background-color: white;
                   <enum>Qt::LeftToRight</enum>
                  </property>
                  <property name="text">
-                  <string>-l rus</string>
+                  <string>-l eng</string>
                  </property>
                 </widget>
                </item>
@@ -765,6 +763,9 @@ p, li { white-space: pre-wrap; }
               </property>
               <widget class="QWidget" name="page">
                <layout class="QFormLayout" name="formLayout">
+                <property name="fieldGrowthPolicy">
+                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                </property>
                 <item row="0" column="0">
                  <widget class="QLabel" name="bitonalEncoderLabel">
                   <property name="text">
@@ -878,19 +879,148 @@ p, li { white-space: pre-wrap; }
               <widget class="QWidget" name="page_2">
                <layout class="QFormLayout" name="formLayout_4">
                 <item row="0" column="0">
-                 <widget class="QLabel" name="label_2">
+                 <widget class="QLabel" name="label_14">
                   <property name="text">
-                   <string>Bitonal Encoder</string>
+                   <string>Page Layout</string>
                   </property>
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QComboBox" name="pdfBitonalEncoder">
+                 <widget class="QComboBox" name="pdfPageLayout">
                   <item>
                    <property name="text">
-                    <string>jbig2</string>
+                    <string>Single Page</string>
                    </property>
                   </item>
+                  <item>
+                   <property name="text">
+                    <string>One Column</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Two Column (Left)</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Two Column (Right)</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Two Page (Left)</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Two Page (Right)</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>Foreground Encoder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QComboBox" name="pdfForegroundEncoder">
+                  <item>
+                   <property name="text">
+                    <string>JBIG2</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>G4</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_13">
+                  <property name="text">
+                   <string>Background Encoder</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QComboBox" name="pdfBackgroundEncoder">
+                  <item>
+                   <property name="text">
+                    <string>JPEG2000</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>JPEG</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>PNG (lossless)</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_10">
+                  <property name="text">
+                   <string>JBIG2 Dictionary Size</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QSpinBox" name="jbig2DictionarySize">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>200</number>
+                  </property>
+                  <property name="value">
+                   <number>15</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>Binarization Threshold</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QSpinBox" name="binarizationThreshold">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_12">
+                  <property name="text">
+                   <string>Maximum Indexed Colors</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QSpinBox" name="maxIndexedColors">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>10</number>
+                  </property>
+                  <property name="value">
+                   <number>4</number>
+                  </property>
                  </widget>
                 </item>
                </layout>

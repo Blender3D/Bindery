@@ -1,8 +1,8 @@
 # Maintainer: Blender3D  <>
 
 pkgname=bindery
-pkgver=20120124
-pkgrel=1
+pkgver=20120225
+pkgrel=2
 pkgdesc="Interactive digital document binding tool for post-processed scanned images"
 
 arch=('any')
@@ -18,8 +18,11 @@ install='bindery.install'
 _download_url="https://github.com/Blender3D/Bindery/tarball/master"
 
 build() {
-  rm "$pkgname".tar.gz
-
+  if [ -f "$pkgname".tar.gz ];
+  then
+    rm "$pkgname".tar.gz
+  fi
+  
   wget --no-check-certificate "$_download_url" -O "$pkgname".tar.gz
   tar xvzf "$pkgname".tar.gz
   

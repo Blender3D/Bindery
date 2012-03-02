@@ -1,4 +1,4 @@
-import sys, os, time, glob
+import sys, os, time, glob, re
 
 import config, tempfile
 from djvubind import utils
@@ -10,19 +10,22 @@ from PyQt4.QtGui import *
 
 try:
   # Pynotify makes Qt4 segfault. Why?
-  #import pynotify
-  #pynotify.init('Bindery')
+  import pynotify
+  pynotify.init('Bindery')
   
   notify = True
 except:
   notify = False
+
+# Until Pynotify works
+notify = False
 
 def all_same(items):
   return all(x == items[0] for x in items)
 
 class StartQT4(QMainWindow):
   def error(self, message):
-    self.log.log('Error: {error}'.format(message), level = 'critical')
+    self.log.log('Error: {error}'.format(message), level='critical')
     
     QMessageBox.critical(self, '', message, QMessageBox.Ok, QMessageBox.Ok)
     self.toggleBinding()
@@ -513,7 +516,12 @@ class StartQT4(QMainWindow):
       if self.options['output_format'] == 'djvu':
         self.options['bitonal_encoder'] = str(self.ui.djvuBitonalEncoder.currentText())
       elif self.options['output_format'] == 'pdf':
-        self.options['bitonal_encoder'] = str(self.ui.pdfBitonalEncoder.currentText())
+        self.options['background_encoder'] = re.sub(r'\s+\(.*?\)', '', str(self.ui.pdfBackgroundEncoder.currentText()))
+        self.options['page_layout'] = str(self.ui.pdfPageLayout.currentText()).replace(' ', '')
+        self.options['foreground_encoder'] = str(self.ui.pdfForegroundEncoder.currentText())
+        self.options['pages_per_dict'] = self.ui.jbig2DictionarySize.value()
+        self.options['binarization_threshold'] = self.ui.binarizationThreshold.value()
+        self.options['max_indexed_colors'] = self.ui.maxIndexedColors.value()
       
       if os.path.isfile(self.options['output_file']):
         self.log.log('Removing existing book...')
