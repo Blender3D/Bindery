@@ -274,23 +274,6 @@ background-color: white;
               </layout>
              </widget>
             </item>
-            <item row="1" column="0">
-             <layout class="QFormLayout" name="formLayout_5">
-              <property name="fieldGrowthPolicy">
-               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-              </property>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="pageGrayscale"/>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="pageGrayscaleLabel">
-                <property name="text">
-                 <string>Convert to grayscale</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="bookTab">
@@ -520,11 +503,6 @@ background-color: white;
                  <item>
                   <property name="text">
                    <string>Tesseract</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>OCRopus</string>
                   </property>
                  </item>
                  <item>
@@ -1038,51 +1016,15 @@ p, li { white-space: pre-wrap; }
            </attribute>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0" colspan="3">
-             <widget class="DebugLog" name="debugLog">
-              <property name="indentation">
-               <number>0</number>
+             <widget class="QTextBrowser" name="debugLog">
+              <property name="styleSheet">
+               <string notr="true">QTextBrowser {
+  font-family: Arial, monospace;
+}</string>
               </property>
-              <property name="uniformRowHeights">
-               <bool>true</bool>
+              <property name="lineWrapMode">
+               <enum>QTextEdit::NoWrap</enum>
               </property>
-              <property name="sortingEnabled">
-               <bool>true</bool>
-              </property>
-              <property name="animated">
-               <bool>true</bool>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-              <attribute name="headerCascadingSectionResizes">
-               <bool>true</bool>
-              </attribute>
-              <attribute name="headerMinimumSectionSize">
-               <number>20</number>
-              </attribute>
-              <attribute name="headerShowSortIndicator" stdset="0">
-               <bool>true</bool>
-              </attribute>
-              <column>
-               <property name="text">
-                <string>Time</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Sender</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Event</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Level</string>
-               </property>
-              </column>
              </widget>
             </item>
             <item row="1" column="0">
@@ -1177,7 +1119,6 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="aboutMenuItem"/>
     <addaction name="actionAbout_Qt4"/>
-    <addaction name="actionAbout_PyQt"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -1234,38 +1175,65 @@ p, li { white-space: pre-wrap; }
    <addaction name="startBindingMenuItem"/>
   </widget>
   <action name="newMenuItem">
+   <property name="icon">
+    <iconset theme="document-new"/>
+   </property>
    <property name="text">
     <string>&amp;New</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="openMenuItem">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>&amp;Open</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="saveMenuItem">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
    <property name="text">
     <string>&amp;Save</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="saveAsMenuItem">
+   <property name="icon">
+    <iconset theme="document-save-as"/>
+   </property>
    <property name="text">
     <string>Save &amp;As...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Alt+S</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="quitMenuItem">
+   <property name="icon">
+    <iconset theme="exit"/>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -1275,18 +1243,36 @@ p, li { white-space: pre-wrap; }
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="helpMenuItem">
+   <property name="icon">
+    <iconset theme="help"/>
+   </property>
    <property name="text">
     <string>Help</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="aboutMenuItem">
+   <property name="icon">
+    <iconset theme="gtk-about"/>
+   </property>
    <property name="text">
     <string>About Bindery</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="filePreviewsMenuItem">
@@ -1299,6 +1285,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>File Previews</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="advancedOptionsMenuItem">
    <property name="checkable">
@@ -1307,21 +1296,31 @@ p, li { white-space: pre-wrap; }
    <property name="checked">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset theme="applications-system"/>
+   </property>
    <property name="text">
     <string>Advanced Options</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionAbout_Qt4">
+   <property name="icon">
+    <iconset theme="gtk-about"/>
+   </property>
    <property name="text">
     <string>About Qt</string>
    </property>
    <property name="menuRole">
     <enum>QAction::AboutQtRole</enum>
    </property>
-  </action>
-  <action name="actionAbout_PyQt">
-   <property name="text">
-    <string>About PyQt</string>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionList">
@@ -1334,6 +1333,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>List</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionIcon">
    <property name="checkable">
@@ -1341,6 +1343,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Icon</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionAdvanced_Mode">
@@ -1353,23 +1358,47 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Advanced Mode</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="addPageMenuItem">
+   <property name="icon">
+    <iconset theme="add"/>
+   </property>
    <property name="text">
     <string>Add Page</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="removePageMenuItem">
+   <property name="icon">
+    <iconset theme="remove"/>
+   </property>
    <property name="text">
     <string>Remove Page</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="startBindingMenuItem">
+   <property name="icon">
+    <iconset theme="media-playback-start"/>
+   </property>
    <property name="text">
     <string>Start Binding</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="insertBlankPageMenuItem">
+   <property name="icon">
+    <iconset theme="document"/>
+   </property>
    <property name="text">
     <string>Insert Blank Page</string>
    </property>
@@ -1391,11 +1420,6 @@ p, li { white-space: pre-wrap; }
    <class>ImageViewerWidget</class>
    <extends>QGraphicsView</extends>
    <header>.ImageViewerWidget</header>
-  </customwidget>
-  <customwidget>
-   <class>DebugLog</class>
-   <extends>QTreeWidget</extends>
-   <header>.DebugLog</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -1735,22 +1759,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>520</x>
      <y>239</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pageGrayscale</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>pageGrayscaleChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>422</x>
-     <y>494</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>709</x>
-     <y>174</y>
     </hint>
    </hints>
   </connection>

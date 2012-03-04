@@ -5,21 +5,22 @@ import sys, os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-import functions, config
+import functions
 
 from thumbnailer import Thumbnailer
 from previewer import Previewer
 
 from binding.binder import Binder
+from functionality import sorting, dialogs, error
 
-from ui import gui, project_files, resources_rc, BookListWidget, DebugLog, ImageViewerWidget
+from ui import gui, project_files, resources_rc, BookListWidget, ImageViewerWidget
 
-class StartQT4(functions.StartQT4, QMainWindow):
+class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4, QMainWindow):
   def __init__(self, parent = None):
     QMainWindow.__init__(self, parent)
     
     self.version = 'Bindery 2.7.0 (Beta PDF)'
-    self.config = config.config('options.ini')
+    self.settings = QSettings('Bindery {}'.format(self.version), 'Blender3D ')
     
     self.ui = gui.Ui_MainWindow()
     self.ui.setupUi(self)
@@ -62,6 +63,11 @@ class StartQT4(functions.StartQT4, QMainWindow):
     self.ui.moveDownButton.setIcon(self.QIconFromTheme('go-down'))
     self.ui.moveToBottomButton.setIcon(self.QIconFromTheme('go-bottom'))
     
+    self.ui.clearLogButton.setIcon(self.QIconFromTheme('reload'))
+    self.ui.saveLogButton.setIcon(self.QIconFromTheme('document-save'))
+    
+    self.ui.outputFileBrowseButton.setIcon(self.QIconFromTheme('document-save'))
+    
     self.ui.saveMenuItem.setEnabled(False)
     self.ui.startBindingMenuItem.setEnabled(False)
     self.ui.removePageMenuItem.setEnabled(False)
@@ -82,18 +88,19 @@ class StartQT4(functions.StartQT4, QMainWindow):
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
       widget.setEnabled(self.ui.pageList.count() > 0)
     
+    self.itemSelectionChanged()
+    
   def QIconFromTheme(self, name):
     if QIcon.hasThemeIcon(name):
-      self.log.log('Loading icon (theme): {0}'.format(name))
       return QIcon.fromTheme(name)
     else:
-      self.log.log('Loading icon (fallback): {0}'.format(name))
       return QIcon(':/icons/{0}.svg'.format(name))
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
   
   bindery = StartQT4()
+  sys.excepthook = bindery.handleError
   bindery.show()
   
   sys.exit(app.exec_())

@@ -1,6 +1,6 @@
 import sys, os, time, glob, re
 
-import config, tempfile
+import tempfile
 from djvubind import utils
 
 from ui.BookListWidget import BookListWidget, BookListWidgetItem
@@ -17,24 +17,11 @@ try:
 except:
   notify = False
 
-# Until Pynotify works
-notify = False
-
 def all_same(items):
   return all(x == items[0] for x in items)
 
 class StartQT4(QMainWindow):
-  def error(self, message):
-    self.log.log('Error: {error}'.format(message), level='critical')
-    
-    QMessageBox.critical(self, '', message, QMessageBox.Ok, QMessageBox.Ok)
-    self.toggleBinding()
-
-
-  
   def previewPage(self, image):
-    self.log.log('Displaying page preview image')
-    
     if self.ui.pagePreview.scene():
       self.ui.pagePreview.scene().clear()
       self.ui.pagePreview.scene().addPixmap(QPixmap().fromImage(image))
@@ -81,48 +68,10 @@ class StartQT4(QMainWindow):
   
   
   
-  def moveItemToTop(self):
-    self.log.log('Moving selected item to top')
-    currentRow = self.ui.pageList.row(self.ui.pageList.currentItem())
-    
-    self.ui.pageList.insertItem(0, self.ui.pageList.takeItem(currentRow))
-    self.ui.pageList.setCurrentRow(0)
-  
-  
-  
-  def moveItemUp(self):
-    self.log.log('Moving selected item up')
-    currentRow = self.ui.pageList.row(self.ui.pageList.currentItem())
-    
-    self.ui.pageList.insertItem(currentRow - 1, self.ui.pageList.takeItem(currentRow))
-    self.ui.pageList.setCurrentRow(currentRow - 1 if currentRow != 0 else 0)
-  
-  
-  
-  def moveItemDown(self):
-    self.log.log('Moving selected item down')
-    currentRow = self.ui.pageList.row(self.ui.pageList.currentItem())
-    
-    self.ui.pageList.insertItem(currentRow + 1, self.ui.pageList.takeItem(currentRow))
-    self.ui.pageList.setCurrentRow(currentRow + 1 if currentRow != self.ui.pageList.count() - 1 else self.ui.pageList.count() - 1) 
-  
-  
-  
-  def moveItemToBottom(self):
-    self.log.log('Moving selected item to bottom')
-    currentRow = self.ui.pageList.row(self.ui.pageList.currentItem())
-    
-    self.ui.pageList.insertItem(self.ui.pageList.count() - 1, self.ui.pageList.takeItem(currentRow))
-    self.ui.pageList.setCurrentRow(self.ui.pageList.count() - 1)
-  
-  
-  
   def pageGrayscaleChanged(self, state):
     if state == Qt.PartiallyChecked:
       state = Qt.Checked
       self.ui.pageGrayscale.setCheckState(Qt.Checked)
-    
-    self.log.log('Page grayscale changed to {state}'.format(state = (state == Qt.Checked)))
     
     for page in self.ui.pageList.selectedItems():
       page.grayscale = (state == Qt.Checked)
@@ -130,14 +79,12 @@ class StartQT4(QMainWindow):
   
   
   def makeIcon(self, index, icon):
-    self.log.log('Showing the icon of element {number}'.format(number = index))
     item = self.ui.pageList.item(index)
     item.setIcon(QIcon(QPixmap.fromImage(icon)))
   
   
   
   def outputFormatChanged(self, choice):
-    self.log.log('Output file format changed to {format}'.format(format = self.ui.outputFormat.currentText()))
     self.ui.stackedWidget.setCurrentIndex(choice)
   
   
@@ -157,7 +104,6 @@ class StartQT4(QMainWindow):
     self.addFile(self.blank_image.name, index=self.ui.pageList.currentRow(), title='blank.tif')
     self.blank_image.close()
     
-    self.log.log('Starting thumbnailer...')
     self.thumbnailer.start()
 
   
@@ -184,60 +130,8 @@ class StartQT4(QMainWindow):
   
 
   
-  def showProjectDialog(self):
-    self.log.log('Showing New Project dialog...')
-    self.projectFiles.show()    
-
-
-
-  def showFileDialog(self):
-    self.log.log('Displaying directory selection dialog...')
-    directory = QFileDialog.getExistingDirectory(self, 'Input directory', self.config.get('startup', 'input_directory'))
-    self.log.log('Selected directory: {directory}'.format(directory = directory))
-    
-    if str(directory) != '':
-      self.projectFilesUi.inputDirectory.setText(str(directory) + '/')
-      
-      self.config.set('startup', 'input_directory', str(directory) + '/')
-      
-      for file in glob.glob(str(directory) + '/*'):
-        item = QListWidgetItem(os.path.split(file)[-1])
-        item.setStatusTip(file)
-        
-        if os.path.splitext(os.path.split(file)[-1])[-1] not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
-          item.setFlags(Qt.NoItemFlags)
-        else:
-          self.log.log('Rejecting file due to extension: {filename}'.format(filename=filename))
-
-        self.log.log('Adding file: {filename}'.format(filename=filename))
-        self.projectFilesUi.offProjectList.addItem(item)
-    else:
-      self.log.log('User closed dialog')
-  
-  
-  
-  def showSaveDialog(self):
-    filename = str(self.ui.outputFormat.currentText())
-    filename = 'Book.{extension}'.format(extension=filename.lower())
-    filetype = '{filetype} Document (*.{extension})'.format(filetype=filename, extension=filename.lower())
-    
-    self.log.log('Displaying file save dialog...')
-    self.ui.outputFile.setText(QFileDialog.getSaveFileName(self, 'Save output file', self.config.get('startup', 'output_directory') + filename, filetype))
-    
-    if str(self.ui.outputFile.text()) != '':
-      self.log.log('File name is: "{filename}"'.format(filename=self.ui.outputFile.text()))
-      
-      self.projectFilesUi.outputFile.setText(self.ui.outputFile.text())
-      self.config.set('startup', 'output_directory', os.path.split(str(self.ui.outputFile.text()))[0] + '/')
-    else:
-      self.log.log('User closed dialog')
-  
-  
-  
   def addToProject(self):
     for item in self.projectFilesUi.offProjectList.selectedItems():
-      self.log.log('Adding file to page list: {filename}'.format(filename=item.path))
-      
       self.projectFilesUi.offProjectList.takeItem(self.projectFilesUi.offProjectList.row(item))
       self.projectFilesUi.inProjectList.addItem(item)
 
@@ -245,8 +139,6 @@ class StartQT4(QMainWindow):
   
   def removeFromProject(self):
     for item in self.projectFilesUi.inProjectList.selectedItems():
-      self.log.log('Removing file from page list: {filename}'.format(filename=item.path))
-      
       self.projectFilesUi.inProjectList.takeItem(self.projectFilesUi.inProjectList.row(item))
       self.projectFilesUi.offProjectList.addItem(item)
   
@@ -258,29 +150,19 @@ class StartQT4(QMainWindow):
       item = BookListWidgetItem(os.path.split(filename)[-1] if not title else title, filename)
       
       if filename not in [str(self.ui.pageList.item(i).path) for i in range(self.ui.pageList.count())]:
-        self.log.log('Adding file: {filename}'.format(filename=filename))
-        
         if index:
           self.ui.pageList.insertItem(index, item)
         else:
           self.ui.pageList.addItem(item)
         
         return True
-      else:
-        self.log.log('Rejecting duplicate file')
-    else:
-      self.log.log('Rejecting file due to extension: {filename}'.format(filename=filename))
     
     return False
   
   
   
   def filesDropped(self, files):
-    self.log.log('Files dropped')
-    
     for filename in files:
-      self.log.log('Dropped file name: {filename}'.format(filename=filename))
-      
       self.addFile(filename)
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
@@ -288,34 +170,11 @@ class StartQT4(QMainWindow):
   
     if self.ui.pageList.count() > 0:
       self.hideBackground()
-      
-      self.log.log('Starting thumbnailer...')
-      self.thumbnailer.start()
-  
-  
-  
-  def addFiles(self):
-    self.log.log('Files selected')
-    
-    for filename in QFileDialog.getOpenFileNames(self, 'Add files to project', self.config.get('startup', 'input_directory')):
-      self.log.log('Selected file name: {filename}'.format(filename=filename))
-
-      self.addFile(filename)
-    
-    for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
-      widget.setEnabled(self.ui.pageList.count() > 0)
-  
-    if self.ui.pageList.count() > 0:
-      self.hideBackground()
-      
-      self.log.log('Starting thumbnailer...')
       self.thumbnailer.start()
   
   
   
   def changeOCRLanguage(self, language):
-    self.log.log('Changing OCR language to "{language}"'.format(language = language))
-    
     currentOptions = str(self.ui.ocrOptions.text())
     arguments = currentOptions.split(' ')
     
@@ -332,13 +191,10 @@ class StartQT4(QMainWindow):
   
   def projectFilesAccepted(self):
     self.ui.outputFile.setText(self.projectFilesUi.outputFile.text())
-    self.log.log('Project files accepted')
     
     if self.projectFilesUi.inProjectList.count() == 0:
-      self.log.log('There are no pages to process!')
       QMessageBox.warning(self, '', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
     elif self.ui.outputFile.text() == '':
-      self.log.log('There is no output file!')
       QMessageBox.warning(self, '', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:
       self.projectFiles.close()
@@ -348,7 +204,6 @@ class StartQT4(QMainWindow):
         item = BookListWidgetItem(str(orig.text()), str(orig.statusTip()))
         
         if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in range(self.ui.pageList.count())]:
-          self.log.log('Adding file: {file}'.format(file = item.path))
           self.ui.pageList.addItem(item)
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
@@ -356,15 +211,12 @@ class StartQT4(QMainWindow):
     
     if self.ui.pageList.count() > 0:
       self.hideBackground()
-      
-      self.log.log('Starting thumbnailer...')
       self.thumbnailer.start()
   
   
   
   def removeFiles(self):
     for item in self.ui.pageList.selectedItems():
-      self.log.log('Removing page: {file}'.format(file = item.path))
       self.ui.pageList.takeItem(self.ui.pageList.row(item))
     
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
@@ -374,38 +226,25 @@ class StartQT4(QMainWindow):
   
   
   
-  def togglePreviews(self, on = True):
+  def togglePreviews(self, on=True):
     self.previews = on
     
-    self.log.log('Toggling page previews to {state)'.format(state = on))
-    
     if on:
-      self.log.log('Turning thumbnailer on...')
       self.thumbnailer.die = False
       
       while self.thumbnailer.isRunning():
-        self.log.log('Waiting for thumbnailer to finish...')
         time.wait(0.1)
       
-      self.log.log('Resetting icons:')
-      
       for i in range(self.ui.pageList.count()):
-        self.log.log('Resetting icon {number}'.format(number = i))
         self.ui.pageList.item(i).resetIcon()
       
-      self.log.log('Starting thumbnailer...')
       self.thumbnailer.start()
     else:
-      self.log.log('Stopping thumbnailer...')
       self.thumbnailer.die = True
-    
-    self.log.log()
   
   
   
   def updateProgress(self, value, message):
-    self.log.log('Binding status: {message} - {value}%'.format(value = value, message = message))
-    
     self.ui.progressBar.setValue(value)
     self.ui.progressBar.setFormat('{0} - %p%'.format(message))
   
@@ -415,37 +254,6 @@ class StartQT4(QMainWindow):
     self.ui.pageList.item(item).setBackground(color)
   
   
-  def saveDebugLog(self):
-    #output = QFileDialog.getSaveFileName(self, 'Save debug log', 'bindery.log', 'Log file (*.log)')
-    output = '/opt/bindery/source/tests/bindery.log'
-    handle = open(output, 'w')
-    
-    table = []
-    
-    if output != '':
-      self.log.log('Saving debug log to: {filename}'.format(filename = output))
-      
-      table.append(['Time', 'Caller', 'Message', 'Level'])
-      
-      for i in range(self.ui.debugLog.topLevelItemCount()):
-        item = self.ui.debugLog.topLevelItem(i)
-        table.append([str(item.text(j)) for j in range(item.columnCount())])
-      
-      column_paddings = []
-      
-      for i in range(len(table[0])):
-        column_paddings.append(max([len(row[i]) for row in table]))
-
-      for row in table:
-        handle.write(row[0].ljust(column_paddings[0] + 4))
-
-        for i in range(1, len(row)):
-          handle.write(row[i].ljust(column_paddings[i] + 4))
-        
-        handle.write('\n')
-    else:
-      self.log.log('User closed the debug log save dialog')
-  
   def clearDebugLog(self):
     if QMessageBox.question(self, '', 'Are you sure you want to clear the debug log?', QMessageBox.Yes, QMessageBox.No) == QMessageBox.Yes:
       self.ui.debugLog.clear()
@@ -453,13 +261,11 @@ class StartQT4(QMainWindow):
   
   
   def finishedBinding(self):
-    self.log.log('Finished binding')
-    
     self.ui.progressBar.reset()
     
     self.ui.startButton.setText('Start')
-    self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
-    self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
+    self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-start'))
+    self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
     
     if notify:
       self.log.log('Showing notification via notification daemon...')
@@ -487,8 +293,8 @@ class StartQT4(QMainWindow):
       self.pages = [self.ui.pageList.item(i) for i in range(self.ui.pageList.count())]
     
       self.ui.startButton.setText('Stop')
-      self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
-      self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-stop', QIcon(':/icons/media-playback-stop.png')))
+      self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-stop'))
+      self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-stop'))
       
       self.options = {
         'output_file':       str(self.ui.outputFile.text()),
@@ -537,8 +343,8 @@ class StartQT4(QMainWindow):
       self.ui.progressBar.reset()
       
       self.ui.startButton.setText('Start')
-      self.ui.startButton.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
-      self.ui.startBindingMenuItem.setIcon(QIcon.fromTheme('media-playback-start', QIcon(':/icons/media-playback-start.png')))
+      self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-start'))
+      self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
       
       for i in range(self.ui.pageList.count()):
         self.ui.pageList.item(i).setBackground(QColor(0, 0, 0, 0))
