@@ -62,14 +62,10 @@ class BookListWidgetItem(QListWidgetItem, organizer.Page):
     QListWidgetItem.__init__(self)
     organizer.Page.__init__(self, filepath)
     
-    print(self.height)
-    
     self.defaultIcon = True
-    
     self.number = 0
     
     self.setText(text)
-    
     self.setSizeHint(QSize(72, 72))
     self.resetIcon()
   

@@ -1,4 +1,5 @@
 *.pyc
+*.tar.gz
 
 temp_graphics.ppm
 temp_graphics.tif
@@ -8,6 +9,9 @@ temp_textual.tif
 build/
 dist/
 tests/
+test/
+src/
+pkg/
 
 __pycache__
 .pynative
