@@ -1,4 +1,4 @@
-import os, time, shutil, glob, sys
+import os, time, shutil, glob, sys, tempfile
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -134,6 +134,20 @@ class Binder(QThread):
     
     if not self.die:
       self.book.get_dpi()
+    
+    metadata = tempfile.NamedTemporaryFile(delete=False)
+
+    for prop in ['Title', 'Author', 'Subject', 'Keywords']:
+      if prop.strip():
+        metadata.write('{prop}{sep} "{value}"\n'.format(
+          prop=prop,
+          sep=':' if self.options['output_format'] == 'pdf' else '',
+          value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
+        ).encode())
+    
+    metadata.close()
+    
+    self.book.suppliments['metadata'] = metadata.name
     
     if self.options['ocr'] and not self.die:
       self.get_ocr()

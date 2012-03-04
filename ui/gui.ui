@@ -317,6 +317,16 @@ background-color: white;
                <item row="2" column="1">
                 <widget class="QLineEdit" name="bookAuthor"/>
                </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="keywordsLabel">
+                 <property name="text">
+                  <string>Keywords</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="bookKeywords"/>
+               </item>
               </layout>
              </widget>
             </item>
@@ -1414,6 +1424,7 @@ p, li { white-space: pre-wrap; }
    <header>.BookListWidget</header>
    <slots>
     <signal>dropped(QStringList)</signal>
+    <signal>clicked()</signal>
    </slots>
   </customwidget>
   <customwidget>
@@ -1539,38 +1550,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>pageList</sender>
-   <signal>itemSelectionChanged()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>itemSelectionChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>138</x>
-     <y>302</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>356</x>
-     <y>282</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>removePageMenuItem</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>removeFiles()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>356</x>
-     <y>282</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>addPageMenuItem</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -1593,8 +1572,8 @@ p, li { white-space: pre-wrap; }
    <slot>moveItemDown()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>521</x>
-     <y>467</y>
+     <x>554</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>505</x>
@@ -1609,8 +1588,8 @@ p, li { white-space: pre-wrap; }
    <slot>moveItemToTop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>354</x>
-     <y>467</y>
+     <x>396</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>350</x>
@@ -1625,8 +1604,8 @@ p, li { white-space: pre-wrap; }
    <slot>moveItemUp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>428</x>
-     <y>470</y>
+     <x>466</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>398</x>
@@ -1641,12 +1620,12 @@ p, li { white-space: pre-wrap; }
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>368</x>
-     <y>104</y>
+     <x>646</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
-     <x>368</x>
-     <y>130</y>
+     <x>646</x>
+     <y>251</y>
     </hint>
    </hints>
   </connection>
@@ -1657,8 +1636,8 @@ p, li { white-space: pre-wrap; }
    <slot>moveItemToBottom()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>592</x>
-     <y>472</y>
+     <x>643</x>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>579</x>
@@ -1753,12 +1732,12 @@ p, li { white-space: pre-wrap; }
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>485</x>
-     <y>144</y>
+     <x>682</x>
+     <y>172</y>
     </hint>
     <hint type="destinationlabel">
-     <x>520</x>
-     <y>239</y>
+     <x>682</x>
+     <y>261</y>
     </hint>
    </hints>
   </connection>
@@ -1775,6 +1754,38 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>356</x>
      <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removePageMenuItem</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>removeFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pageList</sender>
+   <signal>itemSelectionChanged()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>itemSelectionChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-3</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>

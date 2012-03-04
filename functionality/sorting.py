@@ -11,7 +11,6 @@ class Sorting(QMainWindow):
   
   
   def moveItemUp(self):
-    asd
     currentRow = self.ui.pageList.row(self.ui.pageList.currentItem())
     
     self.ui.pageList.insertItem(currentRow - 1, self.ui.pageList.takeItem(currentRow))

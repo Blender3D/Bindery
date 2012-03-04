@@ -1,5 +1,3 @@
-import os, time, shutil, glob, sys, platform
-
 from djvubind import encode
 
 from PyQt4.QtCore import *

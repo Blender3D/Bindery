@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Sun Mar  4 15:56:11 2012
+# Created: Sun Mar  4 18:02:58 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -172,6 +172,12 @@ class Ui_MainWindow(object):
     self.bookAuthor = QtGui.QLineEdit(self.groupBox_3)
     self.bookAuthor.setObjectName(_fromUtf8("bookAuthor"))
     self.formLayout_8.setWidget(2, QtGui.QFormLayout.FieldRole, self.bookAuthor)
+    self.keywordsLabel = QtGui.QLabel(self.groupBox_3)
+    self.keywordsLabel.setObjectName(_fromUtf8("keywordsLabel"))
+    self.formLayout_8.setWidget(3, QtGui.QFormLayout.LabelRole, self.keywordsLabel)
+    self.bookKeywords = QtGui.QLineEdit(self.groupBox_3)
+    self.bookKeywords.setObjectName(_fromUtf8("bookKeywords"))
+    self.formLayout_8.setWidget(3, QtGui.QFormLayout.FieldRole, self.bookKeywords)
     self.gridLayout_8.addWidget(self.groupBox_3, 0, 0, 1, 1)
     self.groupBox = QtGui.QGroupBox(self.bookTab)
     self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -606,8 +612,6 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.startBindingMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.toggleBinding)
     QtCore.QObject.connect(self.newMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.showProjectDialog)
     QtCore.QObject.connect(self.filePreviewsMenuItem, QtCore.SIGNAL(_fromUtf8("triggered(bool)")), MainWindow.togglePreviews)
-    QtCore.QObject.connect(self.pageList, QtCore.SIGNAL(_fromUtf8("itemSelectionChanged()")), MainWindow.itemSelectionChanged)
-    QtCore.QObject.connect(self.removePageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.removeFiles)
     QtCore.QObject.connect(self.addPageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.addFiles)
     QtCore.QObject.connect(self.moveDownButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.moveItemDown)
     QtCore.QObject.connect(self.moveToTopButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.moveItemToTop)
@@ -621,6 +625,8 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.saveLogButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.saveDebugLog)
     QtCore.QObject.connect(self.ocrEngine, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), self.stackedWidget_2.setCurrentIndex)
     QtCore.QObject.connect(self.insertBlankPageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.addBlankPage)
+    QtCore.QObject.connect(self.removePageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.removeFiles)
+    QtCore.QObject.connect(self.pageList, QtCore.SIGNAL(_fromUtf8("itemSelectionChanged()")), MainWindow.itemSelectionChanged)
     QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
   def retranslateUi(self, MainWindow):
@@ -638,6 +644,7 @@ class Ui_MainWindow(object):
     self.label_6.setText(QtGui.QApplication.translate("MainWindow", "Title", None, QtGui.QApplication.UnicodeUTF8))
     self.label_7.setText(QtGui.QApplication.translate("MainWindow", "Subject", None, QtGui.QApplication.UnicodeUTF8))
     self.label_9.setText(QtGui.QApplication.translate("MainWindow", "Author", None, QtGui.QApplication.UnicodeUTF8))
+    self.keywordsLabel.setText(QtGui.QApplication.translate("MainWindow", "Keywords", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Book Options", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFormatLabel.setText(QtGui.QApplication.translate("MainWindow", "Output Format", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFormat.setItemText(0, QtGui.QApplication.translate("MainWindow", "DjVu", None, QtGui.QApplication.UnicodeUTF8))

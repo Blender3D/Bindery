@@ -27,7 +27,7 @@ class Dialogs(QMainWindow):
         item = QListWidgetItem(os.path.split(file)[-1])
         item.setStatusTip(file)
         
-        if os.path.splitext(os.path.split(file)[-1])[-1] not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
+        if os.path.splitext(os.path.split(file)[-1])[-1].lower() not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
           item.setFlags(Qt.NoItemFlags)
 
         self.projectFilesUi.offProjectList.addItem(item)
@@ -75,27 +75,9 @@ class Dialogs(QMainWindow):
   
   
   def saveDebugLog(self):
-    output = QFileDialog.getSaveFileName(self, 'Save debug log', 'bindery.log', 'Log file (*.log)')
+    output = QFileDialog.getSaveFileName(self, 'Save debug log', 'bindery.log', 'Log File (*.log)')
     
     if output:
       handle = open(output, 'w')
-      table = []
-      
-      table.append(['Time', 'Caller', 'Message', 'Level'])
-      
-      for i in range(self.ui.debugLog.topLevelItemCount()):
-        item = self.ui.debugLog.topLevelItem(i)
-        table.append([str(item.text(j)) for j in range(item.columnCount())])
-      
-      column_paddings = []
-      
-      for i in range(len(table[0])):
-        column_paddings.append(max([len(row[i]) for row in table]))
-
-      for row in table:
-        handle.write(row[0].ljust(column_paddings[0] + 4))
-
-        for i in range(1, len(row)):
-          handle.write(row[i].ljust(column_paddings[i] + 4))
-        
-        handle.write('\n')
+      handle.write(self.ui.debugLog.plainText())
+      handle.close()

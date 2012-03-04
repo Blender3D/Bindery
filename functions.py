@@ -38,16 +38,9 @@ class StartQT4(QMainWindow):
     if self.selected:
       self.ui.pageTab.setEnabled(True)
       
-      for widget in [self.ui.removePageButton, self.ui.removePageMenuItem, self.ui.pageGrayscale]:
+      for widget in [self.ui.removePageButton, self.ui.removePageMenuItem]:
+        print(len(self.selected))
         widget.setEnabled(len(self.selected) > 0)
-      
-      if all_same([page.grayscale for page in self.selected]):
-        if self.selected[0].grayscale:
-          self.ui.pageGrayscale.setCheckState(Qt.Checked)
-        else:
-          self.ui.pageGrayscale.setCheckState(Qt.Unchecked)
-      else:
-        self.ui.pageGrayscale.setCheckState(Qt.PartiallyChecked)
       
       self.ui.singlePageFrame.setEnabled(len(self.selected) == 1)
       
@@ -254,6 +247,7 @@ class StartQT4(QMainWindow):
     self.ui.pageList.item(item).setBackground(color)
   
   
+  
   def clearDebugLog(self):
     if QMessageBox.question(self, '', 'Are you sure you want to clear the debug log?', QMessageBox.Yes, QMessageBox.No) == QMessageBox.Yes:
       self.ui.debugLog.clear()
@@ -268,25 +262,17 @@ class StartQT4(QMainWindow):
     self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
     
     if notify:
-      self.log.log('Showing notification via notification daemon...')
       notification = pynotify.Notification('Bindery', 'Your book has finished binding', 'ui/icons/logo.png')
       notification.show()
     else:
-      self.log.log('Showing notification via standard message box...')
       QMessageBox.information(self, '', 'Your book has finished binding.', QMessageBox.Ok, QMessageBox.Ok)
-    
-    self.log.log('Resetting backgrounds of pages...')
     
     for i in range(self.ui.pageList.count()):
       self.ui.pageList.item(i).setBackground(QColor(0, 0, 0, 0))
   
   
   def toggleBinding(self):
-    self.log.log('Toggling binding...')
-    
     if str(self.ui.startButton.text()) == 'Start':
-      self.log.log('Starting binding')
-      
       if self.ui.outputFile.text() == '':
         self.showSaveDialog()
       
@@ -314,10 +300,9 @@ class StartQT4(QMainWindow):
         'title':             str(self.ui.bookTitle.text()),
         'author':            str(self.ui.bookAuthor.text()),
         'subject':           str(self.ui.bookSubject.text()),
+        'keywords':           str(self.ui.bookKeywords.text()),
         'win_path':          'C:\\Program Files\\DjVuZone\\DjVuLibre\\'
       }
-      
-      self.log.log('Output format is {format}'.format(format=self.ui.djvuBitonalEncoder.currentText()))
       
       if self.options['output_format'] == 'djvu':
         self.options['bitonal_encoder'] = str(self.ui.djvuBitonalEncoder.currentText())
@@ -330,15 +315,11 @@ class StartQT4(QMainWindow):
         self.options['max_indexed_colors'] = self.ui.maxIndexedColors.value()
       
       if os.path.isfile(self.options['output_file']):
-        self.log.log('Removing existing book...')
         os.remove(self.options['output_file'])
       
-      self.log.log('Initializing binder...')
       self.binder.initialize(self.pages, self.options)
-      self.log.log('Starting binder...')
       self.binder.start()
     else:
-      self.log.log('Stopping binder...')
       self.binder.die = True
       self.ui.progressBar.reset()
       

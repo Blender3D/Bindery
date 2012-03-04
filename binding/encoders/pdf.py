@@ -20,7 +20,7 @@ class PDFEncoder(QThread):
     self.sendProgress(100.0 * float(self.done) / float(self.total))
 
   def sendProgress(self, percent):
-    self.emit(SIGNAL('updateProgress(int, int)'), (percent * 0.50) + 50.0, int(self.done))
+    self.emit(SIGNAL('updateProgress(int, int)'), (percent * 0.50) + 50.0, int(self.done - 1))
   
   def sendError(self, message):
     self.emit(SIGNAL('error(QString)'), message)
@@ -66,12 +66,26 @@ class PDFEncoder(QThread):
       )
     
     command += ' -o "{}"'.format(outfile.replace(' ', '\\ '))
+    command += ' -M "{}"'.format(book.suppliments['metadata'])
     
     for page in book.pages:
+      if ' ' in page.path:
+        self.sendError('pdfbeads breaks when image paths have a space in them. Please rename the images and paths so that there are no spaces.')
       command += ' "{}"'.format(page.path)
     
     self.total = len(book.pages)
     self._pdfbeads(command)
+    
+    for page in book.pages:
+      filepath, filename = os.path.split(page.path)
+      basename, extension = os.path.splitext(filename)
+      
+      jbig2 = os.path.join(filepath, basename + '.jbig2')
+      symfile = os.path.join(filepath, basename + '.sym')
+      
+      for path in [jbig2, symfile]:
+        if os.path.exists(path):
+          os.remove(path)
     
     self.exit()
     
