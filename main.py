@@ -82,9 +82,6 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
-    for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
-      widget.setEnabled(self.ui.pageList.count() > 0)
-    
     self.itemSelectionChanged()
     
   def QIconFromTheme(self, name):
