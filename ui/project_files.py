@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/project_files.ui'
 #
-# Created: Sun Mar  4 18:05:36 2012
+# Created: Tue Apr 10 21:38:14 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -147,4 +147,4 @@ class Ui_ProjectFilesDialog(object):
     self.cancelButton.setText(QtGui.QApplication.translate("ProjectFilesDialog", "&Cancel", None, QtGui.QApplication.UnicodeUTF8))
     self.okButton.setText(QtGui.QApplication.translate("ProjectFilesDialog", "&OK", None, QtGui.QApplication.UnicodeUTF8))
 
-from . import resources_rc
+import resources_rc

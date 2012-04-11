@@ -94,7 +94,7 @@ if __name__ == '__main__':
   app = QApplication(sys.argv)
   
   bindery = StartQT4()
-  #sys.excepthook = bindery.handleError
+  sys.excepthook = bindery.handleError
   bindery.show()
   
   sys.exit(app.exec_())

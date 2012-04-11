@@ -1,7 +1,11 @@
 import sys, os, time, glob, re
 
 import tempfile
-from djvubind import utils
+
+try:
+  from djvubind import utils
+except:
+  from binding.djvubind import utils
 
 from ui.BookListWidget import BookListWidget, BookListWidgetItem
 
@@ -79,6 +83,7 @@ class StartQT4(QMainWindow):
   
   def outputFormatChanged(self, choice):
     self.ui.stackedWidget.setCurrentIndex(choice)
+    a()
   
   
   
@@ -171,7 +176,7 @@ class StartQT4(QMainWindow):
     currentOptions = str(self.ui.ocrOptions.text())
     arguments = currentOptions.split(' ')
     
-    if currentOptions.find('-l') != -1:
+    if '-l' in currentOptions:
       for i in range(len(arguments) - 1):
         if arguments[i] == '-l':
           arguments[i + 1] = str(language).lower()[:3]

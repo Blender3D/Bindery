@@ -1,4 +1,7 @@
-from djvubind import encode
+try:
+  from djvubind import encode
+except:
+  from ..djvubind import encode
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *

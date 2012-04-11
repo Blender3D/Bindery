@@ -1,7 +1,10 @@
 import os, time, shutil, glob, sys, shlex, platform, struct
 from subprocess import Popen, PIPE, STDOUT
 
-from djvubind import organizer, utils
+try:
+  from djvubind import organizer, utils
+except:
+  from ..djvubind import organizer, utils
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -71,6 +74,7 @@ class PDFEncoder(QThread):
     for page in book.pages:
       if ' ' in page.path:
         self.sendError('pdfbeads breaks when image paths have a space in them. Please rename the images and paths so that there are no spaces.')
+        break
       command += ' "{}"'.format(page.path)
     
     self.total = len(book.pages)

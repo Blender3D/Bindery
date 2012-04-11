@@ -19,7 +19,7 @@ class Error(QMainWindow):
       line = linecache.getline(filename, lineno, f.f_globals)
       
       if line:
-        exception += ['    ' + line.strip()]
+        exception.append('    ' + line.strip())
       
       trace = trace.tb_next
     
