@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
-import sys, os
+import sys, os, warnings
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+with warnings.catch_warnings():
+  warnings.simplefilter('ignore')
 
-import functions
+  from PyQt4.QtCore import *
+  from PyQt4.QtGui import *
+
+  import functions
 
 from thumbnailer import Thumbnailer
 from previewer import Previewer
@@ -16,16 +19,20 @@ from functionality import sorting, dialogs, error
 from ui import gui, project_files, resources_rc, BookListWidget, ImageViewerWidget
 
 class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4, QMainWindow):
+  name = 'Bindery'
+  version = '2.7.1'
+  caption = '(Beta PDF)'
+  full_name = ' '.join([name, version, caption])
+  
   def __init__(self, parent = None):
     QMainWindow.__init__(self, parent)
     
-    self.version = 'Bindery 2.7.0 (Beta PDF)'
-    self.settings = QSettings('Bindery {}'.format(self.version), 'Blender3D ')
+    self.settings = QSettings(' '.join([self.name, self.version]), 'Blender3D ')
     
     self.ui = gui.Ui_MainWindow()
     self.ui.setupUi(self)
     
-    self.setWindowTitle(self.version)
+    self.setWindowTitle(self.full_name)
     
     self.projectFiles = QDialog(self)
     self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
@@ -48,8 +55,6 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.ui.newMenuItem.setIcon(self.QIconFromTheme('document-new'))
     self.ui.openMenuItem.setIcon(self.QIconFromTheme('document-open'))
     self.ui.saveMenuItem.setIcon(self.QIconFromTheme('document-save'))
-    
-    self.ui.insertBlankPageMenuItem.setIcon(self.QIconFromTheme('document-new'))
     
     self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
     self.ui.addPageMenuItem.setIcon(self.QIconFromTheme('list-add'))
@@ -82,6 +87,7 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.connect(self.binder, SIGNAL('finishedBinding'), self.finishedBinding)
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
+    self.checkDependencies()
     self.itemSelectionChanged()
     
   def QIconFromTheme(self, name):

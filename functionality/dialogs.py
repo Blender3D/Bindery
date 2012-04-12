@@ -42,7 +42,7 @@ class Dialogs(QMainWindow):
     self.ui.outputFile.setText(QFileDialog.getSaveFileName(
       self,
       'Save output file',
-      os.path.join(self.settings.value('startup/output_directory', QDir.homePath()), filename), filetype)
+      os.path.join(str(self.settings.value('startup/output_directory', QDir.homePath())), filename), filetype)
     )
     
     if str(self.ui.outputFile.text()) != '':

@@ -34,6 +34,7 @@ class Binder(QThread):
   
   def error(self, message):
     self.emit(SIGNAL('error(QString)'), message)
+    self.terminate()
   
   def add_file(self, filename, type = 'page'):
     if type == 'page':
@@ -44,15 +45,16 @@ class Binder(QThread):
     return self.book.pages[-1]
   
   def analyze(self):
-    queue = []
+    if self.options['output_format'] == 'pdf':
+      bad_pages = filter(lambda page: ' ' in page.path, self.book.pages)
+      
+      if bad_pages:
+        self.error('pdfbeads breaks when image paths have a space in them. Please rename the images and paths so that there are no spaces.')
     
-    for page in self.book.pages:
-      queue.append(page)
-    
-    self.queue = queue
+    self.queue = self.book.pages[:]
     self.quit = False
     self.total = len(self.queue)
-    base_percent = 25 if self.options['ocr'] else 50
+    base_percent = 25 + 25 * self.options['ocr']
     
     while not self.quit:
       if len(self.queue) == 0:
@@ -90,12 +92,7 @@ class Binder(QThread):
       self.emit(SIGNAL('finishedBinding'))
   
   def get_ocr(self):
-    queue = []
-    
-    for page in self.book.pages:
-      queue.append(page)
-    
-    self.queue = queue
+    self.queue = self.book.pages[:]
     self.total = len(self.queue)
     self.quit = False
     
@@ -114,10 +111,7 @@ class Binder(QThread):
       )
       
       page = self.queue.pop()
-      boxing = self.ocr.analyze(page.path)
-      
       page.text = ocr.translate(boxing)
-      page.boxing = ocr.translate(boxing, False)
       
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
     
@@ -125,9 +119,7 @@ class Binder(QThread):
   
   def run(self):
     self.die = False
-    
-    for page in self.pages:
-      self.book.pages.append(page)
+    self.book.pages.extend(self.pages)
     
     if not self.die:
       self.analyze()
@@ -138,12 +130,11 @@ class Binder(QThread):
     metadata = tempfile.NamedTemporaryFile(delete=False)
 
     for prop in ['Title', 'Author', 'Subject', 'Keywords']:
-      if prop.strip():
-        metadata.write('{prop}{sep} "{value}"\n'.format(
-          prop=prop,
-          sep=':' if self.options['output_format'] == 'pdf' else '',
-          value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
-        ).encode())
+      metadata.write('{prop}{sep} "{value}"\n'.format(
+        prop=prop,
+        sep=':' if self.options['output_format'] == 'pdf' else '',
+        value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
+      ).encode())
     
     metadata.close()
     

@@ -281,54 +281,18 @@ background-color: white;
             <string>Book</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_8">
-            <item row="0" column="0">
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>Book Metadata</string>
+            <item row="3" column="0">
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
-              <layout class="QFormLayout" name="formLayout_8">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_6">
-                 <property name="text">
-                  <string>Title</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLineEdit" name="bookTitle"/>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>Subject</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="bookSubject"/>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_9">
-                 <property name="text">
-                  <string>Author</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLineEdit" name="bookAuthor"/>
-               </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="keywordsLabel">
-                 <property name="text">
-                  <string>Keywords</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1">
-                <widget class="QLineEdit" name="bookKeywords"/>
-               </item>
-              </layout>
-             </widget>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
             <item row="1" column="0">
              <widget class="QGroupBox" name="groupBox">
@@ -375,7 +339,7 @@ background-color: white;
                  <item>
                   <widget class="QLineEdit" name="outputFile">
                    <property name="text">
-                    <string/>
+                    <string>/opt/bindery/source/tests/book.djvu</string>
                    </property>
                   </widget>
                  </item>
@@ -391,6 +355,71 @@ background-color: white;
               </layout>
              </widget>
             </item>
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Book Metadata</string>
+              </property>
+              <layout class="QFormLayout" name="formLayout_8">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Title</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="bookTitle">
+                 <property name="text">
+                  <string>A Test Title</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Subject</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="bookSubject">
+                 <property name="text">
+                  <string>Subject of the Book</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Author</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="bookAuthor">
+                 <property name="text">
+                  <string>The Author; The Other Author</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="keywordsLabel">
+                 <property name="text">
+                  <string>Keywords</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="bookKeywords">
+                 <property name="text">
+                  <string>Keyword1, Keyword2</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item row="2" column="0">
              <widget class="QGroupBox" name="groupBox_2">
               <property name="enabled">
@@ -400,6 +429,9 @@ background-color: white;
                <string>Page Options</string>
               </property>
               <layout class="QFormLayout" name="formLayout_6">
+               <property name="fieldGrowthPolicy">
+                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+               </property>
                <item row="0" column="0">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
@@ -461,19 +493,6 @@ background-color: white;
                </item>
               </layout>
              </widget>
-            </item>
-            <item row="3" column="0">
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
             </item>
            </layout>
           </widget>
@@ -1155,7 +1174,6 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;Tools</string>
     </property>
-    <addaction name="insertBlankPageMenuItem"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -1180,13 +1198,14 @@ p, li { white-space: pre-wrap; }
    <addaction name="separator"/>
    <addaction name="addPageMenuItem"/>
    <addaction name="removePageMenuItem"/>
-   <addaction name="insertBlankPageMenuItem"/>
    <addaction name="separator"/>
    <addaction name="startBindingMenuItem"/>
   </widget>
   <action name="newMenuItem">
    <property name="icon">
-    <iconset theme="document-new"/>
+    <iconset theme="document-new">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -1200,7 +1219,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="openMenuItem">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Open</string>
@@ -1214,7 +1235,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="saveMenuItem">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -1228,7 +1251,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="saveAsMenuItem">
    <property name="icon">
-    <iconset theme="document-save-as"/>
+    <iconset theme="document-save-as">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Save &amp;As...</string>
@@ -1242,7 +1267,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="quitMenuItem">
    <property name="icon">
-    <iconset theme="exit"/>
+    <iconset theme="exit">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -1259,7 +1286,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="helpMenuItem">
    <property name="icon">
-    <iconset theme="help"/>
+    <iconset theme="help">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Help</string>
@@ -1273,7 +1302,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="aboutMenuItem">
    <property name="icon">
-    <iconset theme="gtk-about"/>
+    <iconset theme="gtk-about">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>About Bindery</string>
@@ -1307,7 +1338,9 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="applications-system"/>
+    <iconset theme="applications-system">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Advanced Options</string>
@@ -1321,7 +1354,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAbout_Qt4">
    <property name="icon">
-    <iconset theme="gtk-about"/>
+    <iconset theme="gtk-about">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>About Qt</string>
@@ -1374,7 +1409,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="addPageMenuItem">
    <property name="icon">
-    <iconset theme="add"/>
+    <iconset theme="add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Add Page</string>
@@ -1385,7 +1422,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="removePageMenuItem">
    <property name="icon">
-    <iconset theme="remove"/>
+    <iconset theme="remove">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Remove Page</string>
@@ -1396,21 +1435,12 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="startBindingMenuItem">
    <property name="icon">
-    <iconset theme="media-playback-start"/>
+    <iconset theme="media-playback-start">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Start Binding</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
-  </action>
-  <action name="insertBlankPageMenuItem">
-   <property name="icon">
-    <iconset theme="document"/>
-   </property>
-   <property name="text">
-    <string>Insert Blank Page</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
@@ -1738,22 +1768,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>682</x>
      <y>261</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>insertBlankPageMenuItem</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>addBlankPage()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>356</x>
-     <y>282</y>
     </hint>
    </hints>
   </connection>

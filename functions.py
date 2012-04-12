@@ -21,10 +21,33 @@ try:
 except:
   notify = False
 
+
+
 def all_same(items):
   return all(x == items[0] for x in items)
 
+
+
 class StartQT4(QMainWindow):
+  def checkDependencies(self):
+    ocr_engines = [str(self.ui.ocrEngine.itemText(index)) for index in range(self.ui.ocrEngine.count())]
+    installed_ocr_engines = []
+    
+    for index, engine in enumerate(ocr_engines):
+      if utils.is_executable(engine.lower()):
+        installed_ocr_engines.append(engine)
+      else:
+        self.ui.ocrEngine.removeItem(index)
+    
+    if not installed_ocr_engines:
+      self.ui.tabWidget.removeTab(2)
+    
+    
+    if not utils.is_executable('pdfbeads'):
+      self.ui.outputFormat.removeItem(1)
+  
+  
+  
   def previewPage(self, image):
     if self.ui.pagePreview.scene():
       self.ui.pagePreview.scene().clear()
@@ -82,28 +105,12 @@ class StartQT4(QMainWindow):
   
   
   def outputFormatChanged(self, choice):
+    folder, filename = os.path.split(str(self.ui.outputFile.text()))
+    basename, extension = os.path.splitext(filename)
+    
+    self.ui.outputFile.setText(os.path.join(folder, basename + '.' + str(self.ui.outputFormat.currentText()).lower()))
     self.ui.stackedWidget.setCurrentIndex(choice)
-    a()
   
-  
-  
-  def addBlankPage(self):
-    self.blank_image = tempfile.NamedTemporaryFile(delete=False, suffix='.png')
-    
-    index = self.ui.pageList.row(self.ui.pageList.currentItem())
-    image_size = self.ui.pageList.currentItem().get_size()
-    
-    utils.execute('convert -size {width}x{height} xc:white "{filename}"'.format(
-      width=image_size[0],
-      height=image_size[1],
-      filename=self.blank_image.name
-    ))
-    
-    self.addFile(self.blank_image.name, index=self.ui.pageList.currentRow(), title='blank.tif')
-    self.blank_image.close()
-    
-    self.thumbnailer.start()
-
   
   
   def hideBackground(self):

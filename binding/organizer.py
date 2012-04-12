@@ -2,7 +2,7 @@ from djvubind import utils, organizer
 
 class Book(organizer.Book):
   def __init__(self):
-    super().__init__()
+    organizer.Book.__init__(self)
   
   def insert_page(self, path):
     self.pages.append(Page(path))
@@ -12,8 +12,6 @@ class Book(organizer.Book):
 class Page(organizer.Page):
   def __init__(self, path=None):
     organizer.Page.__init__(self, path)
-    
-    self.boxing = None
     
     self.width = None
     self.height = None

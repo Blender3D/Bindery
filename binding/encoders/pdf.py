@@ -72,9 +72,6 @@ class PDFEncoder(QThread):
     command += ' -M "{}"'.format(book.suppliments['metadata'])
     
     for page in book.pages:
-      if ' ' in page.path:
-        self.sendError('pdfbeads breaks when image paths have a space in them. Please rename the images and paths so that there are no spaces.')
-        break
       command += ' "{}"'.format(page.path)
     
     self.total = len(book.pages)
