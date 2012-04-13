@@ -45,13 +45,13 @@ class StartQT4(QMainWindow):
       self.windows_path = getenv_system('PATH').split(';')
       
       if os.path.abspath('bin/') not in self.windows_path:
-        setenv_system('PATH', ';'.join([os.path.abspath('bin/')] + self.windows_path)
+        setenv_system('PATH', ';'.join([os.path.abspath('bin/')] + self.windows_path))
     except:
       pass
   
   def restoreWindowsPath(self):
     if self.windows_path:
-      setenv_system('PATH', ';'.join(self.windows_path)
+      setenv_system('PATH', ';'.join(self.windows_path))
   
   def checkDependencies(self):
     self.injectWindowsPath()

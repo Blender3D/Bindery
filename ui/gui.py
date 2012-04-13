@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Thu Apr 12 02:17:42 2012
+# Created: Fri Apr 13 12:44:28 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -171,6 +171,7 @@ class Ui_MainWindow(object):
     self.horizontalLayout_2 = QtGui.QHBoxLayout()
     self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
     self.outputFile = QtGui.QLineEdit(self.groupBox)
+    self.outputFile.setText(_fromUtf8(""))
     self.outputFile.setObjectName(_fromUtf8("outputFile"))
     self.horizontalLayout_2.addWidget(self.outputFile)
     self.outputFileBrowseButton = QtGui.QPushButton(self.groupBox)
@@ -186,24 +187,28 @@ class Ui_MainWindow(object):
     self.label_6.setObjectName(_fromUtf8("label_6"))
     self.formLayout_8.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_6)
     self.bookTitle = QtGui.QLineEdit(self.groupBox_3)
+    self.bookTitle.setText(_fromUtf8(""))
     self.bookTitle.setObjectName(_fromUtf8("bookTitle"))
     self.formLayout_8.setWidget(0, QtGui.QFormLayout.FieldRole, self.bookTitle)
     self.label_7 = QtGui.QLabel(self.groupBox_3)
     self.label_7.setObjectName(_fromUtf8("label_7"))
     self.formLayout_8.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_7)
     self.bookSubject = QtGui.QLineEdit(self.groupBox_3)
+    self.bookSubject.setText(_fromUtf8(""))
     self.bookSubject.setObjectName(_fromUtf8("bookSubject"))
     self.formLayout_8.setWidget(1, QtGui.QFormLayout.FieldRole, self.bookSubject)
     self.label_9 = QtGui.QLabel(self.groupBox_3)
     self.label_9.setObjectName(_fromUtf8("label_9"))
     self.formLayout_8.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_9)
     self.bookAuthor = QtGui.QLineEdit(self.groupBox_3)
+    self.bookAuthor.setText(_fromUtf8(""))
     self.bookAuthor.setObjectName(_fromUtf8("bookAuthor"))
     self.formLayout_8.setWidget(2, QtGui.QFormLayout.FieldRole, self.bookAuthor)
     self.keywordsLabel = QtGui.QLabel(self.groupBox_3)
     self.keywordsLabel.setObjectName(_fromUtf8("keywordsLabel"))
     self.formLayout_8.setWidget(3, QtGui.QFormLayout.LabelRole, self.keywordsLabel)
     self.bookKeywords = QtGui.QLineEdit(self.groupBox_3)
+    self.bookKeywords.setText(_fromUtf8(""))
     self.bookKeywords.setObjectName(_fromUtf8("bookKeywords"))
     self.formLayout_8.setWidget(3, QtGui.QFormLayout.FieldRole, self.bookKeywords)
     self.gridLayout_8.addWidget(self.groupBox_3, 0, 0, 1, 1)
@@ -653,17 +658,12 @@ class Ui_MainWindow(object):
     self.outputFormat.setItemText(0, QtGui.QApplication.translate("MainWindow", "DjVu", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFormat.setItemText(1, QtGui.QApplication.translate("MainWindow", "PDF", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFileLabel.setText(QtGui.QApplication.translate("MainWindow", "Output File", None, QtGui.QApplication.UnicodeUTF8))
-    self.outputFile.setText(QtGui.QApplication.translate("MainWindow", "/opt/bindery/source/tests/book.djvu", None, QtGui.QApplication.UnicodeUTF8))
     self.outputFileBrowseButton.setText(QtGui.QApplication.translate("MainWindow", "Browse", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_3.setTitle(QtGui.QApplication.translate("MainWindow", "Book Metadata", None, QtGui.QApplication.UnicodeUTF8))
     self.label_6.setText(QtGui.QApplication.translate("MainWindow", "Title", None, QtGui.QApplication.UnicodeUTF8))
-    self.bookTitle.setText(QtGui.QApplication.translate("MainWindow", "A Test Title", None, QtGui.QApplication.UnicodeUTF8))
     self.label_7.setText(QtGui.QApplication.translate("MainWindow", "Subject", None, QtGui.QApplication.UnicodeUTF8))
-    self.bookSubject.setText(QtGui.QApplication.translate("MainWindow", "Subject of the Book", None, QtGui.QApplication.UnicodeUTF8))
     self.label_9.setText(QtGui.QApplication.translate("MainWindow", "Author", None, QtGui.QApplication.UnicodeUTF8))
-    self.bookAuthor.setText(QtGui.QApplication.translate("MainWindow", "The Author; The Other Author", None, QtGui.QApplication.UnicodeUTF8))
     self.keywordsLabel.setText(QtGui.QApplication.translate("MainWindow", "Keywords", None, QtGui.QApplication.UnicodeUTF8))
-    self.bookKeywords.setText(QtGui.QApplication.translate("MainWindow", "Keyword1, Keyword2", None, QtGui.QApplication.UnicodeUTF8))
     self.groupBox_2.setTitle(QtGui.QApplication.translate("MainWindow", "Page Options", None, QtGui.QApplication.UnicodeUTF8))
     self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Scale Pages", None, QtGui.QApplication.UnicodeUTF8))
     self.pageScale.setSuffix(QtGui.QApplication.translate("MainWindow", "%", None, QtGui.QApplication.UnicodeUTF8))
