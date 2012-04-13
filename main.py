@@ -10,6 +10,11 @@ with warnings.catch_warnings():
 
   import functions
 
+try:
+  from djvubind import utils
+except:
+  from binding.djvubind import utils
+
 from thumbnailer import Thumbnailer
 from previewer import Previewer
 

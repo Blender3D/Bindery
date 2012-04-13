@@ -1,6 +1,4 @@
-import sys, os, time, glob, re
-
-import tempfile
+import sys, os, time, glob, re, tempfile
 
 try:
   from djvubind import utils
@@ -22,14 +20,38 @@ except:
   notify = False
 
 
-
 def all_same(items):
   return all(x == items[0] for x in items)
 
 
 
 class StartQT4(QMainWindow):
+  def injectWindowsPath(self):
+    try:
+      import win32api, win32con
+      
+      def getenv_system(name):
+        key = win32api.RegOpenKey(win32con.HKEY_LOCAL_MACHINE, 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment')
+        value = win32api.ExpandEnvironmentStrings(str(win32api.RegQueryValueEx(key, name)[0]))
+        win32api.RegCloseKey(key)
+        
+        return value
+
+      def setenv_system(name, value):
+        key = win32api.RegOpenKeyEx(win32con.HKEY_LOCAL_MACHINE, 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment', 0, win32con.KEY_WRITE)
+        win32api.RegSetValueEx(key, name, 0, win32con.REG_SZ, value)
+        win32api.RegCloseKey(rkey)
+      
+      self.windows_path = getenv_system('PATH').split(';')
+      
+      if os.path.abspath('bin/') not in self.windows_path:
+        setenv_system('PATH', ';'.join([os.path.abspath('bin/')] + self.windows_path)
+    except:
+      pass
+  
   def checkDependencies(self):
+    self.injectWindowsPath()
+    
     ocr_engines = [str(self.ui.ocrEngine.itemText(index)) for index in range(self.ui.ocrEngine.count())]
     installed_ocr_engines = []
     
