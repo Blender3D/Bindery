@@ -47,10 +47,13 @@ class PDFEncoder(QThread):
         if output.strip().startswith('Prepared data for'):
           self.progress(0.5)
         
+        if output.strip().startswith('Unable to open'):
+          self.progress(0.5)
+        
         if output.strip().startswith('Processed'):
           self.progress(0.5)
         
-    return None
+    return True
   
   def enc_book(self, book, outfile):
     command = "pdfbeads "
@@ -73,6 +76,8 @@ class PDFEncoder(QThread):
     
     for page in book.pages:
       command += ' "{}"'.format(page.path)
+    
+    print command
     
     self.total = len(book.pages)
     self._pdfbeads(command)

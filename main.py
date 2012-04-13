@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, os, warnings
+import sys, os, warnings, glob
 
 with warnings.catch_warnings():
   warnings.simplefilter('ignore')
@@ -93,7 +93,19 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.connect(self.binder, SIGNAL('error(QString)'), self.error)
     
     self.checkDependencies()
+    
+    if '--test' in sys.argv:
+      for image in sorted(glob.glob('tests/*.tif')):
+        self.addFile(image)
+        
+        self.ui.outputFile.setText('/tmp/output.djvu')
+    
+    for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
+      widget.setEnabled(self.ui.pageList.count() > 0)
+    
     self.itemSelectionChanged()
+    self.hideBackground()
+    self.thumbnailer.start()
     
   def QIconFromTheme(self, name):
     if QIcon.hasThemeIcon(name):
@@ -105,7 +117,7 @@ if __name__ == '__main__':
   app = QApplication(sys.argv)
   
   bindery = StartQT4()
-  sys.excepthook = bindery.handleError
+  #sys.excepthook = bindery.handleError
   bindery.show()
   
   sys.exit(app.exec_())

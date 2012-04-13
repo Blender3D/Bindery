@@ -21,6 +21,7 @@ import multiprocessing
 import os
 import subprocess
 import sys
+import platform
 
 def error(message):
   sys.stderr.write(message + '\n')
@@ -182,8 +183,8 @@ def execute(cmd, capture=False):
     """
     
     if platform.system() == 'Windows':
-      cmd = ['bin\\' + cmd[0]] + cmd[1:]
-    
+      cmd = 'bin\\' + cmd
+
     with open(os.devnull, 'w') as void:
         if capture:
             sub = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=void)

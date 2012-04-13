@@ -84,8 +84,8 @@ class Page:
         """
         Check if the image is bitonal.
         """
-
-        if utils.execute('identify -ping "{0}"'.format(self.path), capture=True).decode('utf8').find('Bilevel') == -1:
+        
+        if 'Bilevel' not in utils.execute('identify -ping "{0}"'.format(self.path), capture=True).decode('utf8'):
             self.bitonal = False
         else:
             if (utils.execute('identify -ping -format %z "{0}"'.format(self.path), capture=True).decode('utf8') != ('1' + os.linesep)):

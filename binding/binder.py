@@ -36,21 +36,15 @@ class Binder(QThread):
     self.emit(SIGNAL('error(QString)'), message)
     self.terminate()
   
-  def add_file(self, filename, type = 'page'):
-    if type == 'page':
+  def add_file(self, filename, category='page'):
+    if category == 'page':
       self.book.insert_page(filename)
     else:
-      self.book.suppliments[type] = filename
+      self.book.suppliments[category] = filename
 
     return self.book.pages[-1]
   
   def analyze(self):
-    if self.options['output_format'] == 'pdf':
-      bad_pages = filter(lambda page: ' ' in page.path, self.book.pages)
-      
-      if bad_pages:
-        self.error('pdfbeads breaks when image paths have a space in them. Please rename the images and paths so that there are no spaces.')
-    
     self.queue = self.book.pages[:]
     self.quit = False
     self.total = len(self.queue)
@@ -60,7 +54,7 @@ class Binder(QThread):
       if len(self.queue) == 0:
         self.quit = True
         break
-      
+
       self.emit(
         SIGNAL('updateProgress(int, QString)'),
         int(base_percent * (1 - float(len(self.queue)) / float(self.total))),
@@ -74,7 +68,7 @@ class Binder(QThread):
       page.is_bitonal()
       page.get_dpi()
       page.get_size()
-
+      
       if page.grayscale and not page.bitonal:
         utils.simple_exec('convert "{0}" -type Grayscale "{0}.grayscale"'.format(page.path))
         page.path += '.grayscale'
@@ -119,7 +113,10 @@ class Binder(QThread):
   
   def run(self):
     self.die = False
-    self.book.pages.extend(self.pages)
+    self.book.pages = self.pages[:]
+    
+    for page in self.book.pages:
+      print page.path
     
     if not self.die:
       self.analyze()
@@ -127,18 +124,17 @@ class Binder(QThread):
     if not self.die:
       self.book.get_dpi()
     
-    metadata = tempfile.NamedTemporaryFile(delete=False)
-
-    for prop in ['Title', 'Author', 'Subject', 'Keywords']:
-      metadata.write('{prop}{sep} "{value}"\n'.format(
-        prop=prop,
-        sep=':' if self.options['output_format'] == 'pdf' else '',
-        value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
-      ).encode())
-    
-    metadata.close()
-    
-    self.book.suppliments['metadata'] = metadata.name
+    with tempfile.NamedTemporaryFile(delete=False) as metadata:
+      for prop in ['Title', 'Author', 'Subject', 'Keywords']:
+        metadata.write('{prop}{sep} "{value}"\n'.format(
+          prop=prop,
+          sep=':' if self.options['output_format'] == 'pdf' else '',
+          value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
+        ).encode())
+      
+      metadata.close()
+      
+      self.book.suppliments['metadata'] = metadata.name
     
     if self.options['ocr'] and not self.die:
       self.get_ocr()

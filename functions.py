@@ -271,7 +271,7 @@ class StartQT4(QMainWindow):
     self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
     
     if notify:
-      notification = pynotify.Notification('Bindery', 'Your book has finished binding', 'ui/icons/logo.png')
+      notification = pynotify.Notification('Bindery', 'Your book has finished binding', os.path.abspath('ui/icons/logo.png'))
       notification.show()
     else:
       QMessageBox.information(self, '', 'Your book has finished binding.', QMessageBox.Ok, QMessageBox.Ok)
@@ -286,7 +286,7 @@ class StartQT4(QMainWindow):
         self.showSaveDialog()
       
       self.pages = [self.ui.pageList.item(i) for i in range(self.ui.pageList.count())]
-    
+      
       self.ui.startButton.setText('Stop')
       self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-stop'))
       self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-stop'))
