@@ -49,6 +49,10 @@ class StartQT4(QMainWindow):
     except:
       pass
   
+  def restoreWindowsPath(self):
+    if self.windows_path:
+      setenv_system('PATH', ';'.join(self.windows_path)
+  
   def checkDependencies(self):
     self.injectWindowsPath()
     
@@ -355,6 +359,7 @@ class StartQT4(QMainWindow):
       self.binder.start()
     else:
       self.binder.die = True
+      self.binder.terminate()
       self.ui.progressBar.reset()
       
       self.ui.startButton.setText('Start')
