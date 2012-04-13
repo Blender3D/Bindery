@@ -27,8 +27,6 @@ def all_same(items):
 
 class StartQT4(QMainWindow):
   def checkDependencies(self):
-    self.injectWindowsPath()
-    
     ocr_engines = [str(self.ui.ocrEngine.itemText(index)) for index in range(self.ui.ocrEngine.count())]
     installed_ocr_engines = []
     
