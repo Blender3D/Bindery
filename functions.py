@@ -31,14 +31,14 @@ class StartQT4(QMainWindow):
       import win32api, win32con
       
       def getenv_system(name):
-        key = win32api.RegOpenKey(win32con.HKEY_LOCAL_MACHINE, 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment')
+        key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment')
         value = win32api.ExpandEnvironmentStrings(str(win32api.RegQueryValueEx(key, name)[0]))
         win32api.RegCloseKey(key)
         
         return value
 
       def setenv_system(name, value):
-        key = win32api.RegOpenKeyEx(win32con.HKEY_LOCAL_MACHINE, 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment', 0, win32con.KEY_WRITE)
+        key = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER, 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment', 0, win32con.KEY_WRITE)
         win32api.RegSetValueEx(key, name, 0, win32con.REG_SZ, value)
         win32api.RegCloseKey(rkey)
       
