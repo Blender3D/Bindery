@@ -100,10 +100,6 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
       return QIcon.fromTheme(name)
     else:
       return QIcon(':/icons/{0}.svg'.format(name))
-  
-  def closeEvent(self, event): 
-    self.restoreWindowsPath()
-    event.accept()
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
