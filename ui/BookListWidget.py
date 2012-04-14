@@ -74,5 +74,6 @@ class BookListWidgetItem(QListWidgetItem, organizer.Page):
     self.defaultIcon = True
   
   def removeIcon(self):
-    self.setIcon(QIcon(QPixmap(72, 72)))
+    self.setSizeHint(QSize(-1, 20))
+    self.setIcon(QIcon())
     self.defaultIcon = True

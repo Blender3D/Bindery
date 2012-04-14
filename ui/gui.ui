@@ -1139,6 +1139,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <addaction name="actionNot_Implemented_Yet"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -1153,14 +1154,6 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <widget class="QMenu" name="menuPage_Style">
-     <property name="title">
-      <string>Page Style</string>
-     </property>
-     <addaction name="actionList"/>
-     <addaction name="actionIcon"/>
-    </widget>
-    <addaction name="menuPage_Style"/>
     <addaction name="filePreviewsMenuItem"/>
    </widget>
    <widget class="QMenu" name="menuPage">
@@ -1174,6 +1167,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <addaction name="actionReload_Thumbnails"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -1446,6 +1440,27 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
   </action>
+  <action name="actionNot_Implemented_Yet">
+   <property name="text">
+    <string>Not Implemented Yet</string>
+   </property>
+  </action>
+  <action name="actionNot_Implemented_Yet_2">
+   <property name="text">
+    <string>Not Implemented Yet</string>
+   </property>
+  </action>
+  <action name="actionReload_Thumbnails">
+   <property name="icon">
+    <iconset theme="reload"/>
+   </property>
+   <property name="text">
+    <string>Reload Thumbnails</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1565,7 +1580,7 @@ p, li { white-space: pre-wrap; }
   </connection>
   <connection>
    <sender>filePreviewsMenuItem</sender>
-   <signal>triggered(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
    <slot>togglePreviews()</slot>
    <hints>
@@ -1699,7 +1714,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>681</x>
-     <y>314</y>
+     <y>356</y>
     </hint>
     <hint type="destinationlabel">
      <x>356</x>
@@ -1715,7 +1730,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>682</x>
-     <y>280</y>
+     <y>322</y>
     </hint>
     <hint type="destinationlabel">
      <x>356</x>
@@ -1803,6 +1818,86 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAbout_Qt4</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutQt()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>aboutMenuItem</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>aboutBindery()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>helpMenuItem</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>notImplemented()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saveAsMenuItem</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>notImplemented()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionReload_Thumbnails</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>reloadThumbnails()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>addFiles()</slot>
@@ -1823,5 +1918,9 @@ p, li { white-space: pre-wrap; }
   <slot>clearDebugLog()</slot>
   <slot>saveDebugLog()</slot>
   <slot>addBlankPage()</slot>
+  <slot>notImplemented()</slot>
+  <slot>reloadThumbnails()</slot>
+  <slot>aboutQt()</slot>
+  <slot>aboutBindery()</slot>
  </slots>
 </ui>

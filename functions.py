@@ -26,6 +26,53 @@ def all_same(items):
 
 
 class StartQT4(QMainWindow):
+  def notImplemented(self):
+    QMessageBox.information(self, '', 'This feature is still being implemented.', QMessageBox.Ok, QMessageBox.Ok)
+  
+  
+  
+  def aboutBindery(self):
+    QMessageBox.about(self, 'About ' + self.full_name, '''
+    <h1>{}</h1>
+    
+    <h2>Description</h2>
+    <p>
+      {}
+    </p>
+    
+    <h2>Modules</h2>
+    <p>
+      Bindery bundles a modified version <a href="http://code.google.com/p/djvubind/">djvubind</a>, a command-line DjVu 
+      document binder written in Python. Without this project, Bindery would never have started. I would like to thank 
+      strider1551 for his wonderful project!
+    </p>
+    
+    <h2>Bugs and Feature Requests</h2>
+    <p>
+      If you find a bug in Bindery or would like to see a new feature added, please 
+      <a href="https://github.com/Blender3D/Bindery/issues">file a report</a> on GitHub. It's a painless process and helps keep all
+      issues organized.
+    </p>
+    
+    <h2>Legal</h2>
+    <p>
+      This software and all of its modules are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU Public License</a>.
+    </p>
+    
+    <p>
+      <small>
+        Copyright &copy; 2012 Blender3D  &lt;<a href="mailto:"></a>&gt;
+      </small>
+    </p>
+    '''.format(self.full_name, self.description))
+  
+  
+  
+  def aboutQt(self):
+    QMessageBox.aboutQt(self)
+  
+  
+  
   def checkDependencies(self):
     ocr_engines = [str(self.ui.ocrEngine.itemText(index)) for index in range(self.ui.ocrEngine.count())]
     installed_ocr_engines = []
@@ -38,7 +85,6 @@ class StartQT4(QMainWindow):
     
     if not installed_ocr_engines:
       self.ui.tabWidget.removeTab(2)
-    
     
     if not utils.is_executable('pdfbeads'):
       self.ui.outputFormat.removeItem(1)
@@ -227,22 +273,33 @@ class StartQT4(QMainWindow):
     self.hideBackground()
   
   
+  def reloadThumbnails(self):
+    self.thumbnailer.die = False
+    self.thumbnailer.start()
   
-  def togglePreviews(self, on=True):
-    self.previews = on
+  
+  def togglePreviews(self):
+    self.previews = not self.previews
     
-    if on:
-      self.thumbnailer.die = False
+    if not self.previews:
+      self.ui.actionReload_Thumbnails.setEnabled(False)
+      
+      self.thumbnailer.die = True
       
       while self.thumbnailer.isRunning():
         time.wait(0.1)
       
       for i in range(self.ui.pageList.count()):
-        self.ui.pageList.item(i).resetIcon()
+        self.ui.pageList.item(i).removeIcon()
       
       self.thumbnailer.start()
     else:
-      self.thumbnailer.die = True
+      for i in range(self.ui.pageList.count()):
+        self.ui.pageList.item(i).setSizeHint(QSize(72, 72))
+        self.ui.pageList.item(i).resetIcon()
+      
+      self.ui.actionReload_Thumbnails.setEnabled(True)
+      self.reloadThumbnails()
   
   
   

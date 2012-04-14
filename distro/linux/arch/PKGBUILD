@@ -1,8 +1,8 @@
 # Maintainer: Blender3D  <>
 
 pkgname=bindery
-pkgver=20120225
-pkgrel=2
+pkgver=20120414
+pkgrel=1
 pkgdesc="Interactive digital document binding tool for post-processed scanned images"
 
 arch=('any')

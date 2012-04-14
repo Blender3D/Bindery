@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Fri Apr 13 16:51:22 2012
+# Created: Sat Apr 14 04:00:07 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -495,8 +495,6 @@ class Ui_MainWindow(object):
     self.menuAbout.setObjectName(_fromUtf8("menuAbout"))
     self.menuView = QtGui.QMenu(self.menuBar)
     self.menuView.setObjectName(_fromUtf8("menuView"))
-    self.menuPage_Style = QtGui.QMenu(self.menuView)
-    self.menuPage_Style.setObjectName(_fromUtf8("menuPage_Style"))
     self.menuPage = QtGui.QMenu(self.menuBar)
     self.menuPage.setObjectName(_fromUtf8("menuPage"))
     self.menu_Tools = QtGui.QMenu(self.menuBar)
@@ -581,6 +579,13 @@ class Ui_MainWindow(object):
     self.startBindingMenuItem.setIcon(icon1)
     self.startBindingMenuItem.setIconVisibleInMenu(True)
     self.startBindingMenuItem.setObjectName(_fromUtf8("startBindingMenuItem"))
+    self.actionNot_Implemented_Yet = QtGui.QAction(MainWindow)
+    self.actionNot_Implemented_Yet.setObjectName(_fromUtf8("actionNot_Implemented_Yet"))
+    self.actionNot_Implemented_Yet_2 = QtGui.QAction(MainWindow)
+    self.actionNot_Implemented_Yet_2.setObjectName(_fromUtf8("actionNot_Implemented_Yet_2"))
+    self.actionReload_Thumbnails = QtGui.QAction(MainWindow)
+    self.actionReload_Thumbnails.setIconVisibleInMenu(True)
+    self.actionReload_Thumbnails.setObjectName(_fromUtf8("actionReload_Thumbnails"))
     self.menuFile.addAction(self.newMenuItem)
     self.menuFile.addAction(self.openMenuItem)
     self.menuFile.addSeparator()
@@ -588,16 +593,15 @@ class Ui_MainWindow(object):
     self.menuFile.addAction(self.saveAsMenuItem)
     self.menuFile.addSeparator()
     self.menuFile.addAction(self.quitMenuItem)
+    self.menuEdit.addAction(self.actionNot_Implemented_Yet)
     self.menuAbout.addAction(self.helpMenuItem)
     self.menuAbout.addSeparator()
     self.menuAbout.addAction(self.aboutMenuItem)
     self.menuAbout.addAction(self.actionAbout_Qt4)
-    self.menuPage_Style.addAction(self.actionList)
-    self.menuPage_Style.addAction(self.actionIcon)
-    self.menuView.addAction(self.menuPage_Style.menuAction())
     self.menuView.addAction(self.filePreviewsMenuItem)
     self.menuPage.addAction(self.addPageMenuItem)
     self.menuPage.addAction(self.removePageMenuItem)
+    self.menu_Tools.addAction(self.actionReload_Thumbnails)
     self.menuBar.addAction(self.menuFile.menuAction())
     self.menuBar.addAction(self.menuEdit.menuAction())
     self.menuBar.addAction(self.menuPage.menuAction())
@@ -625,7 +629,7 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.startButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.toggleBinding)
     QtCore.QObject.connect(self.startBindingMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.toggleBinding)
     QtCore.QObject.connect(self.newMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.showProjectDialog)
-    QtCore.QObject.connect(self.filePreviewsMenuItem, QtCore.SIGNAL(_fromUtf8("triggered(bool)")), MainWindow.togglePreviews)
+    QtCore.QObject.connect(self.filePreviewsMenuItem, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), MainWindow.togglePreviews)
     QtCore.QObject.connect(self.addPageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.addFiles)
     QtCore.QObject.connect(self.moveDownButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.moveItemDown)
     QtCore.QObject.connect(self.moveToTopButton, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.moveItemToTop)
@@ -640,6 +644,11 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.ocrEngine, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), self.stackedWidget_2.setCurrentIndex)
     QtCore.QObject.connect(self.removePageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.removeFiles)
     QtCore.QObject.connect(self.pageList, QtCore.SIGNAL(_fromUtf8("itemSelectionChanged()")), MainWindow.itemSelectionChanged)
+    QtCore.QObject.connect(self.actionAbout_Qt4, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.aboutQt)
+    QtCore.QObject.connect(self.aboutMenuItem, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.aboutBindery)
+    QtCore.QObject.connect(self.helpMenuItem, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.notImplemented)
+    QtCore.QObject.connect(self.saveAsMenuItem, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.notImplemented)
+    QtCore.QObject.connect(self.actionReload_Thumbnails, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.reloadThumbnails)
     QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
   def retranslateUi(self, MainWindow):
@@ -756,7 +765,6 @@ class Ui_MainWindow(object):
     self.menuEdit.setTitle(QtGui.QApplication.translate("MainWindow", "&Edit", None, QtGui.QApplication.UnicodeUTF8))
     self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
     self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "&View", None, QtGui.QApplication.UnicodeUTF8))
-    self.menuPage_Style.setTitle(QtGui.QApplication.translate("MainWindow", "Page Style", None, QtGui.QApplication.UnicodeUTF8))
     self.menuPage.setTitle(QtGui.QApplication.translate("MainWindow", "Page", None, QtGui.QApplication.UnicodeUTF8))
     self.menu_Tools.setTitle(QtGui.QApplication.translate("MainWindow", "&Tools", None, QtGui.QApplication.UnicodeUTF8))
     self.newMenuItem.setText(QtGui.QApplication.translate("MainWindow", "&New", None, QtGui.QApplication.UnicodeUTF8))
@@ -781,6 +789,9 @@ class Ui_MainWindow(object):
     self.addPageMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Add Page", None, QtGui.QApplication.UnicodeUTF8))
     self.removePageMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Remove Page", None, QtGui.QApplication.UnicodeUTF8))
     self.startBindingMenuItem.setText(QtGui.QApplication.translate("MainWindow", "Start Binding", None, QtGui.QApplication.UnicodeUTF8))
+    self.actionNot_Implemented_Yet.setText(QtGui.QApplication.translate("MainWindow", "Not Implemented Yet", None, QtGui.QApplication.UnicodeUTF8))
+    self.actionNot_Implemented_Yet_2.setText(QtGui.QApplication.translate("MainWindow", "Not Implemented Yet", None, QtGui.QApplication.UnicodeUTF8))
+    self.actionReload_Thumbnails.setText(QtGui.QApplication.translate("MainWindow", "Reload Thumbnails", None, QtGui.QApplication.UnicodeUTF8))
 
 from .BookListWidget import BookListWidget
 from .ImageViewerWidget import ImageViewerWidget

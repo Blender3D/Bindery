@@ -25,9 +25,10 @@ from ui import gui, project_files, resources_rc, BookListWidget, ImageViewerWidg
 
 class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4, QMainWindow):
   name = 'Bindery'
-  version = '2.7.1'
-  caption = '(Beta PDF)'
+  version = '2.7.3'
+  caption = ''
   full_name = ' '.join([name, version, caption])
+  description = 'Bindery is a cross-platform solution to binding scanned pages into PDF and DjVu documents.'
   
   def __init__(self, parent = None):
     QMainWindow.__init__(self, parent)
@@ -38,6 +39,7 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.ui.setupUi(self)
     
     self.setWindowTitle(self.full_name)
+    self.previews = True
     
     self.projectFiles = QDialog(self)
     self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
@@ -60,6 +62,10 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.ui.newMenuItem.setIcon(self.QIconFromTheme('document-new'))
     self.ui.openMenuItem.setIcon(self.QIconFromTheme('document-open'))
     self.ui.saveMenuItem.setIcon(self.QIconFromTheme('document-save'))
+    self.ui.saveAsMenuItem.setIcon(self.QIconFromTheme('document-save-as'))
+    self.ui.quitMenuItem.setIcon(self.QIconFromTheme('exit'))
+    self.ui.helpMenuItem.setIcon(self.QIconFromTheme('help'))
+    self.ui.aboutMenuItem.setIcon(self.QIconFromTheme('gtk-about'))
     
     self.ui.startBindingMenuItem.setIcon(self.QIconFromTheme('media-playback-start'))
     self.ui.addPageMenuItem.setIcon(self.QIconFromTheme('list-add'))
@@ -74,6 +80,9 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.ui.saveLogButton.setIcon(self.QIconFromTheme('document-save'))
     
     self.ui.outputFileBrowseButton.setIcon(self.QIconFromTheme('document-save'))
+    
+    self.ui.actionReload_Thumbnails.setIcon(self.QIconFromTheme('reload'))
+    self.ui.actionAbout_Qt4.setIcon(self.QIconFromTheme('gtk-about'))
     
     self.ui.saveMenuItem.setEnabled(False)
     self.ui.startBindingMenuItem.setEnabled(False)

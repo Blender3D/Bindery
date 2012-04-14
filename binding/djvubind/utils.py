@@ -168,9 +168,6 @@ def simple_exec(cmd):
     returned.
     """
     
-    if platform.system() == 'Windows':
-      cmd = 'bin\\' + cmd
-
     cmd = separate_cmd(cmd)
     with open(os.devnull, 'w') as void:
         sub = subprocess.Popen(cmd, shell=False, stdout=void, stderr=void)
