@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Sat Apr 14 14:30:59 2012
+# Created: Sat Apr 14 17:27:06 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -584,6 +584,7 @@ class Ui_MainWindow(object):
     self.actionNot_Implemented_Yet_2 = QtGui.QAction(MainWindow)
     self.actionNot_Implemented_Yet_2.setObjectName(_fromUtf8("actionNot_Implemented_Yet_2"))
     self.actionReload_Thumbnails = QtGui.QAction(MainWindow)
+    self.actionReload_Thumbnails.setIcon(icon1)
     self.actionReload_Thumbnails.setIconVisibleInMenu(True)
     self.actionReload_Thumbnails.setObjectName(_fromUtf8("actionReload_Thumbnails"))
     self.menuFile.addAction(self.newMenuItem)
@@ -644,11 +645,11 @@ class Ui_MainWindow(object):
     QtCore.QObject.connect(self.ocrEngine, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(int)")), self.stackedWidget_2.setCurrentIndex)
     QtCore.QObject.connect(self.removePageMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.removeFiles)
     QtCore.QObject.connect(self.pageList, QtCore.SIGNAL(_fromUtf8("itemSelectionChanged()")), MainWindow.itemSelectionChanged)
-    QtCore.QObject.connect(self.actionAbout_Qt4, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.aboutQt)
-    QtCore.QObject.connect(self.aboutMenuItem, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.aboutBindery)
-    QtCore.QObject.connect(self.helpMenuItem, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.notImplemented)
+    QtCore.QObject.connect(self.actionAbout_Qt4, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.aboutQt)
+    QtCore.QObject.connect(self.aboutMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.aboutBindery)
+    QtCore.QObject.connect(self.helpMenuItem, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.notImplemented)
     QtCore.QObject.connect(self.saveAsMenuItem, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.notImplemented)
-    QtCore.QObject.connect(self.actionReload_Thumbnails, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.reloadThumbnails)
+    QtCore.QObject.connect(self.actionReload_Thumbnails, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.reloadThumbnails)
     QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
   def retranslateUi(self, MainWindow):
