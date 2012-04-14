@@ -1452,7 +1452,9 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionReload_Thumbnails">
    <property name="icon">
-    <iconset theme="reload"/>
+    <iconset theme="reload">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Reload Thumbnails</string>
@@ -1820,7 +1822,7 @@ p, li { white-space: pre-wrap; }
   </connection>
   <connection>
    <sender>actionAbout_Qt4</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>aboutQt()</slot>
    <hints>
@@ -1836,7 +1838,7 @@ p, li { white-space: pre-wrap; }
   </connection>
   <connection>
    <sender>aboutMenuItem</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>aboutBindery()</slot>
    <hints>
@@ -1852,7 +1854,7 @@ p, li { white-space: pre-wrap; }
   </connection>
   <connection>
    <sender>helpMenuItem</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>notImplemented()</slot>
    <hints>
@@ -1884,7 +1886,7 @@ p, li { white-space: pre-wrap; }
   </connection>
   <connection>
    <sender>actionReload_Thumbnails</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>reloadThumbnails()</slot>
    <hints>
