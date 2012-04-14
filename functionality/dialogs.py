@@ -14,14 +14,13 @@ class Dialogs(QMainWindow):
     directory = QFileDialog.getExistingDirectory(
       self,
       'Input directory',
-      self.settings.value('startup/input_directory', QDir.homePath())
-      ,asd
+      self.settings.value('startup/input_directory', QDir.homePath()).toString()
     )
 
     if str(directory) != '':
-      self.projectFilesUi.inputDirectory.setText(str(directory) + '/')
+      self.projectFilesUi.inputDirectory.setText(str(directory) + os.pathsep)
       
-      self.settings.setValue('startup/input_directory', str(directory) + '/')
+      self.settings.setValue('startup/input_directory', str(directory) + os.pathsep)
       
       for file in glob.glob(str(directory) + '/*'):
         item = QListWidgetItem(os.path.split(file)[-1])
@@ -42,8 +41,9 @@ class Dialogs(QMainWindow):
     self.ui.outputFile.setText(QFileDialog.getSaveFileName(
       self,
       'Save output file',
-      os.path.join(str(self.settings.value('startup/output_directory', QDir.homePath())), filename), filetype)
-    )
+      os.path.join(str(self.settings.value('startup/output_directory', QDir.homePath()).toString()), filename),
+      filetype
+    ))
     
     if str(self.ui.outputFile.text()) != '':
       self.projectFilesUi.outputFile.setText(self.ui.outputFile.text())
@@ -60,7 +60,7 @@ class Dialogs(QMainWindow):
     for filename in QFileDialog.getOpenFileNames(
       self,
       'Add files to project',
-      self.settings.value('startup/input_directory', QDir.homePath())
+      self.settings.value('startup/input_directory', QDir.homePath()).toString()
     ):
       self.addFile(filename)
     
