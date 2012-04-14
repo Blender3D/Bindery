@@ -84,10 +84,10 @@ class StartQT4(QMainWindow):
         self.ui.ocrEngine.removeItem(index)
     
     if not installed_ocr_engines:
-      self.ui.tabWidget.removeTab(2)
+      self.ui.ocrTab.setEnabled(False)
     
     if not utils.is_executable('pdfbeads'):
-      self.ui.outputFormat.removeItem(1)
+      self.ui.outputFormat.model().itemFromIndex(self.ui.outputFormat.model().index(1, self.ui.outputFormat.modelColumn(), self.ui.outputFormat.rootModelIndex())).setEnabled(False)
   
   
   
