@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Sat Apr 14 17:27:06 2012
+# Created: Thu May  3 00:59:07 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -686,7 +686,7 @@ class Ui_MainWindow(object):
     self.enableOCR.setText(QtGui.QApplication.translate("MainWindow", "Enable OCR", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrEngineLabel.setText(QtGui.QApplication.translate("MainWindow", "OCR Engine", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrEngine.setItemText(0, QtGui.QApplication.translate("MainWindow", "Tesseract", None, QtGui.QApplication.UnicodeUTF8))
-    self.ocrEngine.setItemText(1, QtGui.QApplication.translate("MainWindow", "Cuniform", None, QtGui.QApplication.UnicodeUTF8))
+    self.ocrEngine.setItemText(1, QtGui.QApplication.translate("MainWindow", "Cuneiform", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrLanguageLabel.setText(QtGui.QApplication.translate("MainWindow", "Language", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrLanguage.setItemText(0, QtGui.QApplication.translate("MainWindow", "Bulgarian", None, QtGui.QApplication.UnicodeUTF8))
     self.ocrLanguage.setItemText(1, QtGui.QApplication.translate("MainWindow", "Catalan", None, QtGui.QApplication.UnicodeUTF8))

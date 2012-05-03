@@ -101,6 +101,9 @@ background-color: white;
             <property name="text">
              <string>Add page</string>
             </property>
+            <property name="icon">
+             <iconset theme="add"/>
+            </property>
            </widget>
           </item>
           <item>
@@ -536,7 +539,7 @@ background-color: white;
                  </item>
                  <item>
                   <property name="text">
-                   <string>Cuniform</string>
+                   <string>Cuneiform</string>
                   </property>
                  </item>
                 </widget>

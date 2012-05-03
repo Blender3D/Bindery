@@ -9,7 +9,7 @@ def QIconFromTheme(name):
   if QIcon.hasThemeIcon(name):
     return QIcon.fromTheme(name)
   else:
-    return QIcon(':/icons/{0}.svg'.format(name))
+    return QIcon(':/icons/{0}.png'.format(name))
 
 class BookListWidget(QListWidget):
   def __init__(self, type, parent = None):

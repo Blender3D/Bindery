@@ -22,6 +22,7 @@ import glob
 import os
 import shutil
 import sys
+import re
 
 from . import utils
 
@@ -113,39 +114,60 @@ class Encoder:
         """
         Encode files with csepdjvu.
         """
-
+        
+        temp_graphics1 = tempfile.NamedTemporaryFile(delete=False, suffix='.tif')
+        temp_graphics2 = tempfile.NamedTemporaryFile(delete=False, suffix='.ppm')
+        
+        temp_graphics1.close()
+        temp_graphics2.close()
+        
+        temp_textual1 = tempfile.NamedTemporaryFile(delete=False, suffix='.tif')
+        temp_textual2 = tempfile.NamedTemporaryFile(delete=False, suffix='.rle')
+        
+        temp_textual1.close()
+        temp_textual2.close()
+        
         # Separate the bitonal text (scantailor's mixed mode) from everything else.
-        utils.execute('convert -opaque black "{0}" "temp_graphics.tif"'.format(infile))
-        utils.execute('convert +opaque black "{0}" "temp_textual.tif"'.format(infile))
-
+        utils.execute('convert -opaque black "{0}" "{1}"'.format(infile, temp_graphics1.name))
+        utils.execute('convert +opaque black "{0}" "{1}"'.format(infile, temp_textual.name))
+        
+        enc_bitonal_out = tempfile.NamedTemporaryFile(delete=False, suffix='.djvu')
+        enc_bitonal_out.close()
+        
         # Encode the bitonal image.
-        self._cjb2('temp_textual.tif', 'enc_bitonal_out.djvu', dpi)
+        self._cjb2(temp_textual.name, enc_bitonal_out.name, dpi)
 
         # Encode with color with bitonal via csepdjvu
-        utils.execute('ddjvu -format=rle -v "enc_bitonal_out.djvu" "temp_textual.rle"')
-        utils.execute('convert temp_graphics.tif temp_graphics.ppm')
-        with open('temp_merge.mix', 'wb') as mix:
-            with open('temp_textual.rle', 'rb') as rle:
+        utils.execute('ddjvu -format=rle -v "{0}" "{1}"'.format(enc_bitonal_out.name, re.sub('\.tif$', '.rle', temp_textual.name)))
+        utils.execute('convert "{0}" "{1}"'.format(temp_graphics1.name, temp_graphics2.name))
+        
+        temp_merge = tempfile.NamedTemporaryFile(delete=False, suffix='.mix')
+        temp_merge.close()
+        
+        with open(temp_merge.name, 'wb') as mix:
+            with open(temp_textual2.name, 'rb') as rle:
                 buffer = rle.read(1024)
                 while buffer:
                     mix.write(buffer)
                     buffer = rle.read(1024)
-            with open('temp_graphics.ppm', 'rb') as ppm:
+            with open(temp_graphics2.name, 'rb') as ppm:
                 buffer = ppm.read(1024)
                 while buffer:
                     mix.write(buffer)
                     buffer = ppm.read(1024)
-        utils.execute('csepdjvu -d {0} {1} "temp_merge.mix" "temp_final.djvu"'.format(dpi, self.opts['csepdjvu_options']))
+        
+        temp_final = tempfile.NamedTemporaryFile(delete=False)
+        temp_final.close()
 
-        if (not os.path.isfile(outfile)):
-            shutil.move('temp_final.djvu', outfile)
+        utils.execute('csepdjvu -d {0} {1} "{2}" "{3}"'.format(dpi, self.opts['csepdjvu_options'], temp_merge.name, temp_final.name))
+
+        if not os.path.isfile(outfile):
+            shutil.copy(temp_final.name, outfile)
         else:
-            utils.execute('djvm -i {0} "temp_final.djvu"'.format(outfile))
-
-        # Clean up
-        for tempfile in glob.glob('temp_*'):
-            os.remove(tempfile)
-        os.remove('enc_bitonal_out.djvu')
+            utils.execute('djvm -i {0} "{1}"'.format(outfile, temp_final.name))
+        
+        for temp in [temp_graphics1, temp_graphics2, temp_textual1, temp_textual2, enc_bitonal_out, temp_merge, temp_final]:
+          os.remove(temp.name)
 
         return None
 

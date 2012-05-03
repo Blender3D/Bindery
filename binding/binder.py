@@ -23,11 +23,14 @@ class Binder(QThread):
       self.enc = DjVuEncoder(self.options)
     elif self.options['output_format'] == 'pdf':
       self.enc = PDFEncoder(self.options)
-    
-    if self.options['ocr_engine'] == 'tesseract':
-      self.ocr = djvubind.ocr.Tesseract(self.options)
-    elif self.options['ocr_engine'] == 'cuneiform':
-      self.ocr = djvubind.ocr.Cuneiform(self.options)
+
+    if self.options['ocr']:
+      if self.options['ocr_engine'] == 'tesseract':
+        self.ocr = djvubind.ocr.Tesseract(self.options)
+      elif self.options['ocr_engine'] == 'cuneiform':
+        self.ocr = djvubind.ocr.Cuneiform(self.options)
+    else:
+      self.ocr = False
     
     self.connect(self.enc, SIGNAL('updateProgress(int, int)'), self.updateProgress)
     self.connect(self.enc, SIGNAL('error(QString)'), self.error)
@@ -48,7 +51,7 @@ class Binder(QThread):
     self.queue = self.book.pages[:]
     self.quit = False
     self.total = len(self.queue)
-    base_percent = 25 + 25 * self.options['ocr']
+    base_percent = 25 + 25 * (not self.options['ocr'])
     
     while not self.quit:
       if len(self.queue) == 0:
@@ -82,6 +85,8 @@ class Binder(QThread):
     self.emit(SIGNAL('updateBackground(int, QColor)'), int(item), QColor(170, 255, 170, 120))
     
     if int(percent) == 100:
+      os.remove(self.metadata.name)
+      
       time.sleep(0.5)
       self.emit(SIGNAL('finishedBinding'))
   
@@ -105,7 +110,9 @@ class Binder(QThread):
       )
       
       page = self.queue.pop()
-      page.text = ocr.translate(boxing)
+      
+      if self.options['ocr']:
+        page.text = djvubind.ocr.translate(self.ocr.analyze(page.path))
       
       self.emit(SIGNAL('updateBackground(int, QColor)'), len(self.book.pages) - len(self.queue) - 1, QColor(190, 255, 190, 120))
     
@@ -115,8 +122,8 @@ class Binder(QThread):
     self.die = False
     self.book.pages = self.pages[:]
     
-    for page in self.book.pages:
-      print page.path
+    if os.path.isfile(self.options['output_file']):
+      os.remove(self.options['output_file'])
     
     if not self.die:
       self.analyze()
@@ -124,18 +131,19 @@ class Binder(QThread):
     if not self.die:
       self.book.get_dpi()
     
-    with tempfile.NamedTemporaryFile(delete=False) as metadata:
-      for prop in ['Title', 'Author', 'Subject', 'Keywords']:
-        metadata.write('{prop}{sep} "{value}"\n'.format(
-          prop=prop,
-          sep=':' if self.options['output_format'] == 'pdf' else '',
-          value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
-        ).encode())
-      
-      metadata.close()
-      
-      self.book.suppliments['metadata'] = metadata.name
+    self.metadata = tempfile.NamedTemporaryFile(delete=False)
     
+    for prop in ['Title', 'Author', 'Subject', 'Keywords']:
+      self.metadata.write('{prop}{sep} "{value}"\n'.format(
+        prop=prop,
+        sep=':' if self.options['output_format'] == 'pdf' else '',
+        value=self.options[prop.lower()].replace('\\', '\\\\').replace('"', '\\"')
+      ).encode())
+    
+    self.metadata.close()
+    
+    self.book.suppliments['metadata'] = self.metadata.name
+  
     if self.options['ocr'] and not self.die:
       self.get_ocr()
       self.emit(SIGNAL('ocrFinished'))

@@ -120,7 +120,7 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     if QIcon.hasThemeIcon(name):
       return QIcon.fromTheme(name)
     else:
-      return QIcon(':/icons/{0}.svg'.format(name))
+      return QIcon(':/icons/{0}.png'.format(name))
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
