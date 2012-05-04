@@ -5,25 +5,11 @@ class ImageViewerWidget(QGraphicsView):
   def __init__(self, type, parent = None):
     super(ImageViewerWidget, self).__init__(parent)
     
-    self.setCursor(Qt.OpenHandCursor)
-    
-    self.rectangles = []
-    self.lastRectangle = None
-    
-    self.painter = None
     self.lastClick = None
-    self.currentCenter = None
     
+    self.setCursor(Qt.OpenHandCursor)
     self.setCenter(QPointF(0, 0))
     self.setMouseTracking(True)
-    
-    self.defaultPen = QPen()
-    self.defaultPen.setBrush(Qt.red)
-    self.defaultPen.setWidth(2)
-    
-    self.hoverPen = QPen()
-    self.hoverPen.setBrush(Qt.green)
-    self.hoverPen.setWidth(2)
 
   def setCenter(self, centerPoint):
     visibleArea = self.mapToScene(self.rect()).boundingRect()
@@ -59,7 +45,7 @@ class ImageViewerWidget(QGraphicsView):
   def wheelEvent(self, event):
     pointBeforeScale = QPointF(self.mapToScene(event.pos()))
     screenCenter = self.currentCenter
-    scaleFactor = 1.15
+    scaleFactor = 1.10
     
     if event.delta() > 0:
       self.scale(scaleFactor, scaleFactor)
@@ -72,14 +58,16 @@ class ImageViewerWidget(QGraphicsView):
     
     self.setCenter(newCenter)
   
-  def getRectangle(self, point):
-    if type(point) == QPoint:
-      point = QPointF(point)
+  def pointWheelEvent(self, point):
+    pointBeforeScale = QPointF(self.mapToScene(point))
+    screenCenter = self.currentCenter
+    scaleFactor = 1.10
     
-    for rectangle in self.rectangles:
-      if rectangle.contains(point):
-        return rectangle
+    pointAfterScale = self.mapToScene(point)
+    offset = pointBeforeScale - pointAfterScale
+    newCenter = screenCenter + offset
     
+    self.setCenter(newCenter)
   
   def mousePressEvent(self, event):
     self.lastClick = event.pos()
@@ -90,15 +78,6 @@ class ImageViewerWidget(QGraphicsView):
     self.lastClick = None
   
   def mouseMoveEvent(self, event):
-    rectangle = self.getRectangle(self.mapToScene(event.pos()))
-    
-    if rectangle:
-      rectangle.setPen(self.hoverPen)
-      self.lastRectangle = rectangle
-    elif self.lastRectangle:
-      self.lastRectangle.setPen(self.defaultPen)
-      self.lastRectangle = None
-    
     if self.lastClick != None:
       delta = QPointF(self.mapToScene(self.lastClick) - self.mapToScene(event.pos()))
       self.lastClick = event.pos()
@@ -108,4 +87,3 @@ class ImageViewerWidget(QGraphicsView):
   
   def resizeEvent(self, event):
     self.setCenter(self.mapToScene(self.rect()).boundingRect().center())
-    self.update()

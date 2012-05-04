@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Thu May  3 00:59:07 2012
+# Created: Fri May  4 03:11:07 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,6 +78,9 @@ class Ui_MainWindow(object):
     self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetMaximumSize)
     self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
     self.addPageButton = QtGui.QPushButton(self.layoutWidget)
+    icon1 = QtGui.QIcon()
+    icon1.addPixmap(QtGui.QPixmap(), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    self.addPageButton.setIcon(icon1)
     self.addPageButton.setObjectName(_fromUtf8("addPageButton"))
     self.horizontalLayout.addWidget(self.addPageButton)
     spacerItem = QtGui.QSpacerItem(50, 0, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -117,7 +120,6 @@ class Ui_MainWindow(object):
     self.pagePreview.setStyleSheet(_fromUtf8("QGraphicsView {\n"
 "  background-color: rgb(240, 240, 240);\n"
 "}"))
-    self.pagePreview.setRenderHints(QtGui.QPainter.Antialiasing|QtGui.QPainter.SmoothPixmapTransform)
     self.pagePreview.setObjectName(_fromUtf8("pagePreview"))
     self.verticalLayout1.addWidget(self.pagePreview)
     self.horizontalLayout1 = QtGui.QHBoxLayout()
@@ -505,8 +507,6 @@ class Ui_MainWindow(object):
     self.toolBar.setObjectName(_fromUtf8("toolBar"))
     MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
     self.newMenuItem = QtGui.QAction(MainWindow)
-    icon1 = QtGui.QIcon()
-    icon1.addPixmap(QtGui.QPixmap(), QtGui.QIcon.Normal, QtGui.QIcon.Off)
     self.newMenuItem.setIcon(icon1)
     self.newMenuItem.setIconVisibleInMenu(True)
     self.newMenuItem.setObjectName(_fromUtf8("newMenuItem"))
@@ -619,7 +619,7 @@ class Ui_MainWindow(object):
     self.toolBar.addAction(self.startBindingMenuItem)
 
     self.retranslateUi(MainWindow)
-    self.tabWidget.setCurrentIndex(1)
+    self.tabWidget.setCurrentIndex(0)
     self.outputFormat.setCurrentIndex(0)
     self.ocrLanguage.setCurrentIndex(5)
     self.stackedWidget_2.setCurrentIndex(0)

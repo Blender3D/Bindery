@@ -23,7 +23,7 @@ from functionality import sorting, dialogs, error
 
 from ui import gui, project_files, resources_rc, BookListWidget, ImageViewerWidget
 
-class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4, QMainWindow):
+class Bindery(sorting.Sorting, dialogs.Dialogs, error.Error, functions.Bindery, QMainWindow):
   name = 'Bindery'
   version = '2.7.4'
   caption = ''
@@ -115,7 +115,14 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
     self.itemSelectionChanged()
     self.hideBackground()
     self.thumbnailer.start()
-    
+  
+  def closeEvent(self, event):
+    if self.binder.isRunning():
+      if QMessageBox.question(self, 'Bindery', 'A book is currently binding. Are you sure you want to exit?', QMessageBox.Yes, QMessageBox.No) == QMessageBox.Yes:
+        event.accept()
+      else:
+        event.ignore()
+  
   def QIconFromTheme(self, name):
     if QIcon.hasThemeIcon(name):
       return QIcon.fromTheme(name)
@@ -125,8 +132,13 @@ class StartQT4(sorting.Sorting, dialogs.Dialogs, error.Error, functions.StartQT4
 if __name__ == '__main__':
   app = QApplication(sys.argv)
   
-  bindery = StartQT4()
-  #sys.excepthook = bindery.handleError
+  bindery = Bindery()
+
+  if '--debug' not in sys.argv:
+    sys.stderr = bindery
+    sys.stdout = bindery
+    sys.excepthook = bindery.handleError
+  
   bindery.show()
   
   sys.exit(app.exec_())

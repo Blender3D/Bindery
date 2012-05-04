@@ -4,6 +4,9 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 class Error(QMainWindow):
+  def write(self, message):
+    self.ui.debugLog.setHtml(self.ui.debugLog.toHtml() + message)
+  
   def handleError(self, etype, value, trace):
     exception = ['<b>Traceback (most recent call last):</b>']
     

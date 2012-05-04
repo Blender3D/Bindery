@@ -21,6 +21,7 @@ import multiprocessing
 import os
 import subprocess
 import sys
+import tempfile
 
 def error(message):
   sys.stderr.write(message + '\n')

@@ -9,4 +9,4 @@ class Previewer(QThread):
     self.size = [None, None]
 
   def run(self):
-    self.emit(SIGNAL('previewPage(QImage)'), QImage(self.image).scaled(self.size[0] * 4, self.size[1] * 4, aspectRatioMode = Qt.KeepAspectRatio).scaled(self.size[0], self.size[1], aspectRatioMode = Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation))
+    self.emit(SIGNAL('previewPage(QImage)'), QImage(self.image))

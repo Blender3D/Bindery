@@ -25,7 +25,7 @@ def all_same(items):
 
 
 
-class StartQT4(QMainWindow):
+class Bindery(QMainWindow):
   def notImplemented(self):
     QMessageBox.information(self, 'Bindery', 'This feature is still being implemented.', QMessageBox.Ok, QMessageBox.Ok)
 
@@ -112,7 +112,6 @@ class StartQT4(QMainWindow):
       self.ui.pageTab.setEnabled(True)
 
       for widget in [self.ui.removePageButton, self.ui.removePageMenuItem]:
-        print(len(self.selected))
         widget.setEnabled(len(self.selected) > 0)
 
       self.ui.singlePageFrame.setEnabled(len(self.selected) == 1)
@@ -127,7 +126,7 @@ class StartQT4(QMainWindow):
         self.ui.moveDownButton.setEnabled(row != self.ui.pageList.count() - 1)
 
         self.previewer.image = self.selected[0].path
-        self.previewer.size = [self.ui.pagePreview.size().width() * 2, self.ui.pagePreview.size().width() * 2]
+        self.previewer.size = [self.ui.pagePreview.size().width(), self.ui.pagePreview.size().width()]
         self.previewer.start()
     else:
       self.ui.pageTab.setEnabled(False)
