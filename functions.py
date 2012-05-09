@@ -181,16 +181,16 @@ class Bindery(QMainWindow):
 
 
   def addToProject(self):
-    for item in self.projectFilesUi.offProjectList.selectedItems():
-      self.projectFilesUi.offProjectList.takeItem(self.projectFilesUi.offProjectList.row(item))
-      self.projectFilesUi.inProjectList.addItem(item)
+    for item in self.projectFiles.ui.offProjectList.selectedItems():
+      self.projectFiles.ui.offProjectList.takeItem(self.projectFiles.ui.offProjectList.row(item))
+      self.projectFiles.ui.inProjectList.addItem(item)
 
 
 
   def removeFromProject(self):
-    for item in self.projectFilesUi.inProjectList.selectedItems():
-      self.projectFilesUi.inProjectList.takeItem(self.projectFilesUi.inProjectList.row(item))
-      self.projectFilesUi.offProjectList.addItem(item)
+    for item in self.projectFiles.ui.inProjectList.selectedItems():
+      self.projectFiles.ui.inProjectList.takeItem(self.projectFiles.ui.inProjectList.row(item))
+      self.projectFiles.ui.offProjectList.addItem(item)
 
 
   def addFile(self, filename, index=None, title=None):
@@ -240,17 +240,17 @@ class Bindery(QMainWindow):
 
 
   def projectFilesAccepted(self):
-    self.ui.outputFile.setText(self.projectFilesUi.outputFile.text())
+    self.ui.outputFile.setText(self.projectFiles.ui.outputFile.text())
 
-    if self.projectFilesUi.inProjectList.count() == 0:
+    if self.projectFiles.ui.inProjectList.count() == 0:
       QMessageBox.warning(self, 'Bindery', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
     elif self.ui.outputFile.text() == '':
       QMessageBox.warning(self, 'Bindery', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:
       self.projectFiles.close()
 
-      for i in range(self.projectFilesUi.inProjectList.count()):
-        orig = self.projectFilesUi.inProjectList.item(i)
+      for i in range(self.projectFiles.ui.inProjectList.count()):
+        orig = self.projectFiles.ui.inProjectList.item(i)
         item = BookListWidgetItem(str(orig.text()), str(orig.statusTip()))
 
         if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in range(self.ui.pageList.count())]:

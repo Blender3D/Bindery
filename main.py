@@ -42,17 +42,26 @@ class Bindery(sorting.Sorting, dialogs.Dialogs, error.Error, functions.Bindery, 
     self.previews = True
     
     self.projectFiles = QDialog(self)
-    self.projectFilesUi = project_files.Ui_ProjectFilesDialog()
-    self.projectFilesUi.setupUi(self.projectFiles)
+    self.projectFiles.ui = project_files.Ui_ProjectFilesDialog()
+    self.projectFiles.ui.setupUi(self.projectFiles)
 
-    self.projectFilesUi.browseButton1.clicked.connect(self.showFileDialog)
-    self.projectFilesUi.browseButton2.clicked.connect(self.showSaveDialog)
-    self.projectFilesUi.addToProjectButton.clicked.connect(self.addToProject)
-    self.projectFilesUi.removeFromProjectButton.clicked.connect(self.removeFromProject)
-    self.projectFilesUi.okButton.clicked.connect(self.projectFilesAccepted)
+    self.projectFiles.ui.browseButton1.clicked.connect(self.showFileDialog)
+    self.projectFiles.ui.browseButton2.clicked.connect(self.showSaveDialog)
+    self.projectFiles.ui.addToProjectButton.clicked.connect(self.addToProject)
+    self.projectFiles.ui.removeFromProjectButton.clicked.connect(self.removeFromProject)
+    self.projectFiles.ui.okButton.clicked.connect(self.projectFilesAccepted)
     
-    self.projectFilesUi.addToProjectButton.setIcon(self.QIconFromTheme('go-next'))
-    self.projectFilesUi.removeFromProjectButton.setIcon(self.QIconFromTheme('go-previous'))
+    self.projectFiles.ui.addToProjectButton.setIcon(self.QIconFromTheme('go-next'))
+    self.projectFiles.ui.removeFromProjectButton.setIcon(self.QIconFromTheme('go-previous'))
+    
+    self.projectFiles.ui.browseButton1.setIcon(self.QIconFromTheme('document-save'))
+    self.projectFiles.ui.browseButton2.setIcon(self.QIconFromTheme('document-save'))
+
+    self.projectFiles.ui.okButton.setIcon(self.QIconFromTheme('dialog-ok-apply'))
+    self.projectFiles.ui.cancelButton.setIcon(self.QIconFromTheme('process-stop'))
+    
+    self.projectFiles.ui.selectAllButton1.setIcon(self.QIconFromTheme('gtk-select-all'))
+    self.projectFiles.ui.selectAllButton2.setIcon(self.QIconFromTheme('gtk-select-all'))
     
     
     self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-start'))
@@ -76,7 +85,7 @@ class Bindery(sorting.Sorting, dialogs.Dialogs, error.Error, functions.Bindery, 
     self.ui.moveDownButton.setIcon(self.QIconFromTheme('go-down'))
     self.ui.moveToBottomButton.setIcon(self.QIconFromTheme('go-bottom'))
     
-    self.ui.clearLogButton.setIcon(self.QIconFromTheme('reload'))
+    self.ui.clearLogButton.setIcon(self.QIconFromTheme('gtk-clear'))
     self.ui.saveLogButton.setIcon(self.QIconFromTheme('document-save'))
     
     self.ui.outputFileBrowseButton.setIcon(self.QIconFromTheme('document-save'))

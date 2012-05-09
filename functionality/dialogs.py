@@ -18,18 +18,19 @@ class Dialogs(QMainWindow):
     )
 
     if str(directory) != '':
-      self.projectFilesUi.inputDirectory.setText(str(directory) + os.pathsep)
+      directory = os.path.abspath(str(directory))
+      self.projectFiles.ui.inputDirectory.setText(directory)
       
-      self.settings.setValue('startup/input_directory', str(directory) + os.pathsep)
-      
-      for file in glob.glob(str(directory) + '/*'):
-        item = QListWidgetItem(os.path.split(file)[-1])
-        item.setStatusTip(file)
+      self.settings.setValue('startup/input_directory', directory)
+
+      for filename in os.listdir(directory):
+        item = QListWidgetItem(os.path.split(filename)[-1])
+        item.setStatusTip(filename)
         
-        if os.path.splitext(os.path.split(file)[-1])[-1].lower() not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
+        if os.path.splitext(os.path.split(filename)[-1])[-1].lower() not in ['.jpg', '.jpeg', '.bmp', '.png', '.tif', '.tiff']:
           item.setFlags(Qt.NoItemFlags)
 
-        self.projectFilesUi.offProjectList.addItem(item)
+        self.projectFiles.ui.offProjectList.addItem(item)
   
   
   
@@ -46,7 +47,7 @@ class Dialogs(QMainWindow):
     ))
     
     if str(self.ui.outputFile.text()) != '':
-      self.projectFilesUi.outputFile.setText(self.ui.outputFile.text())
+      self.projectFiles.ui.outputFile.setText(self.ui.outputFile.text())
       self.settings.setValue('startup/output_directory', os.path.split(str(self.ui.outputFile.text()))[0] + '/')
   
   
