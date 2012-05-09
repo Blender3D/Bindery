@@ -57,12 +57,11 @@ class Bindery(sorting.Sorting, dialogs.Dialogs, error.Error, functions.Bindery, 
     self.projectFiles.ui.browseButton1.setIcon(self.QIconFromTheme('document-save'))
     self.projectFiles.ui.browseButton2.setIcon(self.QIconFromTheme('document-save'))
 
-    self.projectFiles.ui.okButton.setIcon(self.QIconFromTheme('dialog-ok-apply'))
+    self.projectFiles.ui.okButton.setIcon(self.QIconFromTheme('dialog-ok'))
     self.projectFiles.ui.cancelButton.setIcon(self.QIconFromTheme('process-stop'))
     
     self.projectFiles.ui.selectAllButton1.setIcon(self.QIconFromTheme('gtk-select-all'))
     self.projectFiles.ui.selectAllButton2.setIcon(self.QIconFromTheme('gtk-select-all'))
-    
     
     self.ui.startButton.setIcon(self.QIconFromTheme('media-playback-start'))
     self.ui.addPageButton.setIcon(self.QIconFromTheme('list-add'))
