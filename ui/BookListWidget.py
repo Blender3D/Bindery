@@ -1,3 +1,5 @@
+import platform, collections
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -51,8 +53,11 @@ class BookListWidget(QListWidget):
       
       for url in event.mimeData().urls():
         links.append(str(url.toLocalFile()))
-      
-      self.emit(SIGNAL('dropped(QStringList)'), links)
+
+      if platform.system() == 'Windows':
+        self.emit(SIGNAL('dropped(QStringList)'), links[1:] + links[:1])
+      else:
+        self.emit(SIGNAL('dropped(QStringList)'), links)
     else:
       event.ignore()
 
