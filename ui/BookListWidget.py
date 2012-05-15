@@ -53,8 +53,9 @@ class BookListWidget(QListWidget):
       
       for url in event.mimeData().urls():
         links.append(str(url.toLocalFile()))
-
       if platform.system() == 'Windows':
+        print links
+        print links[1:] + links[:1]
         self.emit(SIGNAL('dropped(QStringList)'), links[1:] + links[:1])
       else:
         self.emit(SIGNAL('dropped(QStringList)'), links)

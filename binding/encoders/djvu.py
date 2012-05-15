@@ -17,7 +17,7 @@ class DjVuEncoder(QThread, encode.Encoder):
   
   def progress(self):
     self.done += 1
-    self.sendProgress(100.0 * float(self.done) / float(len(self.book.pages)))
+    self.sendProgress(100.0 * float(self.done) / len(self.book.pages))
 
   def sendProgress(self, percent):
     self.emit(SIGNAL('updateProgress(int, int)'), (percent * 0.50) + 50.0, self.count)

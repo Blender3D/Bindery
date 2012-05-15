@@ -143,9 +143,10 @@ if __name__ == '__main__':
   bindery = Bindery()
 
   if '--debug' not in sys.argv:
-    sys.stderr = bindery
-    sys.stdout = bindery
-    sys.excepthook = bindery.handleError
+    pass
+    #sys.stderr = bindery
+    #sys.stdout = bindery
+    #sys.excepthook = bindery.handleError
   
   bindery.show()
   

@@ -243,7 +243,7 @@ class Bindery(QMainWindow):
     self.ui.outputFile.setText(self.projectFiles.ui.outputFile.text())
 
     if self.projectFiles.ui.inProjectList.count() == 0:
-      QMessageBox.warning(self, 'Bindery', 'There are no pages to process.\nPlease add them using the green arrows.', QMessageBox.Ok, QMessageBox.Ok)
+      QMessageBox.warning(self, 'Bindery', 'There are no pages to process.\nPlease add them using the arrows.', QMessageBox.Ok, QMessageBox.Ok)
     elif self.ui.outputFile.text() == '':
       QMessageBox.warning(self, 'Bindery', 'No output file has been selected.\nPlease select one using the "Output File" form.', QMessageBox.Ok, QMessageBox.Ok)
     else:

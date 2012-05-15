@@ -71,9 +71,7 @@ class Encoder:
         """
         Encode files with cjb2.
         """
-
         cmd = 'cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cjb2_options'], infile, outfile)
-        utils.execute(cmd)
 
         # Check that the outfile has been created.
         if not os.path.isfile(outfile):
@@ -87,6 +85,8 @@ class Encoder:
         """
         Encode files with cpaldjvu.
         """
+
+        utils.error('infile: ' + infile)
 
         # Make sure that the image is in a format acceptable for cpaldjvu
         extension = infile.split('.')[-1]
@@ -129,16 +129,16 @@ class Encoder:
         
         # Separate the bitonal text (scantailor's mixed mode) from everything else.
         utils.execute('convert -opaque black "{0}" "{1}"'.format(infile, temp_graphics1.name))
-        utils.execute('convert +opaque black "{0}" "{1}"'.format(infile, temp_textual.name))
+        utils.execute('convert +opaque black "{0}" "{1}"'.format(infile, temp_textual1.name))
         
         enc_bitonal_out = tempfile.NamedTemporaryFile(delete=False, suffix='.djvu')
         enc_bitonal_out.close()
         
         # Encode the bitonal image.
-        self._cjb2(temp_textual.name, enc_bitonal_out.name, dpi)
+        self._cjb2(temp_textual1.name, enc_bitonal_out.name, dpi)
 
         # Encode with color with bitonal via csepdjvu
-        utils.execute('ddjvu -format=rle -v "{0}" "{1}"'.format(enc_bitonal_out.name, re.sub('\.tif$', '.rle', temp_textual.name)))
+        utils.execute('ddjvu -format=rle -v "{0}" "{1}"'.format(enc_bitonal_out.name, re.sub('\.tif$', '.rle', temp_textual2.name)))
         utils.execute('convert "{0}" "{1}"'.format(temp_graphics1.name, temp_graphics2.name))
         
         temp_merge = tempfile.NamedTemporaryFile(delete=False, suffix='.mix')
