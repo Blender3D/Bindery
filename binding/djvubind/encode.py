@@ -23,6 +23,9 @@ import os
 import shutil
 import sys
 import re
+import tempfile
+import time
+import subprocess
 
 from . import utils
 
@@ -71,7 +74,7 @@ class Encoder:
         """
         Encode files with cjb2.
         """
-        cmd = 'cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cjb2_options'], infile, outfile)
+        utils.execute('cjb2 -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cjb2_options'], infile, outfile))
 
         # Check that the outfile has been created.
         if not os.path.isfile(outfile):
@@ -86,17 +89,15 @@ class Encoder:
         Encode files with cpaldjvu.
         """
 
-        utils.error('infile: ' + infile)
-
         # Make sure that the image is in a format acceptable for cpaldjvu
         extension = infile.split('.')[-1]
+        
         if extension not in ['ppm']:
             utils.execute('convert {0} {1}'.format(infile, 'temp.ppm'))
             infile = 'temp.ppm'
 
         # Encode
-        cmd = 'cpaldjvu -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cpaldjvu_options'], infile, outfile)
-        utils.execute(cmd)
+        utils.execute('cpaldjvu -dpi {0} {1} "{2}" "{3}"'.format(dpi, self.opts['cpaldjvu_options'], infile, outfile))
 
         # Check that the outfile has been created.
         if not os.path.isfile(outfile):
@@ -180,18 +181,19 @@ class Encoder:
         """
 
         # Specify filenames that will be used.
-        tempfile = 'enc_temp.djvu'
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.djvu')
+        temp_file.close()
 
         # Minidjvu has to worry about the length of the command since all the filenames are
         # listed.
-        cmds = utils.split_cmd('minidjvu -d {0} {1}'.format(dpi, self.opts['minidjvu_options']), infiles, tempfile)
+        cmds = utils.split_cmd('minidjvu -d {0} {1}'.format(dpi, self.opts['minidjvu_options']), infiles, temp_file.name)
 
         # Execute each command, adding each result into a single, multipage djvu.
         for cmd in cmds:
             utils.execute(cmd)
-            self.djvu_insert(tempfile, outfile)
+            self.djvu_insert(temp_file.name, outfile)
 
-        os.remove(tempfile)
+        os.remove(tempfile.name)
 
         return None
 
@@ -228,7 +230,8 @@ class Encoder:
         Encode pages, metadata, etc. contained within a organizer.Book() class.
         """
 
-        tempfile = 'temp.djvu'
+        temp_book = tempfile.NamedTemporaryFile(delete=False, suffix='.djvu')
+        temp_book.close()
 
         # Encode bitonal images first, mainly because of minidjvu needing to do
         # them all at once.
@@ -236,20 +239,20 @@ class Encoder:
             bitonals = []
             for page in book.pages:
                 if page.bitonal:
-                    filepath = os.path.split(page.path)[1]
-                    bitonals.append(filepath)
+                    bitonals.append(page.path)
             if len(bitonals) > 0:
                 if self.opts['bitonal_encoder'] == 'minidjvu':
-                    self._minidjvu(bitonals, tempfile, book.dpi)
-                    self.djvu_insert(tempfile, outfile)
-                    os.remove(tempfile)
+                    self._minidjvu(bitonals, temp_book.name, book.dpi)
+                    self.djvu_insert(temp_book.name, outfile)
+                    utils.error('asd')
+                    os.remove(temp_book.name)
                     self.progress()
         elif self.opts['bitonal_encoder'] == 'cjb2':
             for page in book.pages:
                 if page.bitonal:
-                    self._cjb2(page.path, tempfile, page.dpi)
-                    self.djvu_insert(tempfile, outfile)
-                    os.remove(tempfile)
+                    self._cjb2(page.path, temp_book.name, page.dpi)
+                    self.djvu_insert(temp_book.name, outfile)
+                    os.remove(temp_book.name)
                     self.progress()
         else:
             for page in book.pages:
@@ -264,25 +267,25 @@ class Encoder:
             for page in book.pages:
                 if not page.bitonal:
                     page_number = book.pages.index(page) + 1
-                    self._csepdjvu(page.path, tempfile, page.dpi)
-                    self.djvu_insert(tempfile, outfile, page_number)
-                    os.remove(tempfile)
+                    self._csepdjvu(page.path, temp_book.name, page.dpi)
+                    self.djvu_insert(temp_book.name, outfile, page_number)
+                    os.remove(temp_book.name)
                     self.progress()
         elif self.opts['color_encoder'] == 'c44':
             for page in book.pages:
                 if not page.bitonal:
                     page_number = book.pages.index(page) + 1
-                    self._c44(page.path, tempfile, page.dpi)
-                    self.djvu_insert(tempfile, outfile, page_number)
-                    os.remove(tempfile)
+                    self._c44(page.path, temp_book.name, page.dpi)
+                    self.djvu_insert(temp_book.name, outfile, page_number)
+                    os.remove(temp_book.name)
                     self.progress()
         elif self.opts['color_encoder'] == 'cpaldjvu':
             for page in book.pages:
                 if not page.bitonal:
                     page_number = book.pages.index(page) + 1
-                    self._cpaldjvu(page.path, tempfile, page.dpi)
-                    self.djvu_insert(tempfile, outfile, page_number)
-                    os.remove(tempfile)
+                    self._cpaldjvu(page.path, temp_book.name, page.dpi)
+                    self.djvu_insert(temp_book.name, outfile, page_number)
+                    os.remove(temp_book.name)
                     self.progress()
         else:
             for page in book.pages:
@@ -305,13 +308,13 @@ class Encoder:
         # Insert front/back covers, metadata, and bookmarks
         if book.suppliments['cover_front'] is not None:
             dpi = int(utils.execute('identify -ping -format %x "{0}"'.format(book.suppliments['cover_front']), capture=True).decode('ascii').split(' ')[0])
-            self._c44(book.suppliments['cover_front'], tempfile, dpi)
-            self.djvu_insert(tempfile, outfile, 1)
+            self._c44(book.suppliments['cover_front'], temp_book.name, dpi)
+            self.djvu_insert(temp_book.name, outfile, 1)
             utils.execute('djvused -e "select 1; set-page-title cover; save" "{0}"'.format(outfile))
         if book.suppliments['cover_back'] is not None:
             dpi = int(utils.execute('identify -ping -format %x "{0}"'.format(book.suppliments['cover_back']), capture=True).decode('ascii').split(' ')[0])
-            self._c44(book.suppliments['cover_back'], tempfile, dpi)
-            self.djvu_insert(tempfile, outfile, -1)
+            self._c44(book.suppliments['cover_back'], temp_book.name, dpi)
+            self.djvu_insert(temp_book.name, outfile, -1)
         if book.suppliments['metadata'] is not None:
             utils.simple_exec('djvused -e "set-meta {0}; save" "{1}"'.format(book.suppliments['metadata'], outfile))
         if book.suppliments['bookmarks'] is not None:
@@ -336,7 +339,7 @@ class Encoder:
         utils.simple_exec('djvused -f titles "{0}"'.format(outfile))
         os.remove('titles')
 
-        if os.path.isfile(tempfile):
-            os.remove(tempfile)
+        if os.path.isfile(temp_book.name):
+            os.remove(temp_book)
 
         return None

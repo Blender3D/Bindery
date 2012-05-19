@@ -78,7 +78,10 @@ class Bindery(QMainWindow):
     installed_ocr_engines = []
     
     if not utils.is_executable('identify'):
-      os.environ['path'] = os.path.abspath('bin/') + ';' + os.environ['path']
+      if platform.system() == 'Windows':
+        os.environ['PATH'] = os.path.abspath('bin\\') + ';' + os.environ['PATH']
+      else:
+        self.error('Bindery requires a few packages in order to function properly, namely imagemagick, djvulibre, jbig2 and pdfbeads. Check the documentation for instructions on how to install them.')
     
     for index, engine in enumerate(ocr_engines):
       if utils.is_executable(engine.lower()):
@@ -251,9 +254,9 @@ class Bindery(QMainWindow):
 
       for i in range(self.projectFiles.ui.inProjectList.count()):
         orig = self.projectFiles.ui.inProjectList.item(i)
-        item = BookListWidgetItem(str(orig.text()), str(orig.statusTip()))
+        item = BookListWidgetItem(orig.text(), orig.statusTip())
 
-        if orig.text() not in [str(self.ui.pageList.item(i).text()) for i in range(self.ui.pageList.count())]:
+        if str(orig.text()) not in [self.ui.pageList.item(i).filename for i in range(self.ui.pageList.count())]:
           self.ui.pageList.addItem(item)
 
     for widget in [self.ui.startButton, self.ui.startBindingMenuItem]:
@@ -342,7 +345,8 @@ class Bindery(QMainWindow):
   def toggleBinding(self):
     if str(self.ui.startButton.text()) == 'Start':
       if self.ui.outputFile.text() == '':
-        self.showSaveDialog()
+        if not self.showSaveDialog():
+          return False
 
       self.pages = [self.ui.pageList.item(i) for i in range(self.ui.pageList.count())]
 

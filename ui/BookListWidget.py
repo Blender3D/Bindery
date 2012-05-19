@@ -1,4 +1,4 @@
-import platform, collections
+import os, platform, collections
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -18,8 +18,8 @@ class BookListWidget(QListWidget):
     super(BookListWidget, self).__init__(parent)
     
     self.setSelectionMode(QAbstractItemView.ExtendedSelection)
-    self.setDragEnabled(True)
-    self.setDragDropMode(QAbstractItemView.InternalMove)
+    self.setDragEnabled(False)
+    #self.setDragDropMode(QAbstractItemView.InternalMove)
     self.setAcceptDrops(True)
     self.setDropIndicatorShown(True)
     self.setAlternatingRowColors(True)
@@ -66,10 +66,12 @@ class BookListWidget(QListWidget):
 class BookListWidgetItem(QListWidgetItem, organizer.Page):
   def __init__(self, text='', filepath='', parent=None):    
     QListWidgetItem.__init__(self)
-    organizer.Page.__init__(self, filepath)
+    organizer.Page.__init__(self, str(filepath))
     
     self.defaultIcon = True
     self.number = 0
+    
+    self.filename = os.path.split(self.path)[-1]
     
     self.setText(text)
     self.setSizeHint(QSize(72, 72))

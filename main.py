@@ -25,7 +25,7 @@ from ui import gui, project_files, resources_rc, BookListWidget, ImageViewerWidg
 
 class Bindery(sorting.Sorting, dialogs.Dialogs, error.Error, functions.Bindery, QMainWindow):
   name = 'Bindery'
-  version = '2.7.4'
+  version = '2.7.5'
   caption = ''
   full_name = ' '.join([name, version, caption])
   description = 'Bindery is a cross-platform solution to binding scanned pages into PDF and DjVu documents.'

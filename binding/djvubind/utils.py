@@ -172,7 +172,7 @@ def simple_exec(cmd):
         sub = subprocess.Popen(cmd, shell=False, stdout=void, stderr=void)
         return int(sub.wait())
 
-def execute(cmd, capture=False):
+def execute(cmd, capture=False, shell=True):
     """
     Execute a command line process.  Includes the option of capturing output,
     and checks for successful execution.
@@ -180,9 +180,9 @@ def execute(cmd, capture=False):
 
     with open(os.devnull, 'w') as void:
         if capture:
-            sub = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=void)
+            sub = subprocess.Popen(cmd, shell=shell, stdout=subprocess.PIPE, stderr=void)
         else:
-            sub = subprocess.Popen(cmd, shell=True, stdout=void, stderr=void)
+            sub = subprocess.Popen(cmd, shell=shell, stdout=subprocess.PIPE, stderr=void)
     status = sub.wait()
 
     # Exit if the command fails for any reason.

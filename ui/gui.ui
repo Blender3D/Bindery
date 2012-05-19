@@ -152,7 +152,7 @@ background-color: white;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="movable">
            <bool>true</bool>
@@ -362,7 +362,7 @@ background-color: white;
               <property name="title">
                <string>Book Metadata</string>
               </property>
-              <layout class="QFormLayout" name="formLayout_8">
+              <layout class="QFormLayout" name="formLayout_5">
                <item row="0" column="0">
                 <widget class="QLabel" name="label_6">
                  <property name="text">
@@ -378,28 +378,28 @@ background-color: white;
                 </widget>
                </item>
                <item row="1" column="0">
-                <widget class="QLabel" name="label_7">
-                 <property name="text">
-                  <string>Subject</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="bookSubject">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
                 <widget class="QLabel" name="label_9">
                  <property name="text">
                   <string>Author</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1">
+               <item row="1" column="1">
                 <widget class="QLineEdit" name="bookAuthor">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Subject</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="bookSubject">
                  <property name="text">
                   <string/>
                  </property>
