@@ -1,113 +1,49 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    
-    <title>Bindery</title>
+<!DOCTYPE html>
+<html>
 
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="script.js"></script>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Bindery : A simple GUI for binding post processed scanned pages into digital documents." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Bindery</title>
   </head>
 
   <body>
-    <div id="top">
-      <img id="logo" src="logo.png" />
-      
-      <h1>Bindery</h1>
-      
-      A cross-platform solution to DIY book digitalization, all written in Python.
-      
-      <ul id="navigation">
-        <li class="selected">About</li>
-        <li>Develop</li>
-        <li>Download</li>
-      </ul>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Blender3D/Bindery">View on GitHub</a>
+
+          <h1 id="project_title">Bindery</h1>
+          <h2 id="project_tagline">A simple GUI for binding post processed scanned pages into digital documents.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Blender3D/Bindery/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Blender3D/Bindery/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
     </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>Bindery is a PyQt4 application that takes processed images from Scan Tailor and binds them into a DjVu or PDF document.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Bindery maintained by <a href="https://github.com/Blender3D">Blender3D</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
     
-    <div id="about">
-      <dl class="nodates">
-        <dt>Who?</dt>
-        
-        <dd>My nickname is Blender. I prefer to stay (partially) anonymous, but my real identity can be determined quite easily.</dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>What?</dt>
-        
-        <dd>As mentioned earlier, Bindery is a cross-platform solution to DIY book digitalization, all written in <a href="http://www.python.org/">Python</a>. In order to make it useable to non-techies or Terminal-phobics, a GUI exists and is written in <a href="http://www.riverbankcomputing.co.uk/software/pyqt/intro">PyQt4</a>. The core of the software is the <a href="http://code.google.com/p/djvubind/">djvubind</a> package, which is basically the CLI father of the whole project.</dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>When?</dt>
-        
-        <dd>The first git commit was performed on Saturday January 1, 2011, but the project was spread around my desktop for a few days beforehand.</dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>Where?</dt>
-        
-        <dd>In the inner workings of my mind, the hard drive I work with, and a lot of help from <a href="http://github.com/">GitHub</a>!</dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>Why?</dt>
-        
-        <dd>This project was created mainly because I was bored, but helping the DIY book scanning community grow is a part of it too.</dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>How?</dt>
-        
-        <dd>It's written in Python. I love Python. I can rant on about that topic endlessly, but this is not what you want to hear (I hope), so it's better not to ask.</dd>
-      </dl>
-    </div>
-    
-    <div id="develop">
-      <dl class="nodates">
-        <dt>So you want to help, huh?</dt>
-        
-        <dd>Well then, welcome aboard! Just email me at <a href="mailto:"></a>, convince me you're not going to screw up the project, and I'll give you write access to the git repository.</dd>
-      </dl>
-    </div>
-    
-    <div id="download">
-      <dl class="nodates">
-        <dt>Using Git</dt>
-        
-        <dd>
-          <p>Well, since I've been ranting on so much about the project, I'll neglected to let you see it for yourself.</p>
-          
-          <p>I use a version control system called <a href="http://git-scm.com/">Git</a> to manage my code, since I edit it so often and I'm too lazy to tarball it every time.</p>
-          
-          <p>To git the code, you need the git version control client. It's command-line, so don't be shocked when you don't get your fancy Start Menu shortcut after you install it. Run this in Terminal or the alike program to check out the source:</p>
-          
-          <code>git clone git://github.com/Blender3D/Bindery.git</code>
-        </dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>Not using Git</dt>
-        
-        <dd>
-          <p>For those who can't or don't want to use git, GitHub allows you to download a tarball of the current snapshot of the source code. Here's the link to the current snapshot (it's a hot one): <a href="https://github.com/Blender3D/Bindery/tarball/master">https://github.com/Blender3D/Bindery/tarball/master</a>.</p>
-        </dd>
-      </dl>
-      
-      <dl class="nodates">
-        <dt>Some screenshots</dt>
-        
-        <dd>
-          As some people like to see what they are downloading, here are a few screenshots:
-          
-          <img src="screenshot1.png" />
-          <img src="screenshot2.png" />
-          
-          These could be out of date, but the GUI shouldn't change <i>too</i> drastically (but it might).
-        </dd>
-      </dl>
-    </div>
+
   </body>
 </html>

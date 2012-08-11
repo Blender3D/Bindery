@@ -1,0 +1,1 @@
+{"tagline":"A simple GUI for binding post processed scanned pages into digital documents.","note":"Don't delete this file! It's used internally to help with page regeneration.","body":"Bindery is a PyQt4 application that takes processed images from Scan Tailor and binds them into a DjVu or PDF document.","name":"Bindery","google":""}
