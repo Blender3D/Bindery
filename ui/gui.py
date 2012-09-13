@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Thu Sep 13 04:28:40 2012
+# Created: Thu Sep 13 04:30:00 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -808,4 +808,4 @@ class Ui_MainWindow(object):
 
 from .BookListWidget import BookListWidget
 from .ImageViewerWidget import ImageViewerWidget
-import resources_rc
+from . import resources_rc
