@@ -77,8 +77,6 @@ class PDFEncoder(QThread):
     for page in book.pages:
       command += ' "{}"'.format(page.path)
     
-    print command
-    
     self.total = len(book.pages)
     self._pdfbeads(command)
     
